@@ -1,0 +1,15 @@
+{
+  "appId": "com.fitnesscenter.app",
+  "appName": "Fitness Center",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https",
+    "hostname": "app.fitnesscenter.local",
+    "allowNavigation": [
+      "*.fitnesscenter.app",
+      "localhost",
+      "127.0.0.1"
+    ]
+  }
+}

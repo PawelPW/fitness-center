@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Capacitor
+.capacitor/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production
+server/.env.production
+
+# Android signing keys (sensitive)
+android/app/*.keystore
+android/gradle.properties
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sudo apt update:*)",
+      "Bash(sudo apt install:*)",
+      "Bash(pg_isready:*)",
+      "Bash(systemctl status:*)",
+      "Bash(service postgresql status:*)",
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(export ANDROID_HOME=\"/mnt/c/Users/Lenovo/AppData/Local/Android/Sdk\")",
+      "Bash(export ANDROID_SDK_ROOT=\"$ANDROID_HOME\")",
+      "Bash(java:*)",
+      "Bash(cmd.exe /c gradlew.bat assembleDebug)",
+      "Bash(npm run dev:*)",
+      "Bash(npm audit fix:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
