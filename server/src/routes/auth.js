@@ -9,7 +9,17 @@ router.post(
   [
     body('username').trim().isLength({ min: 3 }).escape(),
     body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 6 }),
+    body('password')
+      .isLength({ min: 12 })
+      .withMessage('Password must be at least 12 characters long')
+      .matches(/[A-Z]/)
+      .withMessage('Password must contain at least one uppercase letter')
+      .matches(/[a-z]/)
+      .withMessage('Password must contain at least one lowercase letter')
+      .matches(/[0-9]/)
+      .withMessage('Password must contain at least one number')
+      .matches(/[@$!%*?&#]/)
+      .withMessage('Password must contain at least one special character (@$!%*?&#)'),
   ],
   authController.register
 );

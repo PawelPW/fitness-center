@@ -3,19 +3,20 @@
    Mobile-first design with advanced animations
    ============================================ */
 
-/* CSS Custom Properties for easy theming */
+/* Using global design system from index.css */
+/* Local aliases for backward compatibility */
 :root {
-  --primary-gradient: linear-gradient(135deg, #00f5ff 0%, #0066ff 50%, #8000ff 100%);
-  --secondary-gradient: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
-  --success-gradient: linear-gradient(135deg, #06ffa5 0%, #00d4ff 100%);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --error-color: #ff4757;
-  --shadow-glow: 0 0 40px rgba(0, 245, 255, 0.3);
-  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --primary-gradient: var(--gradient-primary);
+  --secondary-gradient: var(--gradient-accent);
+  --success-gradient: var(--gradient-success);
+  --glass-bg: var(--glass-weak);
+  --glass-border: var(--glass-border);
+  --text-primary: var(--text-primary);
+  --text-secondary: var(--text-secondary);
+  --error-color: var(--red-500);
+  --shadow-glow: var(--shadow-glow-cyan);
+  --transition-smooth: var(--ease-smooth);
+  --transition-bounce: var(--ease-bounce);
 }
 
 /* ============================================
@@ -411,13 +412,15 @@
 .form-input {
   width: 100%;
   padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: var(--glass-weak);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
   transition: all 0.3s var(--transition-smooth);
   outline: none;
+  min-height: 48px;
 }
 
 .form-input::placeholder {
@@ -425,11 +428,9 @@
 }
 
 .form-input:focus {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: #00f5ff;
-  box-shadow:
-    0 0 0 3px rgba(0, 245, 255, 0.1),
-    0 0 20px rgba(0, 245, 255, 0.2);
+  background: var(--glass-medium);
+  border-color: var(--cyan-500);
+  box-shadow: var(--shadow-glow-cyan);
   transform: translateY(-2px);
 }
 
@@ -456,22 +457,20 @@
 .login-button {
   position: relative;
   width: 100%;
-  padding: 1.125rem 2rem;
+  padding: var(--spacing-4) var(--spacing-6);
   background: var(--primary-gradient);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
-  margin-top: 0.5rem;
+  margin-top: var(--spacing-2);
   transition: all 0.3s var(--transition-smooth);
-  box-shadow:
-    0 4px 15px rgba(0, 102, 255, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-glow-cyan);
   /* Minimum touch target size for accessibility */
   min-height: 48px;
 }

@@ -10,7 +10,11 @@ const poolConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
       ssl: process.env.NODE_ENV === 'production'
-        ? { rejectUnauthorized: false }
+        ? {
+            rejectUnauthorized: true, // Enable SSL certificate validation
+            // Optional: Use custom CA certificate if provided
+            // ca: process.env.DB_SSL_CA,
+          }
         : false,
     }
   : {

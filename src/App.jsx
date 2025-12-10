@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiService from './services/api.js';
+import secureStorage from './utils/secureStorage.js';
 import Login from './pages/Login';
 import Welcome from './pages/Welcome';
 import Dashboard from './pages/Dashboard';
@@ -24,20 +25,29 @@ function App() {
 
   // Check for existing session on mount
   useEffect(() => {
-    const token = apiService.getToken();
-    const savedUser = localStorage.getItem('fitness-user');
+    const checkExistingSession = async () => {
+      try {
+        const token = await apiService.getToken();
+        const savedUserJson = await secureStorage.get('fitness-user');
 
-    if (token && savedUser) {
-      const userData = JSON.parse(savedUser);
-      setUser(userData);
-      setShowWelcome(true); // Show welcome screen for returning users
-    }
-    setLoading(false);
+        if (token && savedUserJson) {
+          const userData = JSON.parse(savedUserJson);
+          setUser(userData);
+          setShowWelcome(true); // Show welcome screen for returning users
+        }
+      } catch (error) {
+        console.error('Error loading session:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkExistingSession();
   }, []);
 
-  const handleLogin = (userData) => {
+  const handleLogin = async (userData) => {
     setUser(userData);
-    localStorage.setItem('fitness-user', JSON.stringify(userData));
+    await secureStorage.set('fitness-user', JSON.stringify(userData));
     setShowWelcome(false); // Go straight to dashboard
   };
 
@@ -45,8 +55,9 @@ function App() {
     setShowWelcome(false);
   };
 
-  const handleLogout = () => {
-    apiService.logout();
+  const handleLogout = async () => {
+    await apiService.logout();
+    await secureStorage.remove('fitness-user');
     setUser(null);
     setShowWelcome(false);
     setSelectedSession(null);
@@ -54,7 +65,6 @@ function App() {
     setShowTrainingList(false);
     setShowTrainingBuilder(false);
     setEditingTraining(null);
-    localStorage.removeItem('fitness-user');
   };
 
   const handleViewSession = (session) => {

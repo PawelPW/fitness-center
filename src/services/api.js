@@ -1,22 +1,31 @@
+import secureStorage from '../utils/secureStorage.js';
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const TOKEN_KEY = 'auth-token';
 
 class ApiService {
   constructor() {
     this.baseURL = API_BASE_URL;
-    this.token = localStorage.getItem('auth-token');
+    this.token = null;
+    this._tokenLoaded = false;
   }
 
-  setToken(token) {
+  async setToken(token) {
     this.token = token;
     if (token) {
-      localStorage.setItem('auth-token', token);
+      await secureStorage.set(TOKEN_KEY, token);
     } else {
-      localStorage.removeItem('auth-token');
+      await secureStorage.remove(TOKEN_KEY);
     }
   }
 
-  getToken() {
-    return this.token || localStorage.getItem('auth-token');
+  async getToken() {
+    // Lazy load token from secure storage if not already loaded
+    if (!this._tokenLoaded) {
+      this.token = await secureStorage.get(TOKEN_KEY);
+      this._tokenLoaded = true;
+    }
+    return this.token;
   }
 
   async request(endpoint, options = {}) {
@@ -26,7 +35,7 @@ class ApiService {
       ...options.headers,
     };
 
-    const token = this.getToken();
+    const token = await this.getToken();
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -57,7 +66,7 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify({ username, email, password }),
     });
-    this.setToken(data.token);
+    await this.setToken(data.token);
     return data;
   }
 
@@ -66,12 +75,13 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
-    this.setToken(data.token);
+    await this.setToken(data.token);
     return data;
   }
 
-  logout() {
-    this.setToken(null);
+  async logout() {
+    await this.setToken(null);
+    this._tokenLoaded = false;
   }
 
   // Exercise endpoints

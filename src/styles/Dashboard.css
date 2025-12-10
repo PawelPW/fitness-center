@@ -3,17 +3,7 @@
    Mobile-first design with advanced animations
    ============================================ */
 
-/* CSS Custom Properties */
-:root {
-  --primary-gradient: linear-gradient(135deg, #00f5ff 0%, #0066ff 50%, #8000ff 100%);
-  --secondary-gradient: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
-  --success-gradient: linear-gradient(135deg, #06ffa5 0%, #00d4ff 100%);
-  --glass-bg: rgba(10, 14, 39, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* Using global design system from index.css */
 
 /* ============================================
    CONTAINER & BACKGROUND
@@ -22,7 +12,7 @@
 .dashboard-container {
   position: relative;
   min-height: 100vh;
-  background: #0a0e27;
+  background: var(--bg-primary);
   overflow-x: hidden;
 }
 

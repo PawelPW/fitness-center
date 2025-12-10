@@ -44,7 +44,20 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Strict rate limiting for authentication endpoints (prevent brute force attacks)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 attempts per 15 minutes per IP
+  message: {
+    error: 'Too many authentication attempts. Please try again in 15 minutes.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: false, // Count all requests, even successful ones
+});
+
 app.use('/api/', limiter);
+app.use('/api/auth', authLimiter);
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
