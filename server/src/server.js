@@ -79,8 +79,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`✓ Server running on port ${PORT}`);
+// Listen on all interfaces (0.0.0.0) for Railway
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✓ Server running on port ${PORT} (all interfaces)`);
 });
 
 export default app;
