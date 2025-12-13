@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "db:migrate": "node src/config/migrate.js",
-    "db:setup": "node src/config/setup-cloud-db.js"
+    "db:setup": "node src/config/setup-cloud-db.js",
+    "db:seed": "node src/config/seed-exercises.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
