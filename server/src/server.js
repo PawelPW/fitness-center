@@ -18,17 +18,24 @@ app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',')
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
   : ['http://localhost:3000', 'http://localhost:5173', 'capacitor://localhost', 'http://localhost'];
+
+console.log('✓ Allowed CORS origins:', allowedOrigins);
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('✓ Request with no origin - allowed');
+      return callback(null, true);
+    }
 
     if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      console.log('✓ Origin allowed:', origin);
       callback(null, true);
     } else {
+      console.log('✗ Origin blocked:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
