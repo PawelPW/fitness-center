@@ -2,8 +2,9 @@ import pool from '../config/database.js';
 
 export const getAllPrograms = async (req, res) => {
   try {
+    // Fetch both system programs (user_id IS NULL) and user's custom programs
     const programsResult = await pool.query(
-      'SELECT * FROM training_programs WHERE user_id = $1 ORDER BY created_at DESC',
+      'SELECT * FROM training_programs WHERE user_id IS NULL OR user_id = $1 ORDER BY user_id NULLS FIRST, created_at DESC',
       [req.user.userId]
     );
 
@@ -19,6 +20,7 @@ export const getAllPrograms = async (req, res) => {
           name: program.name,
           type: program.training_type,
           description: program.description,
+          isSystem: program.user_id === null, // True for default programs, false for user custom
           exercises: exercisesResult.rows.map(ex => ({
             id: ex.id.toString(),
             exerciseId: ex.exercise_id.toString(),
@@ -46,8 +48,9 @@ export const getAllPrograms = async (req, res) => {
 export const getProgramById = async (req, res) => {
   try {
     const { id } = req.params;
+    // Allow fetching both system programs and user's own programs
     const result = await pool.query(
-      'SELECT * FROM training_programs WHERE id = $1 AND user_id = $2',
+      'SELECT * FROM training_programs WHERE id = $1 AND (user_id IS NULL OR user_id = $2)',
       [id, req.user.userId]
     );
 
@@ -66,6 +69,7 @@ export const getProgramById = async (req, res) => {
       name: program.name,
       type: program.training_type,
       description: program.description,
+      isSystem: program.user_id === null,
       exercises: exercisesResult.rows.map(ex => ({
         id: ex.id.toString(),
         exerciseId: ex.exercise_id.toString(),
@@ -199,5 +203,77 @@ export const deleteProgram = async (req, res) => {
   } catch (error) {
     console.error('Delete program error:', error);
     res.status(500).json({ error: 'Failed to delete program' });
+  }
+};
+
+export const cloneProgram = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const { id } = req.params;
+
+    // Fetch the program to clone (must be a system program)
+    const programResult = await client.query(
+      'SELECT * FROM training_programs WHERE id = $1 AND user_id IS NULL',
+      [id]
+    );
+
+    if (programResult.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'System program not found' });
+    }
+
+    const originalProgram = programResult.rows[0];
+
+    // Create a copy for the user
+    const newProgramResult = await client.query(
+      'INSERT INTO training_programs (user_id, name, training_type, description, is_active) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [req.user.userId, `${originalProgram.name} (My Copy)`, originalProgram.training_type, originalProgram.description, true]
+    );
+
+    const newProgram = newProgramResult.rows[0];
+
+    // Copy all exercises from the original program
+    const exercisesResult = await client.query(
+      'SELECT * FROM program_exercises WHERE program_id = $1 ORDER BY order_index',
+      [id]
+    );
+
+    for (const ex of exercisesResult.rows) {
+      await client.query(
+        'INSERT INTO program_exercises (program_id, exercise_id, exercise_name, sets, reps, weight, duration, rest_time, order_index) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        [newProgram.id, ex.exercise_id, ex.exercise_name, ex.sets, ex.reps, ex.weight, ex.duration, ex.rest_time, ex.order_index]
+      );
+    }
+
+    await client.query('COMMIT');
+
+    res.status(201).json({
+      id: newProgram.id.toString(),
+      name: newProgram.name,
+      type: newProgram.training_type,
+      description: newProgram.description,
+      isSystem: false,
+      exercises: exercisesResult.rows.map(ex => ({
+        id: ex.id.toString(),
+        exerciseId: ex.exercise_id.toString(),
+        exerciseName: ex.exercise_name,
+        sets: ex.sets,
+        reps: ex.reps,
+        weight: parseFloat(ex.weight) || 0,
+        duration: ex.duration,
+        restTime: ex.rest_time,
+      })),
+      createdAt: newProgram.created_at,
+      updatedAt: newProgram.updated_at,
+      isActive: newProgram.is_active,
+    });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Clone program error:', error);
+    res.status(500).json({ error: 'Failed to clone program' });
+  } finally {
+    client.release();
   }
 };

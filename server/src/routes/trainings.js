@@ -9,6 +9,7 @@ router.use(authenticate);
 router.get('/', trainingController.getAllPrograms);
 router.get('/:id', trainingController.getProgramById);
 router.post('/', trainingController.createProgram);
+router.post('/:id/clone', trainingController.cloneProgram);
 router.put('/:id', trainingController.updateProgram);
 router.delete('/:id', trainingController.deleteProgram);
 
