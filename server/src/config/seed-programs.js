@@ -10,6 +10,18 @@ async function seedPrograms() {
   try {
     console.log('🏋️  Seeding default training programs...');
 
+    // Check if programs already exist
+    const existingCount = await pool.query(
+      'SELECT COUNT(*) FROM training_programs WHERE user_id IS NULL'
+    );
+
+    if (parseInt(existingCount.rows[0].count) > 0) {
+      console.log('⏭️  Training programs already seeded, skipping...');
+      console.log(`📊 Found ${existingCount.rows[0].count} system programs`);
+      process.exit(0);
+      return;
+    }
+
     const seedSQL = fs.readFileSync(
       path.join(__dirname, 'add_default_programs.sql'),
       'utf8'

@@ -10,6 +10,18 @@ async function seedExercises() {
   try {
     console.log('🌱 Seeding default exercises...');
 
+    // Check if exercises already exist
+    const existingCount = await pool.query(
+      'SELECT COUNT(*) FROM exercises WHERE user_id IS NULL'
+    );
+
+    if (parseInt(existingCount.rows[0].count) > 0) {
+      console.log('⏭️  Exercises already seeded, skipping...');
+      console.log(`📊 Found ${existingCount.rows[0].count} system exercises`);
+      process.exit(0);
+      return;
+    }
+
     const seedSQL = fs.readFileSync(
       path.join(__dirname, 'add_default_exercises.sql'),
       'utf8'
