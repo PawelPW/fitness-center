@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiService from '../services/api';
 import '../styles/Dashboard.css';
 
-function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings }) {
+function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats }) {
   const [sessions, setSessions] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('week');
@@ -45,13 +45,17 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
   // Get completed sessions only
   const completedSessions = sessions.filter(s => s.completed);
 
-  // Get last session
+  // Get last session (sessions are already sorted by date DESC, so first is most recent)
   const lastSession = completedSessions.length > 0
-    ? completedSessions[completedSessions.length - 1]
+    ? completedSessions[0]
     : null;
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid Date';
+
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -160,10 +164,10 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
             >
               <div className="session-icon">✅</div>
               <div className="session-details">
-                <h3 className="session-type">{lastSession.training_type || 'Workout'}</h3>
+                <h3 className="session-type">{lastSession.type || 'Workout'}</h3>
                 <div className="session-meta">
                   <span>
-                    {formatDate(lastSession.session_date || lastSession.created_at)}
+                    {formatDate(lastSession.date)}
                   </span>
                   <span>{lastSession.duration || 0} min</span>
                   <span>{lastSession.calories || 0} cal</span>
@@ -203,9 +207,9 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
               <div className="action-icon">🍎</div>
               <div className="action-title">Track Diet</div>
             </button>
-            <button className="action-card">
+            <button className="action-card" onClick={onViewStats}>
               <div className="action-icon">📊</div>
-              <div className="action-title">View Progress</div>
+              <div className="action-title">Statistics</div>
             </button>
           </div>
         </section>

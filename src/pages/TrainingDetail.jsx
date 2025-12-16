@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import { TRAINING_TYPES } from '../utils/trainingData';
 import '../styles/TrainingDetail.css';
 
 function TrainingDetail({ session, onBack }) {
   const swipeHandlers = useSwipeNavigation(onBack);
+
+  // State for expand/collapse exercise details
+  const [expandedExercises, setExpandedExercises] = useState(new Set());
+
+  const toggleExerciseExpand = (exerciseId) => {
+    setExpandedExercises(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(exerciseId)) {
+        newSet.delete(exerciseId);
+      } else {
+        newSet.add(exerciseId);
+      }
+      return newSet;
+    });
+  };
   if (!session) {
     return (
       <div className="training-detail-container">
@@ -26,30 +41,68 @@ function TrainingDetail({ session, onBack }) {
     });
   };
 
-  const renderStrengthExercise = (exercise, index) => (
-    <div key={index} className="exercise-item">
-      <div className="exercise-header">
-        <h3 className="exercise-name">{exercise.exerciseName}</h3>
-        <span className="exercise-badge">
-          {exercise.sets} sets
-        </span>
+  const renderStrengthExercise = (exercise, index) => {
+    const isExpanded = expandedExercises.has(exercise.id || index);
+    const hasDetailedSets = exercise.setsData && exercise.setsData.length > 0;
+
+    return (
+      <div key={index} className="exercise-item">
+        {/* Clickable header with chevron */}
+        <div
+          className={`exercise-header ${hasDetailedSets ? 'clickable' : ''}`}
+          onClick={() => hasDetailedSets && toggleExerciseExpand(exercise.id || index)}
+        >
+          <div className="exercise-header-left">
+            <h3 className="exercise-name">{exercise.name || exercise.exerciseName}</h3>
+            <span className="exercise-badge">
+              {exercise.sets} sets
+            </span>
+          </div>
+          {hasDetailedSets && (
+            <div className="expand-icon">{isExpanded ? '▼' : '▶'}</div>
+          )}
+        </div>
+
+        {/* Summary - always visible */}
+        <div className="exercise-details">
+          <div className="detail-item">
+            <span className="detail-label">Reps</span>
+            <span className="detail-value">{exercise.reps}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Weight</span>
+            <span className="detail-value">{exercise.weight} kg</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Rest</span>
+            <span className="detail-value">{exercise.restTime}s</span>
+          </div>
+        </div>
+
+        {/* Detailed sets - only when expanded */}
+        {isExpanded && hasDetailedSets && (
+          <div className="sets-breakdown">
+            <div className="sets-breakdown-header">
+              <span className="breakdown-title">Set Details</span>
+            </div>
+            <div className="sets-list">
+              {exercise.setsData.map((set, setIndex) => (
+                <div key={setIndex} className="set-item">
+                  <span className="set-number">Set {set.setNumber}</span>
+                  <span className="set-details">
+                    {set.reps} reps @ {set.weight} kg
+                  </span>
+                  {set.restTime > 0 && (
+                    <span className="set-rest">{set.restTime}s rest</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-      <div className="exercise-details">
-        <div className="detail-item">
-          <span className="detail-label">Reps</span>
-          <span className="detail-value">{exercise.reps}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Weight</span>
-          <span className="detail-value">{exercise.weight} kg</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Rest</span>
-          <span className="detail-value">{exercise.restTime}s</span>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderCalisthenicsExercise = (exercise, index) => (
     <div key={index} className="exercise-item">

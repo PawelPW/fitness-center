@@ -14,6 +14,41 @@ export const getAllSessions = async (req, res) => {
           [session.id]
         );
 
+        // Fetch detailed set data for each exercise
+        const exercisesWithSets = await Promise.all(
+          exercisesResult.rows.map(async (ex) => {
+            // Fetch individual sets for this exercise
+            const setsResult = await pool.query(
+              'SELECT set_number, reps, weight, rest_time FROM session_exercise_sets WHERE session_exercise_id = $1 ORDER BY set_number ASC',
+              [ex.id]
+            );
+
+            return {
+              id: ex.id.toString(),
+              name: ex.exercise_name,
+              sets: ex.sets,
+              reps: ex.reps,
+              weight: parseFloat(ex.weight) || 0,
+              duration: ex.duration,
+              distance: parseFloat(ex.distance) || 0,
+              calories: ex.calories,
+              avgHeartRate: ex.avg_heart_rate,
+              rounds: ex.rounds,
+              roundDuration: ex.round_duration,
+              restBetweenRounds: ex.rest_between_rounds,
+              laps: ex.laps,
+              restTime: ex.rest_time,
+              // NEW: Individual set details
+              setsData: setsResult.rows.map(set => ({
+                setNumber: set.set_number,
+                reps: set.reps,
+                weight: parseFloat(set.weight),
+                restTime: set.rest_time
+              }))
+            };
+          })
+        );
+
         return {
           id: session.id.toString(),
           type: session.training_type,
@@ -22,21 +57,7 @@ export const getAllSessions = async (req, res) => {
           calories: session.calories,
           notes: session.notes,
           completed: session.completed,
-          exercises: exercisesResult.rows.map(ex => ({
-            name: ex.exercise_name,
-            sets: ex.sets,
-            reps: ex.reps,
-            weight: parseFloat(ex.weight) || 0,
-            duration: ex.duration,
-            distance: parseFloat(ex.distance) || 0,
-            calories: ex.calories,
-            avgHeartRate: ex.avg_heart_rate,
-            rounds: ex.rounds,
-            roundDuration: ex.round_duration,
-            restBetweenRounds: ex.rest_between_rounds,
-            laps: ex.laps,
-            restTime: ex.rest_time,
-          })),
+          exercises: exercisesWithSets,
         };
       })
     );
@@ -95,6 +116,41 @@ export const getSessionById = async (req, res) => {
       [id]
     );
 
+    // Fetch detailed set data for each exercise
+    const exercisesWithSets = await Promise.all(
+      exercisesResult.rows.map(async (ex) => {
+        // Fetch individual sets for this exercise
+        const setsResult = await pool.query(
+          'SELECT set_number, reps, weight, rest_time FROM session_exercise_sets WHERE session_exercise_id = $1 ORDER BY set_number ASC',
+          [ex.id]
+        );
+
+        return {
+          id: ex.id.toString(),
+          name: ex.exercise_name,
+          sets: ex.sets,
+          reps: ex.reps,
+          weight: parseFloat(ex.weight) || 0,
+          duration: ex.duration,
+          distance: parseFloat(ex.distance) || 0,
+          calories: ex.calories,
+          avgHeartRate: ex.avg_heart_rate,
+          rounds: ex.rounds,
+          roundDuration: ex.round_duration,
+          restBetweenRounds: ex.rest_between_rounds,
+          laps: ex.laps,
+          restTime: ex.rest_time,
+          // NEW: Individual set details
+          setsData: setsResult.rows.map(set => ({
+            setNumber: set.set_number,
+            reps: set.reps,
+            weight: parseFloat(set.weight),
+            restTime: set.rest_time
+          }))
+        };
+      })
+    );
+
     res.json({
       id: session.id.toString(),
       type: session.training_type,
@@ -103,21 +159,7 @@ export const getSessionById = async (req, res) => {
       calories: session.calories,
       notes: session.notes,
       completed: session.completed,
-      exercises: exercisesResult.rows.map(ex => ({
-        name: ex.exercise_name,
-        sets: ex.sets,
-        reps: ex.reps,
-        weight: parseFloat(ex.weight) || 0,
-        duration: ex.duration,
-        distance: parseFloat(ex.distance) || 0,
-        calories: ex.calories,
-        avgHeartRate: ex.avg_heart_rate,
-        rounds: ex.rounds,
-        roundDuration: ex.round_duration,
-        restBetweenRounds: ex.rest_between_rounds,
-        laps: ex.laps,
-        restTime: ex.rest_time,
-      })),
+      exercises: exercisesWithSets,
     });
   } catch (error) {
     console.error('Get session error:', error);
@@ -263,8 +305,33 @@ export const createSessionExercise = async (req, res) => {
 
     const exercise = result.rows[0];
 
-    // TODO: If setsData is provided (array of individual sets), save to session_exercise_sets table
-    // This requires creating the session_exercise_sets table first
+    // Save individual sets data if provided
+    if (setsData && Array.isArray(setsData) && setsData.length > 0) {
+      console.log(`Saving ${setsData.length} individual sets for exercise ${exercise.id}`);
+
+      for (const set of setsData) {
+        try {
+          await pool.query(
+            `INSERT INTO session_exercise_sets
+             (session_exercise_id, set_number, reps, weight, rest_time, timestamp)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+              exercise.id,
+              set.setNumber,
+              set.reps,
+              set.weight,
+              set.restTime || 0,
+              set.timestamp
+            ]
+          );
+        } catch (setError) {
+          console.error(`Failed to save set ${set.setNumber}:`, setError);
+          // Continue saving other sets even if one fails
+        }
+      }
+
+      console.log(`Successfully saved ${setsData.length} sets for exercise ${exercise.id}`);
+    }
 
     res.status(201).json({
       id: exercise.id.toString(),

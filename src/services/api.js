@@ -181,6 +181,23 @@ class ApiService {
       body: JSON.stringify(exerciseData),
     });
   }
+
+  // Statistics endpoints
+  async getAllExerciseStats() {
+    return this.request('/stats/exercises');
+  }
+
+  async getExerciseHistory(exerciseName, limit = 50) {
+    return this.request(`/stats/exercises/${encodeURIComponent(exerciseName)}/history?limit=${limit}`);
+  }
+
+  async getExercisePRs(exerciseName) {
+    return this.request(`/stats/exercises/${encodeURIComponent(exerciseName)}/prs`);
+  }
+
+  async getVolumeStats(exerciseName, period = 'month', groupBy = 'week') {
+    return this.request(`/stats/exercises/${encodeURIComponent(exerciseName)}/volume?period=${period}&groupBy=${groupBy}`);
+  }
 }
 
 const apiService = new ApiService();

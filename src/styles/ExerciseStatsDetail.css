@@ -1,0 +1,328 @@
+/**
+ * EXERCISE STATISTICS DETAIL PAGE
+ * Orange & Graphite Professional Design
+ * Detailed view for single exercise with tabs and PRs
+ */
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+
+.exercise-detail-container {
+  min-height: 100vh;
+  background: var(--graphite-950);
+  padding: var(--space-6) var(--space-4);
+  padding-bottom: var(--space-20);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  padding: var(--space-4) 0;
+}
+
+.detail-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-extrabold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+  flex: 1;
+}
+
+/* ============================================
+   PERSONAL RECORDS SECTION
+   ============================================ */
+
+.prs-section {
+  margin-bottom: var(--space-8);
+}
+
+.section-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin: 0 0 var(--space-5) 0;
+}
+
+.prs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-4);
+}
+
+.pr-card {
+  background: var(--graphite-900);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+}
+
+.pr-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-3);
+}
+
+.pr-label {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-2);
+}
+
+.pr-value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-extrabold);
+  color: #ffd700;
+  margin-bottom: var(--space-2);
+  text-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
+}
+
+.pr-date {
+  font-size: var(--text-xs);
+  color: var(--text-quaternary);
+  font-weight: var(--font-medium);
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.tabs-container {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  border-bottom: 2px solid var(--graphite-800);
+  background: var(--graphite-900);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: var(--space-2);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border-radius: var(--radius-md);
+  min-height: 44px;
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+  background: var(--orange-600);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+}
+
+.tab-btn:hover:not(.active) {
+  color: var(--text-primary);
+  background: var(--graphite-850);
+}
+
+/* ============================================
+   TAB CONTENT
+   ============================================ */
+
+.tab-content {
+  margin-top: var(--space-6);
+}
+
+/* ============================================
+   HISTORY LIST
+   ============================================ */
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.history-item {
+  background: var(--graphite-900);
+  border: 2px solid var(--graphite-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: all var(--transition-base);
+}
+
+.history-item:hover {
+  border-color: var(--graphite-700);
+  box-shadow: var(--shadow-md);
+}
+
+.history-date {
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--orange-600);
+  margin-bottom: var(--space-3);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.history-stats {
+  display: flex;
+  gap: var(--space-6);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.history-stat {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+}
+
+.history-stat strong {
+  color: var(--text-primary);
+  font-weight: var(--font-bold);
+  font-size: var(--text-base);
+}
+
+.history-sets {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.set-chip {
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--orange-600);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+/* ============================================
+   VOLUME SECTION
+   ============================================ */
+
+.volume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.period-selector {
+  display: flex;
+  gap: var(--space-2);
+  background: var(--graphite-900);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--graphite-800);
+}
+
+.period-btn {
+  background: transparent;
+  border: none;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: 36px;
+}
+
+.period-btn.active {
+  background: var(--orange-600);
+  color: var(--text-primary);
+}
+
+.period-btn:hover:not(.active) {
+  background: var(--graphite-850);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   EMPTY MESSAGE
+   ============================================ */
+
+.empty-message {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--graphite-900);
+  border: 2px solid var(--graphite-800);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .prs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .volume-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .period-selector {
+    width: 100%;
+  }
+
+  .period-btn {
+    flex: 1;
+  }
+
+  .tabs-container {
+    gap: var(--space-1);
+    padding: var(--space-1);
+  }
+
+  .tab-btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercise-detail-container {
+    padding: var(--space-5) var(--space-3);
+  }
+
+  .detail-title {
+    font-size: var(--text-2xl);
+  }
+
+  .pr-value {
+    font-size: var(--text-2xl);
+  }
+
+  .history-stats {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}

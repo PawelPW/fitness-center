@@ -9,6 +9,7 @@ import ExerciseList from './pages/ExerciseList';
 import TrainingList from './pages/TrainingList';
 import TrainingBuilder from './pages/TrainingBuilder';
 import WorkoutSession from './pages/WorkoutSession';
+import ExerciseStats from './pages/ExerciseStats';
 import './styles/App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
   const [editingTraining, setEditingTraining] = useState(null);
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [workoutCompleted, setWorkoutCompleted] = useState(null);
+  const [showStats, setShowStats] = useState(false);
 
   // Check for existing session on mount
   useEffect(() => {
@@ -113,6 +115,18 @@ function App() {
     setShowTrainingBuilder(false);
     setShowTrainingList(true);
     setEditingTraining(null);
+  };
+
+  const handleViewStats = () => {
+    setShowStats(true);
+    setShowExerciseList(false);
+    setShowTrainingList(false);
+    setShowTrainingBuilder(false);
+    setSelectedSession(null);
+  };
+
+  const handleStatsBack = () => {
+    setShowStats(false);
   };
 
   const handleStartWorkout = (program) => {
@@ -217,6 +231,11 @@ function App() {
     return <ExerciseList onBack={handleBackToDashboard} />;
   }
 
+  // Show statistics if showStats is true
+  if (user && showStats) {
+    return <ExerciseStats onBack={handleStatsBack} />;
+  }
+
   // Show training detail if a session is selected
   if (user && selectedSession) {
     return (
@@ -236,6 +255,7 @@ function App() {
         onViewSession={handleViewSession}
         onManageExercises={handleManageExercises}
         onManageTrainings={handleManageTrainings}
+        onViewStats={handleViewStats}
       />
     );
   }
