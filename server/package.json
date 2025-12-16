@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "db:migrate": "node src/config/migrate.js",
+    "db:migrate": "node src/config/migrations/run-migrations.js",
     "db:setup": "node src/config/setup-cloud-db.js",
     "db:seed": "node src/config/seed-exercises.js",
     "db:seed:programs": "node src/config/seed-programs.js",

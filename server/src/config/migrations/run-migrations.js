@@ -31,6 +31,7 @@ async function runMigrations() {
     // Define migrations in order
     const migrations = [
       { version: 1, file: '001_create_session_exercise_sets.sql' },
+      { version: 2, file: '002_add_notes_to_session_exercises.sql' },
       // Add future migrations here
     ];
 
