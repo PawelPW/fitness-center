@@ -1,271 +1,63 @@
-/* ============================================
-   FUTURISTIC FITNESS CENTER - GLOBAL STYLES
-   Design System v2.0 - Gym-Themed with Maximum Readability
-   ============================================ */
+/**
+ * PROFESSIONAL FITNESS TOOL - GLOBAL STYLES
+ * Orange & Graphite Design System
+ * A sophisticated, tool-focused design for serious fitness tracking
+ */
+
+/* Import the Orange & Graphite theme */
+@import './theme.css';
+
+/* Import component styles */
+@import './components/buttons.css';
+@import './components/cards.css';
+@import './components/forms.css';
+@import './components/progress.css';
 
 /* ============================================
-   CSS CUSTOM PROPERTIES - DESIGN TOKENS
+   GLOBAL TYPOGRAPHY
    ============================================ */
 
-:root {
-  /* === GYM ENERGY COLOR PALETTE === */
-  /* Primary Colors - High visibility and energy */
-  --electric-cyan: #00f5ff;
-  --deep-blue: #0066ff;
-  --neon-green: #06ffa5;
-  --power-orange: #ff6a00;
-  --strong-purple: #8000ff;
-
-  /* Gradients - For dynamic visual elements */
-  --gradient-primary: linear-gradient(135deg, #00f5ff 0%, #0066ff 50%, #8000ff 100%);
-  --gradient-success: linear-gradient(135deg, #06ffa5 0%, #00d4ff 100%);
-  --gradient-energy: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
-  --gradient-power: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
-
-  /* === BACKGROUND SYSTEM === */
-  /* Dark, performance-focused backgrounds */
-  --bg-deep-space: #0a0e27;
-  --bg-dark-navy: #1a1f3a;
-  --bg-charcoal: #121621;
-
-  /* Glassmorphism layers */
-  --glass-dark: rgba(10, 14, 39, 0.75);
-  --glass-medium: rgba(10, 14, 39, 0.6);
-  --glass-light: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-highlight: rgba(255, 255, 255, 0.1);
-
-  /* === TEXT COLORS (WCAG AAA Compliant) === */
-  /* Ultra-high contrast for maximum readability */
-  --text-ultra: #ffffff;              /* 21:1 contrast - Headings, key data */
-  --text-primary: #ffffff;            /* 21:1 contrast - Body text */
-  --text-secondary: rgba(255, 255, 255, 0.85);  /* 17:1 - Secondary info */
-  --text-tertiary: rgba(255, 255, 255, 0.70);   /* 14:1 - Labels */
-  --text-muted: rgba(255, 255, 255, 0.55);      /* 11:1 - Hints */
-  --text-disabled: rgba(255, 255, 255, 0.4);    /* 8:1 - Disabled */
-
-  /* Accent text colors - high contrast */
-  --text-cyan: #00f5ff;               /* 10:1 contrast */
-  --text-green: #06ffa5;              /* 12:1 contrast */
-  --text-orange: #ff8844;             /* 9:1 contrast */
-
-  /* === STATE COLORS === */
-  --success-bg: rgba(6, 255, 165, 0.15);
-  --success-border: rgba(6, 255, 165, 0.35);
-  --success-text: #06ffa5;
-
-  --error-bg: rgba(255, 71, 87, 0.15);
-  --error-border: rgba(255, 71, 87, 0.35);
-  --error-text: #ff6b7a;
-
-  --warning-bg: rgba(255, 106, 0, 0.15);
-  --warning-border: rgba(255, 106, 0, 0.35);
-  --warning-text: #ff8844;
-
-  --info-bg: rgba(0, 245, 255, 0.15);
-  --info-border: rgba(0, 245, 255, 0.35);
-  --info-text: #00f5ff;
-
-  /* === SHADOWS & GLOWS === */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-
-  --glow-cyan: 0 0 20px rgba(0, 245, 255, 0.3);
-  --glow-green: 0 0 20px rgba(6, 255, 165, 0.3);
-  --glow-blue: 0 0 20px rgba(0, 102, 255, 0.3);
-
-  /* === TYPOGRAPHY SCALE === */
-  /* Mobile-first, minimum 16px for body text */
-  --text-xs: 0.75rem;      /* 12px - Micro labels */
-  --text-sm: 0.875rem;     /* 14px - Small text */
-  --text-base: 1rem;       /* 16px - BODY TEXT MINIMUM */
-  --text-lg: 1.125rem;     /* 18px - Large body */
-  --text-xl: 1.25rem;      /* 20px - Small headings */
-  --text-2xl: 1.5rem;      /* 24px - Medium headings */
-  --text-3xl: 2rem;        /* 32px - Large headings */
-  --text-4xl: 2.5rem;      /* 40px - Display numbers */
-  --text-5xl: 3rem;        /* 48px - Hero text */
-
-  /* Font weights - Never below 500 for readability */
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
-  --weight-extrabold: 800;
-  --weight-black: 900;
-
-  /* Line heights for optimal readability */
-  --leading-tight: 1.25;
-  --leading-snug: 1.375;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.625;
-  --leading-loose: 2;
-
-  /* Letter spacing for better legibility */
-  --tracking-tight: -0.025em;
-  --tracking-normal: 0;
-  --tracking-wide: 0.025em;
-  --tracking-wider: 0.05em;
-  --tracking-widest: 0.1em;
-
-  /* === SPACING SYSTEM === */
-  /* Based on 8px grid for consistency */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.25rem;   /* 20px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-20: 5rem;     /* 80px */
-
-  /* === BORDER RADIUS === */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
-
-  /* === TRANSITIONS === */
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slower: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-  /* === TOUCH TARGETS === */
-  /* Minimum sizes for mobile accessibility */
-  --touch-min: 44px;     /* iOS minimum */
-  --touch-comfortable: 48px;  /* Android minimum */
-  --touch-large: 56px;   /* Large touch target */
-
-  /* === Z-INDEX SCALE === */
-  --z-base: 1;
-  --z-dropdown: 10;
-  --z-sticky: 20;
-  --z-fixed: 30;
-  --z-modal-backdrop: 40;
-  --z-modal: 50;
-  --z-popover: 60;
-  --z-tooltip: 70;
-  --z-notification: 80;
-}
-
-/* ============================================
-   BASE RESETS & GLOBAL STYLES
-   ============================================ */
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  /* Prevent horizontal scroll */
-  overflow-x: hidden;
-  /* Enable smooth scrolling */
-  scroll-behavior: smooth;
-}
-
-body {
-  /* System font stack for optimal readability */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-
-  /* Font rendering optimizations */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-
-  /* Base typography */
-  font-size: var(--text-base);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-normal);
-
-  /* Colors */
-  background: var(--bg-deep-space);
-  color: var(--text-primary);
-
-  /* Prevent text selection on UI elements during workout */
-  -webkit-tap-highlight-color: transparent;
-
-  /* Prevent horizontal scroll */
-  overflow-x: hidden;
-}
-
-#root {
-  min-height: 100vh;
-  position: relative;
-}
-
-/* ============================================
-   TYPOGRAPHY UTILITIES
-   ============================================ */
-
-/* Ensure all headings have proper font weight */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--weight-bold);
+  font-weight: var(--font-bold);
   line-height: var(--leading-tight);
-  color: var(--text-ultra);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
 }
 
-/* All body text should be easily readable */
-p, li, span, label, input, textarea, button {
+h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-extrabold);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+p {
   line-height: var(--leading-normal);
-}
-
-/* Strong emphasis */
-strong, b {
-  font-weight: var(--weight-bold);
-}
-
-/* Small text should never be too small */
-small {
-  font-size: var(--text-sm);
   color: var(--text-secondary);
 }
 
-/* ============================================
-   FOCUS STYLES FOR ACCESSIBILITY
-   ============================================ */
-
-/* Remove default outline and add custom focus */
-*:focus {
-  outline: none;
+strong, b {
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
 }
 
-/* Keyboard navigation focus indicator */
-*:focus-visible {
-  outline: 2px solid var(--electric-cyan);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+small {
+  font-size: var(--text-sm);
+  color: var(--text-quaternary);
 }
 
 /* ============================================
-   SELECTION STYLES
-   ============================================ */
-
-::selection {
-  background: rgba(0, 245, 255, 0.3);
-  color: var(--text-ultra);
-}
-
-::-moz-selection {
-  background: rgba(0, 245, 255, 0.3);
-  color: var(--text-ultra);
-}
-
-/* ============================================
-   SCROLLBAR STYLES
+   SCROLLBAR STYLING
    ============================================ */
 
 /* Webkit browsers (Chrome, Safari, Edge) */
@@ -275,57 +67,24 @@ small {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark-navy);
+  background: var(--graphite-900);
   border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 245, 255, 0.3);
+  background: var(--graphite-700);
   border-radius: var(--radius-sm);
   transition: background var(--transition-base);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 245, 255, 0.5);
+  background: var(--graphite-600);
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 245, 255, 0.3) var(--bg-dark-navy);
-}
-
-/* ============================================
-   FORM ELEMENTS - BASE STYLES
-   ============================================ */
-
-input,
-textarea,
-select,
-button {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-}
-
-/* Remove default button styles */
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* Remove number input spinners */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
+  scrollbar-color: var(--graphite-700) var(--graphite-900);
 }
 
 /* ============================================
@@ -345,78 +104,140 @@ input[type="number"] {
   border-width: 0;
 }
 
-/* Hide visually but keep in DOM */
+/* Hide element */
 .hidden {
   display: none !important;
 }
 
-/* Prevent text selection */
+/* No text selection */
 .no-select {
   user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 /* Smooth transitions */
-.transition-smooth {
+.transition {
   transition: all var(--transition-base);
 }
 
+/* Text utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-orange { color: var(--text-orange); }
+
+/* Background utilities */
+.bg-graphite-950 { background: var(--graphite-950); }
+.bg-graphite-900 { background: var(--graphite-900); }
+.bg-graphite-850 { background: var(--graphite-850); }
+
+/* Spacing utilities */
+.mt-4 { margin-top: var(--space-4); }
+.mb-4 { margin-bottom: var(--space-4); }
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+
 /* ============================================
-   ACCESSIBILITY - REDUCED MOTION
+   LAYOUT HELPERS
    ============================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.page-content {
+  min-height: 100vh;
+  padding: var(--space-6);
+  background: var(--graphite-950);
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.section-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Grid layouts */
+.grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Flex layouts */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gap-2 { gap: var(--space-2); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .page-content {
+    padding: var(--space-4);
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
   }
 }
 
 /* ============================================
-   ACCESSIBILITY - HIGH CONTRAST MODE
-   ============================================ */
-
-@media (prefers-contrast: high) {
-  :root {
-    /* Increase border visibility */
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-highlight: rgba(255, 255, 255, 0.3);
-  }
-
-  /* Ensure all borders are visible */
-  button,
-  input,
-  textarea,
-  select {
-    border-width: 2px !important;
-  }
-}
-
-/* ============================================
-   PRINT STYLES
+   ACCESSIBILITY - PRINT STYLES
    ============================================ */
 
 @media print {
-  /* Hide non-essential elements */
-  .no-print,
-  .scan-line,
-  .particles,
-  .gradient-mesh,
-  .geometric-shapes {
+  .no-print {
     display: none !important;
   }
 
-  /* Ensure good contrast for printing */
   * {
     background: white !important;
     color: black !important;
     box-shadow: none !important;
-    text-shadow: none !important;
   }
 }

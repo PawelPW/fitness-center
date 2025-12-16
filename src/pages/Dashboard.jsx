@@ -75,25 +75,13 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
 
   return (
     <div className="dashboard-container">
-      {/* Animated Background */}
-      <div className="dashboard-background">
-        <div className="gradient-mesh"></div>
-        <div className="grid-background"></div>
-        <div className="scan-line"></div>
-        <div className="particles">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className={`particle particle-${i}`}></div>
-          ))}
-        </div>
-      </div>
-
       <header className="dashboard-header">
         <div className="header-content">
           <div>
             <h1 className="dashboard-title">Hello, {user?.username}!</h1>
             <p className="dashboard-subtitle">Track your fitness journey</p>
           </div>
-          <button onClick={onLogout} className="logout-button">
+          <button onClick={onLogout} className="btn-secondary">
             Logout
           </button>
         </div>
@@ -108,7 +96,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         ) : (
           <>
         {/* Training Sessions Summary */}
-        <section className="summary-section">
+        <section className="section">
           <div className="section-header">
             <h2 className="section-title">Training Sessions</h2>
             <div className="period-selector">
@@ -134,55 +122,51 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           </div>
 
           <div className="stats-grid">
-            <div className="stat-card highlight">
-              <div className="stat-icon">🏋️</div>
-              <div className="stat-value">{getStatValue('totalSessions', 0)}</div>
-              <div className="stat-label">
+            <div className="stat-card">
+              <div className="stat-card-icon">🏋️</div>
+              <div className="stat-card-value">{getStatValue('totalSessions', 0)}</div>
+              <div className="stat-card-label">
                 Sessions this {selectedPeriod}
               </div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">🔥</div>
-              <div className="stat-value">{getStatValue('totalCalories', 0)}</div>
-              <div className="stat-label">Calories burned</div>
+              <div className="stat-card-icon">🔥</div>
+              <div className="stat-card-value">{getStatValue('totalCalories', 0)}</div>
+              <div className="stat-card-label">Calories burned</div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">⏱️</div>
-              <div className="stat-value">{getStatValue('totalDuration', 0)}</div>
-              <div className="stat-label">Minutes trained</div>
+              <div className="stat-card-icon">⏱️</div>
+              <div className="stat-card-value">{getStatValue('totalDuration', 0)}</div>
+              <div className="stat-card-label">Minutes trained</div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">💪</div>
-              <div className="stat-value">{getStatValue('totalExercises', 0)}</div>
-              <div className="stat-label">Exercises completed</div>
+              <div className="stat-card-icon">💪</div>
+              <div className="stat-card-value">{getStatValue('totalExercises', 0)}</div>
+              <div className="stat-card-label">Exercises completed</div>
             </div>
           </div>
         </section>
 
         {/* Last Training Session */}
         {lastSession ? (
-          <section className="session-info-section">
+          <section className="section">
             <h2 className="section-title">Last Training Session</h2>
             <div
-              className="session-card last-session clickable"
+              className="card card-clickable session-card"
               onClick={() => onViewSession && onViewSession(lastSession)}
             >
               <div className="session-icon">✅</div>
               <div className="session-details">
                 <h3 className="session-type">{lastSession.training_type || 'Workout'}</h3>
                 <div className="session-meta">
-                  <span className="session-date">
+                  <span>
                     {formatDate(lastSession.session_date || lastSession.created_at)}
                   </span>
-                  <span className="session-duration">
-                    {lastSession.duration || 0} min
-                  </span>
-                  <span className="session-calories">
-                    {lastSession.calories || 0} cal
-                  </span>
+                  <span>{lastSession.duration || 0} min</span>
+                  <span>{lastSession.calories || 0} cal</span>
                 </div>
               </div>
               <div className="view-arrow">→</div>
@@ -190,12 +174,12 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           </section>
         ) : (
           completedSessions.length === 0 && !loading && (
-            <section className="session-info-section">
+            <section className="section">
               <div className="empty-state">
                 <div className="empty-icon">🏋️</div>
                 <h3>No workouts yet</h3>
                 <p>Start your first workout to see your progress here!</p>
-                <button onClick={onManageTrainings} className="cta-button">
+                <button onClick={onManageTrainings} className="btn-primary">
                   View Training Programs
                 </button>
               </div>
@@ -204,30 +188,22 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         )}
 
         {/* Quick Actions */}
-        <section className="quick-actions-section">
+        <section className="section">
           <h2 className="section-title">Quick Actions</h2>
           <div className="quick-actions-grid">
-            <button
-              className="action-card"
-              style={{ '--accent-color': '#667eea' }}
-              onClick={onManageTrainings}
-            >
+            <button className="action-card" onClick={onManageTrainings}>
               <div className="action-icon">📋</div>
               <div className="action-title">Trainings</div>
             </button>
-            <button
-              className="action-card"
-              style={{ '--accent-color': '#764ba2' }}
-              onClick={onManageExercises}
-            >
+            <button className="action-card" onClick={onManageExercises}>
               <div className="action-icon">💪</div>
               <div className="action-title">Exercises</div>
             </button>
-            <button className="action-card" style={{ '--accent-color': '#f093fb' }}>
+            <button className="action-card">
               <div className="action-icon">🍎</div>
               <div className="action-title">Track Diet</div>
             </button>
-            <button className="action-card" style={{ '--accent-color': '#4facfe' }}>
+            <button className="action-card">
               <div className="action-icon">📊</div>
               <div className="action-title">View Progress</div>
             </button>

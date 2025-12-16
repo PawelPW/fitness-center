@@ -66,26 +66,6 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
 
   return (
     <div {...swipeHandlers} className="training-list-container">
-      {/* Animated Background */}
-      <div className="training-list-background">
-        <div className="gradient-mesh"></div>
-        <div className="grid-background"></div>
-
-        {/* Floating Geometric Shapes */}
-        <div className="geometric-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-          <div className="shape shape-3"></div>
-        </div>
-
-        {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className={`particle particle-${i}`}></div>
-          ))}
-        </div>
-      </div>
-
       <div className="training-content">
         <div className="page-header">
           <h1 className="page-title">Training Programs</h1>
@@ -118,7 +98,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="filter-select"
+            className="select-field"
           >
             <option value="all">All Types</option>
             {Object.values(TRAINING_TYPES).map((type) => (
@@ -127,7 +107,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
               </option>
             ))}
           </select>
-          <button onClick={onCreateTraining} className="create-training-btn">
+          <button onClick={onCreateTraining} className="btn-primary">
             + Create Training
           </button>
         </div>
@@ -166,25 +146,25 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
                 <div className="program-actions">
                   <button
                     onClick={() => onStartWorkout && onStartWorkout(program)}
-                    className="action-btn start-workout"
+                    className="btn-primary btn-sm"
                   >
                     🏋️ Start Workout
                   </button>
                   <button
                     onClick={() => onEditTraining(program)}
-                    className="action-btn edit"
+                    className="btn-secondary btn-sm"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDuplicate(program.id)}
-                    className="action-btn duplicate"
+                    className="btn-ghost btn-sm"
                   >
                     Duplicate
                   </button>
                   <button
                     onClick={() => handleDelete(program.id)}
-                    className="action-btn delete"
+                    className="btn-danger btn-sm"
                   >
                     Delete
                   </button>
@@ -196,7 +176,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
               <div className="empty-icon">🏋️</div>
               <h3>No training programs yet</h3>
               <p>Create your first training program to get started</p>
-              <button onClick={onCreateTraining} className="create-first-btn">
+              <button onClick={onCreateTraining} className="btn-primary">
                 Create Training Program
               </button>
             </div>

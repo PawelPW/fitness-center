@@ -176,18 +176,6 @@ function TrainingBuilder({ onBack, existingProgram }) {
 
   return (
     <div {...swipeHandlers} className="training-builder-container">
-      {/* Animated Background */}
-      <div className="training-builder-background">
-        <div className="gradient-mesh"></div>
-        <div className="grid-background"></div>
-
-        {/* Floating Geometric Shapes */}
-        <div className="geometric-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-        </div>
-      </div>
-
       <div className="builder-content">
         <div className="page-header">
           <h1 className="page-title">
@@ -213,7 +201,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
                 value={programName}
                 onChange={(e) => setProgramName(e.target.value)}
                 placeholder="e.g., Upper Body Strength"
-                className="form-input"
+                className="input-field"
               />
             </div>
 
@@ -222,7 +210,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
               <select
                 value={programType}
                 onChange={(e) => setProgramType(e.target.value)}
-                className="form-input"
+                className="select-field"
               >
                 {Object.values(TRAINING_TYPES).map((type) => (
                   <option key={type} value={type}>
@@ -238,7 +226,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
                 value={programDescription}
                 onChange={(e) => setProgramDescription(e.target.value)}
                 placeholder="Describe this training program..."
-                className="form-textarea"
+                className="input-field"
                 rows="3"
               />
             </div>
@@ -251,7 +239,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
             <h2 className="section-title">Exercises ({exercises.length})</h2>
             <button
               onClick={() => setShowExercisePicker(true)}
-              className="add-exercise-btn"
+              className="btn-primary"
             >
               + Add Exercise
             </button>
@@ -286,10 +274,10 @@ function TrainingBuilder({ onBack, existingProgram }) {
 
         {/* Save Button */}
         <div className="actions">
-          <button onClick={onBack} className="cancel-btn">
+          <button onClick={onBack} className="btn-secondary">
             Cancel
           </button>
-          <button onClick={handleSave} className="save-btn">
+          <button onClick={handleSave} className="btn-primary">
             {existingProgram ? 'Update Program' : 'Create Program'}
           </button>
         </div>

@@ -1,0 +1,485 @@
+/**
+ * FORM COMPONENTS
+ * Orange & Graphite Design System
+ * Professional, accessible form inputs
+ */
+
+/* ============================================
+   FORM LAYOUT
+   ============================================ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ============================================
+   LABELS
+   ============================================ */
+
+label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-normal);
+}
+
+.label-required::after {
+  content: '*';
+  color: var(--error-500);
+  margin-left: var(--space-1);
+}
+
+/* ============================================
+   TEXT INPUTS
+   ============================================ */
+
+.input-field {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+
+  color: var(--text-primary);
+  background: var(--graphite-850);
+
+  border: 1px solid var(--graphite-700);
+  border-radius: var(--radius-md);
+
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.input-field::placeholder {
+  color: var(--text-quaternary);
+}
+
+.input-field:hover:not(:disabled) {
+  border-color: var(--graphite-600);
+  background: var(--graphite-800);
+}
+
+.input-field:focus {
+  border-color: var(--orange-600);
+  background: var(--graphite-800);
+  box-shadow: 0 0 0 3px var(--orange-alpha-15);
+}
+
+.input-field:disabled {
+  background: var(--graphite-900);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  border-color: var(--graphite-800);
+}
+
+/* ============================================
+   INPUT VARIANTS
+   ============================================ */
+
+.input-field.error {
+  border-color: var(--error-600);
+}
+
+.input-field.error:focus {
+  border-color: var(--error-600);
+  box-shadow: 0 0 0 3px var(--error-bg);
+}
+
+.input-field.success {
+  border-color: var(--success-600);
+}
+
+/* ============================================
+   TEXTAREA
+   ============================================ */
+
+textarea.input-field {
+  min-height: 100px;
+  resize: vertical;
+  font-family: var(--font-primary);
+}
+
+/* ============================================
+   SELECT DROPDOWN
+   ============================================ */
+
+.select-field {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+
+  color: var(--text-primary);
+  background: var(--graphite-850);
+
+  border: 1px solid var(--graphite-700);
+  border-radius: var(--radius-md);
+
+  outline: none;
+  cursor: pointer;
+
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+  padding-right: var(--space-10);
+
+  transition: all var(--transition-base);
+}
+
+.select-field:hover:not(:disabled) {
+  border-color: var(--graphite-600);
+  background-color: var(--graphite-800);
+}
+
+.select-field:focus {
+  border-color: var(--orange-600);
+  background-color: var(--graphite-800);
+  box-shadow: 0 0 0 3px var(--orange-alpha-15);
+}
+
+.select-field:disabled {
+  background-color: var(--graphite-900);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  border-color: var(--graphite-800);
+}
+
+/* ============================================
+   CHECKBOX
+   ============================================ */
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+.checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid var(--graphite-700);
+  border-radius: var(--radius-sm);
+  background: var(--graphite-850);
+
+  cursor: pointer;
+  transition: all var(--transition-base);
+
+  position: relative;
+  flex-shrink: 0;
+}
+
+.checkbox:hover:not(:disabled) {
+  border-color: var(--graphite-600);
+  background: var(--graphite-800);
+}
+
+.checkbox:checked {
+  background: var(--orange-600);
+  border-color: var(--orange-600);
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid var(--text-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+}
+
+.checkbox:disabled {
+  background: var(--graphite-900);
+  border-color: var(--graphite-800);
+  cursor: not-allowed;
+}
+
+.checkbox-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ============================================
+   RADIO BUTTON
+   ============================================ */
+
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+.radio {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid var(--graphite-700);
+  border-radius: var(--radius-full);
+  background: var(--graphite-850);
+
+  cursor: pointer;
+  transition: all var(--transition-base);
+
+  position: relative;
+  flex-shrink: 0;
+}
+
+.radio:hover:not(:disabled) {
+  border-color: var(--graphite-600);
+  background: var(--graphite-800);
+}
+
+.radio:checked {
+  border-color: var(--orange-600);
+  background: var(--graphite-850);
+}
+
+.radio:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--orange-600);
+}
+
+.radio:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+}
+
+.radio-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ============================================
+   INPUT WITH ICON
+   ============================================ */
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon .input-field {
+  padding-left: var(--space-10);
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-quaternary);
+  pointer-events: none;
+}
+
+/* ============================================
+   HELP TEXT
+   ============================================ */
+
+.help-text {
+  font-size: var(--text-sm);
+  color: var(--text-quaternary);
+  line-height: var(--leading-normal);
+}
+
+.help-text.error {
+  color: var(--error-500);
+}
+
+.help-text.success {
+  color: var(--success-500);
+}
+
+/* ============================================
+   INPUT GROUPS
+   ============================================ */
+
+.input-group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.input-group .input-field:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group .input-field:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
+
+.form-actions {
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.form-actions-end {
+  justify-content: flex-end;
+}
+
+.form-actions-between {
+  justify-content: space-between;
+}
+
+/* ============================================
+   SEARCH INPUT
+   ============================================ */
+
+.search-input {
+  position: relative;
+}
+
+.search-input .input-field {
+  padding-left: var(--space-10);
+  padding-right: var(--space-10);
+}
+
+.search-icon {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-quaternary);
+  pointer-events: none;
+}
+
+.search-clear {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-quaternary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+
+  transition: all var(--transition-base);
+}
+
+.search-clear:hover {
+  background: var(--graphite-750);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   RANGE SLIDER
+   ============================================ */
+
+.range-slider {
+  width: 100%;
+  height: 6px;
+
+  appearance: none;
+  background: var(--graphite-800);
+  border-radius: var(--radius-full);
+
+  outline: none;
+  cursor: pointer;
+}
+
+.range-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+
+  background: var(--orange-600);
+  border: 3px solid var(--graphite-850);
+  border-radius: var(--radius-full);
+
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  background: var(--orange-500);
+  box-shadow: 0 0 0 4px var(--orange-alpha-15);
+}
+
+.range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+
+  background: var(--orange-600);
+  border: 3px solid var(--graphite-850);
+  border-radius: var(--radius-full);
+
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.range-slider::-moz-range-thumb:hover {
+  background: var(--orange-500);
+  box-shadow: 0 0 0 4px var(--orange-alpha-15);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

@@ -223,20 +223,6 @@ function WorkoutSession({ program, onComplete, onCancel }) {
 
   return (
     <div {...swipeHandlers} className="workout-session-container">
-      {/* Animated Background */}
-      <div className="workout-session-background">
-        <div className="gradient-mesh"></div>
-        <div className="grid-background"></div>
-        <div className="scan-line"></div>
-
-        {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className={`particle particle-${i}`}></div>
-          ))}
-        </div>
-      </div>
-
       {/* Header */}
       <div className="workout-header">
         <button onClick={handleCancelWorkout} className="cancel-btn">

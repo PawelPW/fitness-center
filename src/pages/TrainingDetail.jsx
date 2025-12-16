@@ -174,18 +174,6 @@ function TrainingDetail({ session, onBack }) {
 
   return (
     <div {...swipeHandlers} className="training-detail-container">
-      {/* Animated Background */}
-      <div className="training-detail-background">
-        <div className="gradient-mesh"></div>
-        <div className="grid-background"></div>
-
-        {/* Floating Geometric Shapes */}
-        <div className="geometric-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-        </div>
-      </div>
-
       <div className="detail-content">
         <div className="session-header">
           <div className="session-type-badge" data-type={session.type.toLowerCase()}>

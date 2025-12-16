@@ -1,0 +1,349 @@
+/**
+ * CARD COMPONENTS
+ * Orange & Graphite Design System
+ * Professional card layouts for fitness data
+ */
+
+/* ============================================
+   BASE CARD
+   ============================================ */
+
+.card {
+  background: var(--graphite-900);
+  border: 1px solid var(--graphite-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  border-color: var(--graphite-750);
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.card-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+}
+
+.card-body {
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.card-footer {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--graphite-800);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ============================================
+   ELEVATED CARD
+   ============================================ */
+
+.card-elevated {
+  background: var(--graphite-850);
+  border: 1px solid var(--graphite-750);
+  box-shadow: var(--shadow-md);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   TRAINING CARD
+   ============================================ */
+
+.training-card {
+  background: var(--graphite-900);
+  border: 1px solid var(--graphite-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.training-card:hover {
+  border-color: var(--orange-600);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.training-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+}
+
+.training-card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.training-card-type {
+  font-size: var(--text-sm);
+  color: var(--text-orange);
+  font-weight: var(--font-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.training-card-description {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+  margin-bottom: var(--space-3);
+}
+
+.training-card-stats {
+  display: flex;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--graphite-800);
+}
+
+.training-card-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.training-card-stat-value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.training-card-stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-quaternary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+/* ============================================
+   EXERCISE CARD
+   ============================================ */
+
+.exercise-card {
+  background: var(--graphite-900);
+  border: 1px solid var(--graphite-800);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  transition: all var(--transition-base);
+}
+
+.exercise-card:hover {
+  border-color: var(--graphite-700);
+  background: var(--graphite-850);
+}
+
+.exercise-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.exercise-card-name {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.exercise-card-muscle {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.exercise-card-sets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.exercise-card-set {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2);
+  background: var(--graphite-850);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+}
+
+.exercise-card-set-number {
+  color: var(--text-quaternary);
+  font-weight: var(--font-medium);
+}
+
+.exercise-card-set-details {
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   STAT CARD - For Dashboard Metrics
+   ============================================ */
+
+.stat-card {
+  background: var(--graphite-900);
+  border: 1px solid var(--graphite-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-card:hover {
+  border-color: var(--graphite-750);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  color: var(--text-orange);
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.stat-card-value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-1);
+}
+
+.stat-card-label {
+  font-size: var(--text-sm);
+  color: var(--text-quaternary);
+  font-weight: var(--font-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-2);
+}
+
+.stat-card-change {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.stat-card-change.positive {
+  color: var(--success-500);
+}
+
+.stat-card-change.negative {
+  color: var(--error-500);
+}
+
+/* ============================================
+   COMPACT CARD - Smaller Padding
+   ============================================ */
+
+.card-compact {
+  padding: var(--space-4);
+}
+
+.card-compact .card-title {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+/* ============================================
+   CLICKABLE CARD - Interactive States
+   ============================================ */
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:hover {
+  border-color: var(--orange-600);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-clickable:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================
+   SELECTED CARD STATE
+   ============================================ */
+
+.card-selected {
+  border-color: var(--orange-600);
+  background: var(--graphite-850);
+  box-shadow: 0 0 0 2px var(--orange-alpha-25);
+}
+
+/* ============================================
+   CARD WITH ORANGE ACCENT
+   ============================================ */
+
+.card-accent-orange {
+  border-left: 4px solid var(--orange-600);
+}
+
+/* ============================================
+   CARD LIST - Stacked Cards
+   ============================================ */
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-4);
+  }
+
+  .card-title {
+    font-size: var(--text-lg);
+  }
+
+  .training-card {
+    padding: var(--space-4);
+  }
+
+  .stat-card-value {
+    font-size: var(--text-2xl);
+  }
+}

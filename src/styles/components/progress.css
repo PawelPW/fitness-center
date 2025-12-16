@@ -1,0 +1,438 @@
+/**
+ * PROGRESS & LOADING COMPONENTS
+ * Orange & Graphite Design System
+ * Professional progress indicators
+ */
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: var(--graphite-800);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--gradient-orange);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ============================================
+   PROGRESS BAR SIZES
+   ============================================ */
+
+.progress-bar-sm {
+  height: 4px;
+}
+
+.progress-bar-lg {
+  height: 12px;
+}
+
+/* ============================================
+   PROGRESS BAR WITH LABEL
+   ============================================ */
+
+.progress-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+}
+
+.progress-value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: var(--text-orange);
+}
+
+/* ============================================
+   CIRCULAR PROGRESS
+   ============================================ */
+
+.circular-progress {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.circular-progress svg {
+  transform: rotate(-90deg);
+}
+
+.circular-progress-bg {
+  fill: none;
+  stroke: var(--graphite-800);
+  stroke-width: 8;
+}
+
+.circular-progress-fill {
+  fill: none;
+  stroke: var(--orange-600);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--transition-slow);
+}
+
+.circular-progress-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.circular-progress-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.circular-progress-text {
+  font-size: var(--text-xs);
+  color: var(--text-quaternary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--graphite-800);
+  border-top-color: var(--orange-600);
+  border-radius: var(--radius-full);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-sm {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 60px;
+  height: 60px;
+  border-width: 4px;
+}
+
+/* ============================================
+   LOADING DOTS
+   ============================================ */
+
+.loading-dots {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--orange-600);
+  border-radius: var(--radius-full);
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   SKELETON LOADER
+   ============================================ */
+
+.skeleton {
+  background: var(--graphite-850);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--graphite-800),
+    transparent
+  );
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-text {
+  height: 16px;
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+
+.skeleton-text:last-child {
+  margin-bottom: 0;
+  width: 60%;
+}
+
+.skeleton-circle {
+  border-radius: var(--radius-full);
+  width: 48px;
+  height: 48px;
+}
+
+.skeleton-card {
+  height: 200px;
+}
+
+/* ============================================
+   LOADING OVERLAY
+   ============================================ */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 13, 18, 0.8);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+
+  z-index: var(--z-modal);
+}
+
+.loading-overlay-text {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   STEP PROGRESS
+   ============================================ */
+
+.step-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  position: relative;
+}
+
+.step::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: var(--graphite-800);
+  z-index: 0;
+}
+
+.step:last-child::before {
+  display: none;
+}
+
+.step.completed::before {
+  background: var(--orange-600);
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--graphite-800);
+  border: 2px solid var(--graphite-700);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: var(--text-quaternary);
+
+  position: relative;
+  z-index: 1;
+
+  transition: all var(--transition-base);
+}
+
+.step.active .step-indicator {
+  background: var(--orange-600);
+  border-color: var(--orange-600);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 4px var(--orange-alpha-15);
+}
+
+.step.completed .step-indicator {
+  background: var(--orange-600);
+  border-color: var(--orange-600);
+  color: var(--text-primary);
+}
+
+.step-label {
+  font-size: var(--text-xs);
+  color: var(--text-quaternary);
+  text-align: center;
+  font-weight: var(--font-medium);
+}
+
+.step.active .step-label,
+.step.completed .step-label {
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   PROGRESS RING (Alternative circular)
+   ============================================ */
+
+.progress-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.progress-ring-circle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: var(--graphite-800);
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke: var(--orange-600);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .circular-progress {
+    width: 100px;
+    height: 100px;
+  }
+
+  .circular-progress-value {
+    font-size: var(--text-xl);
+  }
+
+  .step-progress {
+    padding: var(--space-3) 0;
+  }
+
+  .step-indicator {
+    width: 28px;
+    height: 28px;
+  }
+
+  .step-label {
+    font-size: 10px;
+  }
+}

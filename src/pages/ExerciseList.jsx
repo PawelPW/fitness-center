@@ -140,25 +140,6 @@ function ExerciseList({ onBack }) {
 
   return (
     <div {...swipeHandlers} className="exercise-list-container">
-      {/* Animated Background */}
-      <div className="exercise-list-background">
-        <div className="gradient-mesh"></div>
-        <div className="grid-background"></div>
-
-        {/* Floating Geometric Shapes */}
-        <div className="geometric-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-        </div>
-
-        {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(7)].map((_, i) => (
-            <div key={i} className={`particle particle-${i}`}></div>
-          ))}
-        </div>
-      </div>
-
       <div className="exercise-content">
         <div className="page-header">
           <h1 className="page-title">Exercise Library</h1>
@@ -209,11 +190,11 @@ function ExerciseList({ onBack }) {
             placeholder="Search exercises..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
+            className="input-field"
           />
           <button
             onClick={() => setShowAddForm(true)}
-            className="add-exercise-btn"
+            className="btn-primary"
           >
             + Add Exercise
           </button>
@@ -239,7 +220,7 @@ function ExerciseList({ onBack }) {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g., Incline Dumbbell Press"
-                    className="form-input"
+                    className="input-field"
                     autoFocus
                   />
                 </div>
@@ -251,7 +232,7 @@ function ExerciseList({ onBack }) {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Optional: Add instructions or notes about this exercise"
-                    className="form-input"
+                    className="input-field"
                     rows="3"
                   />
                 </div>
@@ -266,11 +247,11 @@ function ExerciseList({ onBack }) {
                       setFormData({ name: '', description: '' });
                       setError('');
                     }}
-                    className="cancel-btn"
+                    className="btn-secondary"
                   >
                     Cancel
                   </button>
-                  <button type="submit" className="submit-btn">
+                  <button type="submit" className="btn-primary">
                     Add Exercise
                   </button>
                 </div>
@@ -300,7 +281,7 @@ function ExerciseList({ onBack }) {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g., Incline Dumbbell Press"
-                    className="form-input"
+                    className="input-field"
                     autoFocus
                   />
                 </div>
@@ -312,7 +293,7 @@ function ExerciseList({ onBack }) {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Optional: Add instructions or notes about this exercise"
-                    className="form-input"
+                    className="input-field"
                     rows="3"
                   />
                 </div>
@@ -328,11 +309,11 @@ function ExerciseList({ onBack }) {
                       setFormData({ name: '', description: '' });
                       setError('');
                     }}
-                    className="cancel-btn"
+                    className="btn-secondary"
                   >
                     Cancel
                   </button>
-                  <button type="submit" className="submit-btn">
+                  <button type="submit" className="btn-primary">
                     Update Exercise
                   </button>
                 </div>
