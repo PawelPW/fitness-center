@@ -147,7 +147,7 @@
   border-bottom: 1px solid var(--graphite-800);
 }
 
-.progress-bar {
+.workout-progress-container {
   height: 8px;
   background: var(--graphite-800);
   border-radius: var(--radius-full);
@@ -155,11 +155,12 @@
   margin-bottom: var(--space-3);
 }
 
-.progress-fill {
-  height: 100%;
+.workout-progress-fill {
+  height: 8px;
   background: var(--orange-600);
   transition: width var(--transition-base);
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+  display: block;
 }
 
 .progress-text {
@@ -187,7 +188,8 @@
   margin-bottom: var(--space-6);
 }
 
-.exercise-number {
+.workout-exercise-number {
+  display: block;
   font-size: var(--text-sm);
   color: var(--text-orange);
   font-weight: var(--font-bold);
@@ -202,6 +204,9 @@
   color: var(--text-primary);
   margin: 0 0 var(--space-3) 0;
   letter-spacing: var(--tracking-tight);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .exercise-description {
@@ -480,6 +485,34 @@
   border-radius: var(--radius-lg);
   color: var(--text-tertiary);
   font-size: var(--text-base);
+}
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+
+.error-message {
+  padding: var(--space-3) var(--space-4);
+  background: rgba(239, 68, 68, 0.1);
+  border: 2px solid var(--error-600);
+  border-radius: var(--radius-md);
+  color: var(--error-500);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  margin-top: var(--space-4);
+  text-align: center;
+  animation: errorSlideIn 0.3s ease-out;
+}
+
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ============================================

@@ -220,6 +220,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
   const isLastExercise = state.currentExerciseIndex === state.exercises.length - 1;
   const isFirstExercise = state.currentExerciseIndex === 0;
   const canCompleteExercise = currentExercise?.completedSets.length > 0;
+  const hasCompletedExercises = state.exercises.some(ex => ex.completed && !ex.skipped && ex.completedSets.length > 0);
 
   return (
     <div {...swipeHandlers} className="workout-session-container">
@@ -238,22 +239,32 @@ function WorkoutSession({ program, onComplete, onCancel }) {
         <button
           onClick={handleFinishWorkout}
           className="finish-btn"
-          disabled={loading}
+          disabled={loading || !hasCompletedExercises}
+          title={!hasCompletedExercises ? "Complete at least one exercise to finish" : ""}
         >
-          Finish
+          {loading ? 'Saving...' : 'Finish'}
         </button>
       </div>
 
       {/* Progress Bar */}
       <div className="progress-section">
-        <div className="progress-bar">
+        <div className="workout-progress-container">
           <div
-            className="progress-fill"
-            style={{ width: `${progress}%` }}
+            className="workout-progress-fill"
+            style={{
+              width: `${progress}%`,
+              maxWidth: `${progress}%`,
+              minWidth: progress === 0 ? '0%' : undefined
+            }}
           />
         </div>
         <div className="progress-text">
-          {state.completedExercises.length} / {state.exercises.length} exercises completed
+          {state.completedExercises.filter(idx => !state.exercises[idx]?.skipped).length} / {state.exercises.length} exercises completed
+          {state.exercises.filter(ex => ex.skipped).length > 0 && (
+            <span style={{color: 'var(--text-tertiary)', marginLeft: 'var(--space-2)'}}>
+              ({state.exercises.filter(ex => ex.skipped).length} skipped)
+            </span>
+          )}
         </div>
       </div>
 
@@ -261,7 +272,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       {currentExercise ? (
         <div className="exercise-section">
           <div className="exercise-header">
-            <div className="exercise-number">
+            <div className="workout-exercise-number">
               Exercise {state.currentExerciseIndex + 1} of {state.exercises.length}
             </div>
             <h2 className="exercise-name">{currentExercise.exerciseName}</h2>
@@ -308,8 +319,8 @@ function WorkoutSession({ program, onComplete, onCancel }) {
                 type="button"
               >
                 <span className="btn-icon">📝</span>
-                {currentExercise.notes ? 'Edit Notes' : 'Add Notes'}
-                {currentExercise.notes && <span className="notes-indicator">•</span>}
+                {currentExercise.notes?.trim() ? 'Edit Notes' : 'Add Notes'}
+                {currentExercise.notes?.trim() && <span className="notes-indicator">•</span>}
               </button>
 
               {error && <div className="error-message">{error}</div>}

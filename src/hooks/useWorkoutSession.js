@@ -394,10 +394,23 @@ export function useWorkoutSession() {
     return state.exercises[state.currentExerciseIndex] || null;
   };
 
-  // Get progress percentage
+  // Get progress percentage (excluding skipped exercises from both numerator and denominator)
   const getProgress = () => {
     if (state.exercises.length === 0) return 0;
-    return Math.floor((state.completedExercises.length / state.exercises.length) * 100);
+
+    // Count exercises that are not skipped (the actual target)
+    const totalNonSkippedExercises = state.exercises.filter(ex => !ex.skipped).length;
+
+    // If all exercises are skipped, return 100%
+    if (totalNonSkippedExercises === 0) return 100;
+
+    // Count exercises that are completed and not skipped
+    const actuallyCompleted = state.completedExercises.filter(idx =>
+      !state.exercises[idx]?.skipped
+    ).length;
+
+    // Calculate percentage based on non-skipped exercises only
+    return Math.floor((actuallyCompleted / totalNonSkippedExercises) * 100);
   };
 
   // Format elapsed time as MM:SS
