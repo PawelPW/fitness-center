@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { App as CapacitorApp } from '@capacitor/app';
+import { useCapacitorBackButton } from './hooks/useCapacitorBackButton';
 import apiService from './services/api.js';
 import secureStorage from './utils/secureStorage.js';
 import Login from './pages/Login';
@@ -24,6 +26,7 @@ function App() {
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [workoutCompleted, setWorkoutCompleted] = useState(null);
   const [showStats, setShowStats] = useState(false);
+  const [navigationStack, setNavigationStack] = useState(['dashboard']);
 
   // Check for existing session on mount
   useEffect(() => {
@@ -74,6 +77,7 @@ function App() {
     setShowExerciseList(false);
     setShowTrainingList(false);
     setShowTrainingBuilder(false);
+    setNavigationStack(prev => [...prev, 'trainingDetail']);
   };
 
   const handleManageExercises = () => {
@@ -81,6 +85,7 @@ function App() {
     setSelectedSession(null);
     setShowTrainingList(false);
     setShowTrainingBuilder(false);
+    setNavigationStack(prev => [...prev, 'exerciseList']);
   };
 
   const handleManageTrainings = () => {
@@ -89,18 +94,21 @@ function App() {
     setSelectedSession(null);
     setShowTrainingBuilder(false);
     setEditingTraining(null);
+    setNavigationStack(prev => [...prev, 'trainingList']);
   };
 
   const handleCreateTraining = () => {
     setShowTrainingBuilder(true);
     setShowTrainingList(false);
     setEditingTraining(null);
+    setNavigationStack(prev => [...prev, 'trainingBuilder']);
   };
 
   const handleEditTraining = (training) => {
     setEditingTraining(training);
     setShowTrainingBuilder(true);
     setShowTrainingList(false);
+    setNavigationStack(prev => [...prev, 'trainingBuilder']);
   };
 
   const handleBackToDashboard = () => {
@@ -109,12 +117,14 @@ function App() {
     setShowTrainingList(false);
     setShowTrainingBuilder(false);
     setEditingTraining(null);
+    setNavigationStack(['dashboard']);
   };
 
   const handleBackToTrainingList = () => {
     setShowTrainingBuilder(false);
     setShowTrainingList(true);
     setEditingTraining(null);
+    setNavigationStack(prev => prev.slice(0, -1));
   };
 
   const handleViewStats = () => {
@@ -123,11 +133,53 @@ function App() {
     setShowTrainingList(false);
     setShowTrainingBuilder(false);
     setSelectedSession(null);
+    setNavigationStack(prev => [...prev, 'stats']);
   };
 
   const handleStatsBack = () => {
     setShowStats(false);
+    setNavigationStack(prev => prev.slice(0, -1));
   };
+
+  // Capacitor back button handler
+  const handleBackButton = () => {
+    // Check navigation stack depth
+    if (navigationStack.length > 1) {
+      const currentView = navigationStack[navigationStack.length - 1];
+
+      // Route back based on current view
+      switch(currentView) {
+        case 'trainingDetail':
+          handleBackToDashboard();
+          break;
+        case 'exerciseList':
+          handleBackToDashboard();
+          break;
+        case 'trainingList':
+          handleBackToDashboard();
+          break;
+        case 'trainingBuilder':
+          handleBackToTrainingList();
+          break;
+        case 'stats':
+          handleStatsBack();
+          break;
+        case 'workoutSession':
+          handleWorkoutCancel();
+          break;
+        default:
+          handleBackToDashboard();
+      }
+    } else {
+      // At root dashboard - show exit confirmation
+      if (window.confirm('Exit app?')) {
+        CapacitorApp.exitApp();
+      }
+    }
+  };
+
+  // Use Capacitor back button hook
+  useCapacitorBackButton(handleBackButton);
 
   const handleStartWorkout = (program) => {
     setActiveWorkout(program);
@@ -135,21 +187,25 @@ function App() {
     setShowTrainingBuilder(false);
     setSelectedSession(null);
     setShowExerciseList(false);
+    setNavigationStack(prev => [...prev, 'workoutSession']);
   };
 
   const handleWorkoutComplete = (completionData) => {
     setWorkoutCompleted(completionData);
     setActiveWorkout(null);
+    setNavigationStack(['dashboard']);
   };
 
   const handleWorkoutCancel = () => {
     if (window.confirm('Are you sure you want to cancel this workout? Your progress will not be saved.')) {
       setActiveWorkout(null);
+      setNavigationStack(prev => prev.slice(0, -1));
     }
   };
 
   const handleCloseWorkoutSummary = () => {
     setWorkoutCompleted(null);
+    setNavigationStack(['dashboard']);
   };
 
   if (loading) {

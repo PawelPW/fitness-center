@@ -9,10 +9,13 @@
    ============================================ */
 
 .training-detail-container {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
   background: linear-gradient(180deg, var(--graphite-950) 0%, var(--graphite-900) 100%);
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .training-detail-container::before {
@@ -27,10 +30,12 @@
 }
 
 .detail-content {
+  flex: 1;
+  overflow-y: auto;
   padding: var(--space-8) var(--space-6);
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
+  width: 100%;
   position: relative;
   z-index: 1;
 }

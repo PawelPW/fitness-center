@@ -9,8 +9,10 @@ import { useSwipeable } from 'react-swipeable';
 export function useSwipeNavigation(onSwipeRight, options = {}) {
   const handlers = useSwipeable({
     onSwipedRight: (eventData) => {
-      // Only trigger if swipe starts from left edge (first 50px)
-      if (eventData.initial[0] < 50) {
+      // Enhanced edge detection: 100px from left edge (increased from 50px)
+      // Velocity check: minimum 0.3 to prevent accidental triggers
+      const velocity = Math.abs(eventData.velocity);
+      if (eventData.initial[0] < 100 && velocity > 0.3) {
         onSwipeRight?.();
       }
     },
@@ -18,6 +20,7 @@ export function useSwipeNavigation(onSwipeRight, options = {}) {
     trackTouch: true,
     delta: 50, // Minimum swipe distance
     preventScrollOnSwipe: false,
+    touchEventOptions: { passive: false }, // Allow preventDefault when needed
     ...options,
   });
 

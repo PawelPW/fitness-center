@@ -9,9 +9,12 @@
    ============================================ */
 
 .workout-session-container {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
   background: var(--graphite-950);
-  padding-bottom: var(--space-20);
+  overflow: hidden;
 }
 
 /* ============================================
@@ -171,9 +174,12 @@
    ============================================ */
 
 .exercise-section {
+  flex: 1;
+  overflow-y: auto;
   padding: var(--space-6) var(--space-4);
   max-width: 900px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .exercise-header {

@@ -9,15 +9,21 @@
    ============================================ */
 
 .exercise-list-container {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
   background: var(--graphite-950);
+  overflow: hidden;
 }
 
 .exercise-content {
+  flex: 1;
+  overflow-y: auto;
   padding: var(--space-8) var(--space-4);
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
+  width: 100%;
 }
 
 /* ============================================

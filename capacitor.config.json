@@ -1,15 +1,13 @@
 {
-  "appId": "com.fitnesscenter.app",
+  "appId": "com.fitness.center",
   "appName": "Fitness Center",
   "webDir": "dist",
-  "server": {
-    "androidScheme": "https",
-    "iosScheme": "https",
-    "hostname": "app.fitnesscenter.local",
-    "allowNavigation": [
-      "*.fitnesscenter.app",
-      "localhost",
-      "127.0.0.1"
-    ]
+  "bundledWebRuntime": false,
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#0a0a0a",
+      "showSpinner": false
+    }
   }
 }
