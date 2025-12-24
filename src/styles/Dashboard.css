@@ -145,6 +145,11 @@
   transform: translateY(-2px);
 }
 
+.session-card:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+}
+
 .session-icon {
   font-size: 4rem;
   flex-shrink: 0;
@@ -154,38 +159,82 @@
 .session-details {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
 }
 
 .session-type {
   font-size: var(--text-2xl);
   font-weight: var(--font-extrabold);
-  color: var(--text-primary);
-  margin: 0 0 var(--space-3) 0;
+  /* Gradient text for premium feel */
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--orange-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 var(--space-4) 0;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-wider);
+  text-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+  line-height: var(--leading-tight);
 }
 
 .session-meta {
   display: flex;
-  gap: var(--space-5);
-  flex-wrap: wrap;
-  font-size: var(--text-base);
-  color: var(--text-secondary);
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
   font-weight: var(--font-semibold);
+  align-items: center;
+  flex: none;
 }
 
 .session-meta span {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background: rgba(249, 115, 22, 0.1);
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(249, 115, 22, 0.12);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  min-height: 40px;
+  width: 100%;
+  max-width: 280px;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
 }
 
-.session-meta span::before {
-  display: none;
+/* Add icons to metadata pills using pseudo-elements */
+.session-meta span:nth-child(1)::before {
+  content: '📅';
+  font-size: 1.125rem;
+  opacity: 0.95;
+  flex-shrink: 0;
+}
+
+.session-meta span:nth-child(2)::before {
+  content: '⏱️';
+  font-size: 1.125rem;
+  opacity: 0.95;
+  flex-shrink: 0;
+}
+
+.session-meta span:nth-child(3)::before {
+  content: '🔥';
+  font-size: 1.125rem;
+  opacity: 0.95;
+  flex-shrink: 0;
+}
+
+/* Hover effect for individual metadata pills */
+.session-meta span:hover {
+  background: rgba(249, 115, 22, 0.18);
+  border-color: rgba(249, 115, 22, 0.35);
+  transform: translateY(-1px);
 }
 
 .view-arrow {
@@ -353,6 +402,21 @@
   .quick-actions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  /* Tablet optimizations for session metadata - maintain vertical layout */
+  .session-meta {
+    gap: var(--space-2);
+  }
+
+  .session-meta span {
+    font-size: var(--text-sm);
+    padding: var(--space-2) var(--space-4);
+    max-width: 280px;
+  }
+
+  .session-meta span::before {
+    font-size: 1.125rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -379,24 +443,33 @@
     font-size: 3.5rem;
   }
 
-  .session-type {
-    font-size: var(--text-xl);
+  .session-details {
+    width: 100%;
+    align-items: stretch;
   }
 
+  .session-type {
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: 0;
+  }
+
+  /* Mobile optimizations for session metadata - maintain vertical layout */
   .session-meta {
-    flex-direction: column;
     gap: var(--space-2);
     align-items: center;
-    font-size: var(--text-sm);
+    width: 100%;
   }
 
   .session-meta span {
-    width: 100%;
+    max-width: 100%;
     justify-content: center;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
   }
 
-  .view-arrow {
-    font-size: var(--text-2xl);
+  .session-meta span::before {
+    font-size: 1.125rem;
   }
 
   .view-arrow {

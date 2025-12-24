@@ -156,30 +156,30 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         </section>
 
         {/* Last Training Session */}
-        {lastSession ? (
-          <section className="section">
-            <h2 className="section-title">Last Training Session</h2>
-            <div
-              className="card card-clickable session-card"
-              onClick={() => onViewSession && onViewSession(lastSession)}
-            >
-              <div className="session-icon">✅</div>
-              <div className="session-details">
-                <h3 className="session-type">{lastSession.type || 'Workout'}</h3>
-                <div className="session-meta">
-                  <span>
-                    {formatDate(lastSession.date)}
-                  </span>
-                  <span>{lastSession.duration || 0} min</span>
-                  <span>{lastSession.calories || 0} cal</span>
+        <section className="section">
+          {lastSession ? (
+            <>
+              <h2 className="section-title">Last Training Session</h2>
+              <div
+                className="card card-clickable session-card"
+                onClick={() => onViewSession && onViewSession(lastSession)}
+              >
+                <div className="session-icon">✅</div>
+                <div className="session-details">
+                  <h3 className="session-type">{lastSession.type || 'Workout'}</h3>
+                  <div className="session-meta">
+                    <span>
+                      {formatDate(lastSession.date)}
+                    </span>
+                    <span>{lastSession.duration || 0} min</span>
+                    <span>{lastSession.calories || 0} cal</span>
+                  </div>
                 </div>
+                <div className="view-arrow">→</div>
               </div>
-              <div className="view-arrow">→</div>
-            </div>
-          </section>
-        ) : (
-          completedSessions.length === 0 && !loading && (
-            <section className="section">
+            </>
+          ) : (
+            completedSessions.length === 0 && !loading && (
               <div className="empty-state">
                 <div className="empty-icon">🏋️</div>
                 <h3>No workouts yet</h3>
@@ -188,9 +188,9 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
                   View Training Programs
                 </button>
               </div>
-            </section>
-          )
-        )}
+            )
+          )}
+        </section>
 
         {/* Training Calendar */}
         <section className="section">
