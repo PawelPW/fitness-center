@@ -103,6 +103,20 @@ function SetLogger({
             </button>
             <button
               className="adjust-btn"
+              onClick={() => adjustWeight(-7.5)}
+              type="button"
+            >
+              -7.5
+            </button>
+            <button
+              className="adjust-btn"
+              onClick={() => adjustWeight(-5)}
+              type="button"
+            >
+              -5
+            </button>
+            <button
+              className="adjust-btn"
               onClick={() => adjustWeight(-2.5)}
               type="button"
             >
@@ -123,6 +137,20 @@ function SetLogger({
               type="button"
             >
               +2.5
+            </button>
+            <button
+              className="adjust-btn"
+              onClick={() => adjustWeight(5)}
+              type="button"
+            >
+              +5
+            </button>
+            <button
+              className="adjust-btn"
+              onClick={() => adjustWeight(7.5)}
+              type="button"
+            >
+              +7.5
             </button>
             <button
               className="adjust-btn"

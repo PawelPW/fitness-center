@@ -93,17 +93,61 @@
   margin-bottom: var(--space-2);
 }
 
-/* Weight Input Group */
+/* Weight Input Group - Optimized 3-Row Layout */
 .weight-input-group {
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-2);
-  align-items: center;
+  align-items: stretch;
+  position: relative;
 }
 
-.weight-input-group .adjust-btn:nth-child(5) {
-  grid-column: 5;
+/* Visual separator lines between rows (subtle) */
+.weight-input-group::before,
+.weight-input-group::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--graphite-700) 50%,
+    transparent 100%
+  );
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.weight-input-group::before {
+  top: calc(44px + var(--space-2)); /* After first row */
+}
+
+.weight-input-group::after {
+  bottom: calc(44px + var(--space-2)); /* Before last row */
+}
+
+/* Decrease buttons - Row 1 */
+.weight-input-group .adjust-btn:nth-child(1),
+.weight-input-group .adjust-btn:nth-child(2),
+.weight-input-group .adjust-btn:nth-child(3),
+.weight-input-group .adjust-btn:nth-child(4) {
   grid-row: 1;
+}
+
+/* Weight input field - Row 2, spans all columns */
+.weight-input-group .set-input {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+/* Increase buttons - Row 3 */
+.weight-input-group .adjust-btn:nth-child(6),
+.weight-input-group .adjust-btn:nth-child(7),
+.weight-input-group .adjust-btn:nth-child(8),
+.weight-input-group .adjust-btn:nth-child(9) {
+  grid-row: 3;
 }
 
 /* Reps Input Group */
@@ -120,23 +164,44 @@
    ============================================ */
 
 .set-input {
-  padding: var(--space-4);
+  padding: var(--space-5);
   background: var(--graphite-850);
   border: 2px solid var(--graphite-800);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   color: var(--text-primary);
-  font-size: var(--text-lg);
+  font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   text-align: center;
   transition: all var(--transition-base);
   outline: none;
   min-width: 80px;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Special styling for weight input in grid */
+.weight-input-group .set-input {
+  min-height: 64px;
+  font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tight);
+  background: var(--graphite-900);
+  border: 3px solid var(--graphite-800);
 }
 
 .set-input:focus {
   background: var(--graphite-900);
   border-color: var(--orange-600);
-  box-shadow: 0 0 0 3px var(--orange-alpha-10);
+  box-shadow:
+    0 0 0 3px var(--orange-alpha-10),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(249, 115, 22, 0.15);
+  transform: scale(1.02);
+}
+
+/* Placeholder styling */
+.set-input::placeholder {
+  color: var(--text-disabled);
+  opacity: 0.5;
 }
 
 /* ============================================
@@ -144,7 +209,7 @@
    ============================================ */
 
 .adjust-btn {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-2);
   background: var(--graphite-850);
   border: 2px solid var(--graphite-800);
   border-radius: var(--radius-md);
@@ -155,17 +220,79 @@
   transition: all var(--transition-base);
   white-space: nowrap;
   min-height: 44px;
+  position: relative;
+  overflow: hidden;
 }
 
-.adjust-btn:hover {
+/* Subtle gradient overlay for depth */
+.adjust-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+.adjust-btn:hover::before {
+  opacity: 1;
+}
+
+/* Decrease buttons - Subtle red accent with visual indicator */
+.weight-input-group .adjust-btn:nth-child(1),
+.weight-input-group .adjust-btn:nth-child(2),
+.weight-input-group .adjust-btn:nth-child(3),
+.weight-input-group .adjust-btn:nth-child(4) {
+  border-top: 3px solid var(--graphite-750);
+}
+
+.weight-input-group .adjust-btn:nth-child(1):hover,
+.weight-input-group .adjust-btn:nth-child(2):hover,
+.weight-input-group .adjust-btn:nth-child(3):hover,
+.weight-input-group .adjust-btn:nth-child(4):hover {
+  background: var(--graphite-900);
+  border-color: var(--error-600);
+  border-top-color: var(--error-600);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  color: var(--error-500);
+}
+
+/* Increase buttons - Orange accent with visual indicator */
+.weight-input-group .adjust-btn:nth-child(6),
+.weight-input-group .adjust-btn:nth-child(7),
+.weight-input-group .adjust-btn:nth-child(8),
+.weight-input-group .adjust-btn:nth-child(9) {
+  border-bottom: 3px solid var(--graphite-750);
+}
+
+.weight-input-group .adjust-btn:nth-child(6):hover,
+.weight-input-group .adjust-btn:nth-child(7):hover,
+.weight-input-group .adjust-btn:nth-child(8):hover,
+.weight-input-group .adjust-btn:nth-child(9):hover {
   background: var(--graphite-900);
   border-color: var(--orange-600);
+  border-bottom-color: var(--orange-600);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  color: var(--orange-500);
 }
 
+/* Active state for all adjust buttons */
 .adjust-btn:active {
   transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Focus state for accessibility */
+.adjust-btn:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+  z-index: 1;
 }
 
 /* ============================================
@@ -466,27 +593,46 @@
    RESPONSIVE DESIGN
    ============================================ */
 
-@media (max-width: 480px) {
-  .weight-input-group {
-    grid-template-columns: auto 1fr auto;
-    grid-template-rows: auto auto;
-  }
-
-  .weight-input-group .adjust-btn:nth-child(1),
-  .weight-input-group .adjust-btn:nth-child(2) {
-    grid-row: 1;
+/* Small mobile devices - Reduce button padding slightly */
+@media (max-width: 380px) {
+  .adjust-btn {
+    padding: var(--space-3) var(--space-1);
+    font-size: 0.8125rem; /* 13px - slightly smaller for very small screens */
   }
 
   .weight-input-group .set-input {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    font-size: var(--text-2xl); /* Scale down slightly on very small screens */
+    min-height: 56px;
+  }
+}
+
+/* Medium mobile and up - Optimize spacing */
+@media (min-width: 381px) and (max-width: 640px) {
+  .weight-input-group {
+    gap: var(--space-3); /* More generous spacing on larger phones */
+  }
+}
+
+/* Tablet and desktop - Enhanced layout */
+@media (min-width: 641px) {
+  .weight-input-group {
+    gap: var(--space-4);
+    max-width: 600px; /* Prevent buttons from getting too wide on desktop */
+    margin: 0 auto;
   }
 
-  .weight-input-group .adjust-btn:nth-child(4),
-  .weight-input-group .adjust-btn:nth-child(5) {
-    grid-row: 3;
+  .adjust-btn {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-base);
   }
 
+  .weight-input-group .set-input {
+    min-height: 72px;
+  }
+}
+
+/* Summary and modal responsive adjustments */
+@media (max-width: 480px) {
   .set-summary {
     flex-direction: column;
     gap: var(--space-4);
