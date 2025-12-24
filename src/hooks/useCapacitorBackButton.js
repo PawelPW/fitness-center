@@ -9,15 +9,23 @@ import { App } from '@capacitor/app';
  */
 export function useCapacitorBackButton(onBackButton) {
   useEffect(() => {
+    let listenerHandle;
+
     // Add listener for hardware back button (Android)
-    const backButtonListener = App.addListener('backButton', (event) => {
-      // Execute the provided callback
-      onBackButton?.();
-    });
+    const setupListener = async () => {
+      listenerHandle = await App.addListener('backButton', (event) => {
+        // Execute the provided callback
+        onBackButton?.();
+      });
+    };
+
+    setupListener();
 
     // Cleanup: Remove listener when component unmounts
     return () => {
-      backButtonListener.remove();
+      if (listenerHandle) {
+        listenerHandle.remove();
+      }
     };
   }, [onBackButton]);
 }

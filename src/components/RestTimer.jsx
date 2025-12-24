@@ -44,7 +44,7 @@ function RestTimer({
 
           {/* Circular Progress Indicator */}
           <div className="rest-timer-progress">
-            <svg className="progress-ring" width="120" height="120">
+            <svg className="progress-ring" width="120" height="120" viewBox="0 0 120 120">
               <circle
                 className="progress-ring-bg"
                 cx="60"
