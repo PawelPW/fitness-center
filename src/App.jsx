@@ -12,6 +12,7 @@ import TrainingList from './pages/TrainingList';
 import TrainingBuilder from './pages/TrainingBuilder';
 import WorkoutSession from './pages/WorkoutSession';
 import ExerciseStats from './pages/ExerciseStats';
+import TrainingCalendar from './pages/TrainingCalendar';
 import './styles/App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [workoutCompleted, setWorkoutCompleted] = useState(null);
   const [showStats, setShowStats] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [navigationStack, setNavigationStack] = useState(['dashboard']);
 
   // Check for existing session on mount
@@ -141,6 +143,21 @@ function App() {
     setNavigationStack(prev => prev.slice(0, -1));
   };
 
+  const handleViewCalendar = () => {
+    setShowCalendar(true);
+    setShowExerciseList(false);
+    setShowTrainingList(false);
+    setShowTrainingBuilder(false);
+    setSelectedSession(null);
+    setShowStats(false);
+    setNavigationStack(prev => [...prev, 'calendar']);
+  };
+
+  const handleCalendarBack = () => {
+    setShowCalendar(false);
+    setNavigationStack(prev => prev.slice(0, -1));
+  };
+
   // Capacitor back button handler
   const handleBackButton = () => {
     // Check navigation stack depth
@@ -163,6 +180,9 @@ function App() {
           break;
         case 'stats':
           handleStatsBack();
+          break;
+        case 'calendar':
+          handleCalendarBack();
           break;
         case 'workoutSession':
           handleWorkoutCancel();
@@ -292,6 +312,11 @@ function App() {
     return <ExerciseStats onBack={handleStatsBack} />;
   }
 
+  // Show calendar if showCalendar is true
+  if (user && showCalendar) {
+    return <TrainingCalendar onBack={handleCalendarBack} />;
+  }
+
   // Show training detail if a session is selected
   if (user && selectedSession) {
     return (
@@ -312,6 +337,7 @@ function App() {
         onManageExercises={handleManageExercises}
         onManageTrainings={handleManageTrainings}
         onViewStats={handleViewStats}
+        onViewCalendar={handleViewCalendar}
       />
     );
   }

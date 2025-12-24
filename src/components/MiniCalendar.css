@@ -1,0 +1,206 @@
+/* Mini Calendar Widget - Orange & Graphite Theme */
+
+.mini-calendar-card {
+  background: var(--graphite-900);
+  border: 2px solid var(--graphite-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+
+.mini-calendar-card:hover {
+  border-color: var(--orange-600);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 20px rgba(249, 115, 22, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Header */
+.mini-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.mini-calendar-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.calendar-icon {
+  font-size: var(--text-xl);
+}
+
+.mini-calendar-month {
+  font-size: var(--text-sm);
+  color: var(--text-orange);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+/* Calendar Grid Container */
+.mini-calendar-grid-container {
+  margin-bottom: var(--space-4);
+}
+
+/* Day names header */
+.mini-calendar-days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: var(--space-2);
+}
+
+.mini-day-name {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-1);
+}
+
+/* Calendar grid */
+.mini-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.mini-calendar-day {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--graphite-850);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+}
+
+.mini-day-number {
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  font-weight: var(--font-medium);
+  z-index: 1;
+}
+
+/* Other month days (previous/next month) */
+.mini-calendar-day.other-month .mini-day-number {
+  color: var(--text-quaternary);
+  opacity: 0.3;
+}
+
+/* Today indicator */
+.mini-calendar-day.today {
+  border: 2px solid var(--orange-600);
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
+}
+
+/* Training day indicator */
+.mini-calendar-day.has-training {
+  background: linear-gradient(135deg,
+    rgba(249, 115, 22, 0.2),
+    rgba(249, 115, 22, 0.3)
+  );
+}
+
+.training-indicator {
+  position: absolute;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  background: var(--orange-600);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 4px rgba(249, 115, 22, 0.6);
+}
+
+/* Stats footer */
+.mini-calendar-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--graphite-800);
+}
+
+.mini-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mini-stat-icon {
+  font-size: var(--text-lg);
+}
+
+.mini-stat-value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-extrabold);
+  color: var(--text-primary);
+}
+
+.mini-stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-medium);
+}
+
+.mini-calendar-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--orange-600);
+  font-weight: var(--font-bold);
+  transition: all var(--transition-base);
+}
+
+.mini-calendar-card:hover .mini-calendar-cta {
+  gap: var(--space-3);
+}
+
+.arrow-icon {
+  font-size: var(--text-base);
+  transition: transform var(--transition-base);
+}
+
+.mini-calendar-card:hover .arrow-icon {
+  transform: translateX(2px);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .mini-calendar-card {
+    padding: var(--space-4);
+  }
+
+  .mini-day-number {
+    font-size: 10px;
+  }
+
+  .mini-day-name {
+    font-size: 10px;
+  }
+
+  .mini-calendar-stats {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .mini-calendar-cta {
+    width: 100%;
+    justify-content: center;
+    margin-top: var(--space-2);
+  }
+}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import apiService from '../services/api';
+import MiniCalendar from '../components/MiniCalendar';
 import '../styles/Dashboard.css';
 
-function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats }) {
+function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar }) {
   const [sessions, setSessions] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('week');
@@ -190,6 +191,11 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
             </section>
           )
         )}
+
+        {/* Training Calendar */}
+        <section className="section">
+          <MiniCalendar sessions={completedSessions} onClick={onViewCalendar} />
+        </section>
 
         {/* Quick Actions */}
         <section className="section">
