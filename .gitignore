@@ -33,3 +33,16 @@ android/gradle.properties
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Security - Additional sensitive files (DO NOT COMMIT)
+# Android signing - EXPANDED
+android/*.keystore
+android/keystore.properties
+*.jks
+*.p12
+
+# Environment files
+.env.mobile
+
+# Translation working directory
+translation-export/
