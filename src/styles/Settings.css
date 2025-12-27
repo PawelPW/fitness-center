@@ -1,0 +1,493 @@
+/**
+ * SETTINGS PAGE
+ * Orange & Graphite Professional Design
+ * Mobile-first with 56px touch targets
+ */
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+
+.settings-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
+  background: linear-gradient(180deg, var(--graphite-950) 0%, var(--graphite-900) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.08) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 2px solid rgba(249, 115, 22, 0.3);
+  border-radius: var(--radius-xl);
+  color: var(--orange-600);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.back-button:hover {
+  background: rgba(249, 115, 22, 0.25);
+  border-color: var(--orange-600);
+  transform: translateX(-4px);
+}
+
+.back-button:active {
+  transform: translateX(-2px) scale(0.95);
+}
+
+.settings-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-extrabold);
+  color: var(--text-primary);
+  flex: 1;
+  margin: 0;
+}
+
+.header-spacer {
+  width: 48px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ============================================
+   SECTIONS
+   ============================================ */
+
+.settings-section {
+  margin-bottom: var(--space-8);
+}
+
+.settings-section:last-child {
+  margin-bottom: var(--space-12);
+}
+
+.section-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--orange-600);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.section-description {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+  line-height: 1.5;
+}
+
+/* ============================================
+   SETTINGS CARD
+   ============================================ */
+
+.settings-card {
+  background: var(--graphite-800);
+  border: 2px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   SETTINGS ROW (56px minimum touch target)
+   ============================================ */
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  min-height: 56px;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.08);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row:hover:not(.settings-row-disabled):not(.settings-row-static) {
+  background: rgba(249, 115, 22, 0.08);
+}
+
+.settings-row:active:not(.settings-row-disabled):not(.settings-row-static) {
+  background: rgba(249, 115, 22, 0.12);
+  transform: scale(0.98);
+}
+
+/* Active state for language selector */
+.settings-row-active {
+  background: rgba(249, 115, 22, 0.12);
+  border-left: 4px solid var(--orange-600);
+  padding-left: calc(var(--space-4) - 4px);
+}
+
+/* Disabled state */
+.settings-row-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settings-row-disabled:hover {
+  background: transparent;
+}
+
+/* Static state (non-clickable) */
+.settings-row-static {
+  cursor: default;
+}
+
+.settings-row-static:hover {
+  background: transparent;
+}
+
+/* Danger state for logout */
+.settings-row-danger .settings-row-icon {
+  color: var(--red-500);
+}
+
+.settings-row-danger .settings-row-title {
+  color: var(--red-500);
+}
+
+.settings-row-danger:hover:not(.settings-row-disabled) {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* ============================================
+   ROW COMPONENTS
+   ============================================ */
+
+.settings-row-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: rgba(249, 115, 22, 0.12);
+  border-radius: var(--radius-lg);
+  color: var(--orange-600);
+  flex-shrink: 0;
+}
+
+.language-flag {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.settings-row-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-row-title {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  line-height: 1.4;
+}
+
+.settings-row-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  line-height: 1.3;
+}
+
+.settings-row-chevron {
+  display: flex;
+  align-items: center;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.settings-row-indicator {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.settings-row-badge {
+  flex-shrink: 0;
+}
+
+.badge-coming-soon {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: var(--radius-full);
+  color: var(--orange-600);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Small phones (320px - 480px) */
+@media (max-width: 480px) {
+  .settings-header {
+    padding: var(--space-4) var(--space-4) var(--space-3);
+  }
+
+  .settings-title {
+    font-size: var(--text-xl);
+  }
+
+  .back-button {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .header-spacer {
+    width: 44px;
+  }
+
+  .settings-content {
+    padding: var(--space-4);
+  }
+
+  .section-title {
+    font-size: var(--text-base);
+  }
+
+  .section-description {
+    font-size: var(--text-xs);
+  }
+
+  .settings-row {
+    padding: var(--space-3);
+    min-height: 56px; /* Maintain 56px touch target */
+  }
+
+  .settings-row-active {
+    padding-left: calc(var(--space-3) - 4px);
+  }
+
+  .settings-row-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .settings-row-title {
+    font-size: var(--text-sm);
+  }
+
+  .settings-row-subtitle {
+    font-size: var(--text-xs);
+  }
+
+  .badge-coming-soon {
+    font-size: 0.625rem;
+    padding: 2px 8px;
+  }
+}
+
+/* Tablets (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .settings-content {
+    padding: var(--space-6) var(--space-5);
+  }
+}
+
+/* Landscape phones and small tablets */
+@media (max-width: 768px) and (orientation: landscape) {
+  .settings-header {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .settings-content {
+    padding: var(--space-4);
+  }
+}
+
+/* Desktop (769px+) */
+@media (min-width: 769px) {
+  .settings-container {
+    background: linear-gradient(180deg, var(--graphite-950) 0%, var(--graphite-900) 100%);
+  }
+
+  .settings-header {
+    padding: var(--space-8) var(--space-8) var(--space-6);
+  }
+
+  .settings-title {
+    font-size: var(--text-3xl);
+  }
+
+  .settings-content {
+    padding: var(--space-8);
+  }
+
+  .settings-row {
+    min-height: 64px; /* Slightly larger on desktop */
+  }
+
+  .settings-row:hover:not(.settings-row-disabled):not(.settings-row-static) {
+    transform: translateX(4px);
+  }
+
+  .settings-row:active:not(.settings-row-disabled):not(.settings-row-static) {
+    transform: translateX(2px) scale(0.98);
+  }
+}
+
+/* Large desktop (1920px+) */
+@media (min-width: 1920px) {
+  .settings-content {
+    max-width: 900px;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+.settings-row:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: -2px;
+}
+
+.back-button:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .settings-row,
+  .back-button,
+  .settings-container * {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .settings-card {
+    border-width: 3px;
+  }
+
+  .settings-row {
+    border-bottom-width: 2px;
+  }
+
+  .back-button {
+    border-width: 3px;
+  }
+}
+
+/* Dark mode adjustments (already dark by default) */
+@media (prefers-color-scheme: dark) {
+  .settings-container {
+    /* Already optimized for dark mode */
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.settings-section {
+  animation: slideInRight 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.settings-section:nth-child(1) { animation-delay: 0.05s; }
+.settings-section:nth-child(2) { animation-delay: 0.1s; }
+.settings-section:nth-child(3) { animation-delay: 0.15s; }
+.settings-section:nth-child(4) { animation-delay: 0.2s; }
+.settings-section:nth-child(5) { animation-delay: 0.25s; }
+.settings-section:nth-child(6) { animation-delay: 0.3s; }
+
+/* Disable animations for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .settings-section {
+    animation: none;
+  }
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+.settings-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.settings-content::-webkit-scrollbar-track {
+  background: var(--graphite-900);
+}
+
+.settings-content::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.3);
+  border-radius: var(--radius-full);
+}
+
+.settings-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.5);
+}

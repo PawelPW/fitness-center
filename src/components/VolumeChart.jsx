@@ -1,9 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/Charts.css';
 
 function VolumeChart({ data }) {
+  const { t } = useTranslation('stats');
+
   if (!data || data.length === 0) {
-    return <div className="chart-empty">No volume data available</div>;
+    return <div className="chart-empty">{t('volumeChart.noData')}</div>;
   }
 
   // Calculate min/max for scaling
@@ -58,7 +61,7 @@ function VolumeChart({ data }) {
       <div className="chart-legend">
         <div className="legend-item">
           <div className="legend-color volume-bar"></div>
-          <span>Total Volume (kg)</span>
+          <span>{t('volumeChart.legend')}</span>
         </div>
       </div>
     </div>

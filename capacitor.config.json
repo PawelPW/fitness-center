@@ -1,5 +1,5 @@
 {
-  "appId": "com.fitness.center",
+  "appId": "com.fitnesscenter.app",
   "appName": "Fitness Center",
   "webDir": "dist",
   "bundledWebRuntime": false,

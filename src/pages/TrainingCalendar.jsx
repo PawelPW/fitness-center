@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import {
   generateCalendarGrid,
@@ -13,6 +14,7 @@ import apiService from '../services/api';
 import '../styles/TrainingCalendar.css';
 
 function TrainingCalendar({ onBack }) {
+  const { t } = useTranslation('calendar');
   const swipeHandlers = useSwipeNavigation(onBack);
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ function TrainingCalendar({ onBack }) {
       setSessions(data || []);
     } catch (err) {
       console.error('Failed to fetch sessions:', err);
-      setError('Failed to load calendar data');
+      setError(t('errors.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,7 @@ function TrainingCalendar({ onBack }) {
       <div className="training-calendar-container">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading calendar...</p>
+          <p>{t('loading')}</p>
         </div>
       </div>
     );
@@ -80,9 +82,9 @@ function TrainingCalendar({ onBack }) {
       {/* Header */}
       <div className="calendar-header">
         <button onClick={onBack} className="back-btn">
-          ← Back
+          ← {t('back')}
         </button>
-        <h1 className="calendar-page-title">Training Calendar</h1>
+        <h1 className="calendar-page-title">{t('title')}</h1>
       </div>
 
       {/* Month Navigation */}
@@ -106,7 +108,7 @@ function TrainingCalendar({ onBack }) {
             <span className="streak-icon">🔥</span>
             <div className="streak-info">
               <span className="streak-number">{currentStreak}</span>
-              <span className="streak-label">Day Streak</span>
+              <span className="streak-label">{t('streak.label')}</span>
             </div>
           </div>
         )}
@@ -115,17 +117,17 @@ function TrainingCalendar({ onBack }) {
           <div className="stat-card">
             <span className="stat-icon">🏋️</span>
             <span className="stat-value">{monthlyStats.totalSessions}</span>
-            <span className="stat-label">Sessions</span>
+            <span className="stat-label">{t('stats.sessions')}</span>
           </div>
           <div className="stat-card">
             <span className="stat-icon">🔥</span>
             <span className="stat-value">{monthlyStats.totalCalories}</span>
-            <span className="stat-label">Calories</span>
+            <span className="stat-label">{t('stats.calories')}</span>
           </div>
           <div className="stat-card">
             <span className="stat-icon">⏱️</span>
             <span className="stat-value">{monthlyStats.totalMinutes}</span>
-            <span className="stat-label">Minutes</span>
+            <span className="stat-label">{t('stats.minutes')}</span>
           </div>
         </div>
       </div>
@@ -189,18 +191,18 @@ function TrainingCalendar({ onBack }) {
               {selectedDay.sessions.map((session, idx) => (
                 <div key={idx} className="session-item">
                   <div className="session-header">
-                    <span className="session-type">{session.type || 'Workout'}</span>
+                    <span className="session-type">{session.type || t('modal.workoutDefault')}</span>
                     <span className="session-time">
-                      {session.duration || 0} min
+                      {session.duration || 0} {t('units.min')}
                     </span>
                   </div>
                   <div className="session-details">
                     <span className="session-detail">
-                      🔥 {session.calories || 0} cal
+                      🔥 {session.calories || 0} {t('units.cal')}
                     </span>
                     {session.exerciseCount && (
                       <span className="session-detail">
-                        💪 {session.exerciseCount} exercises
+                        💪 {t('modal.exercises', { count: session.exerciseCount })}
                       </span>
                     )}
                   </div>
@@ -215,7 +217,7 @@ function TrainingCalendar({ onBack }) {
               onClick={() => setShowSessionModal(false)}
               className="modal-close-btn"
             >
-              Close
+              {t('modal.close')}
             </button>
           </div>
         </div>

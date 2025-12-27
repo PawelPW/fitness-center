@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import apiService from '../services/api';
 import { TRAINING_TYPES } from '../utils/trainingData';
 import '../styles/ExerciseList.css';
 
 function ExerciseList({ onBack }) {
+  const { t } = useTranslation(['exercises', 'common']);
   const swipeHandlers = useSwipeNavigation(onBack);
   const [exercises, setExercises] = useState({});
   const [selectedType, setSelectedType] = useState(TRAINING_TYPES.STRENGTH);
@@ -37,7 +39,7 @@ function ExerciseList({ onBack }) {
       calculateExerciseCount(allExercises);
     } catch (err) {
       console.error('Failed to load exercises:', err);
-      setError('Failed to load exercises');
+      setError(t('exercises:errors.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -59,7 +61,7 @@ function ExerciseList({ onBack }) {
     setError('');
 
     if (!formData.name.trim()) {
-      setError('Please enter an exercise name');
+      setError(t('exercises:errors.nameRequired'));
       return;
     }
 
@@ -73,7 +75,7 @@ function ExerciseList({ onBack }) {
       setFormData({ name: '', description: '' });
       setShowAddForm(false);
     } catch (err) {
-      setError(err.message || 'Failed to create exercise');
+      setError(err.message || t('exercises:errors.createFailed'));
     }
   };
 
@@ -82,7 +84,7 @@ function ExerciseList({ onBack }) {
     setError('');
 
     if (!formData.name.trim()) {
-      setError('Please enter an exercise name');
+      setError(t('exercises:errors.nameRequired'));
       return;
     }
 
@@ -96,7 +98,7 @@ function ExerciseList({ onBack }) {
       setShowEditForm(false);
       setEditingExercise(null);
     } catch (err) {
-      setError(err.message || 'Failed to update exercise');
+      setError(err.message || t('exercises:errors.updateFailed'));
     }
   };
 
@@ -111,7 +113,7 @@ function ExerciseList({ onBack }) {
   };
 
   const handleDeleteExercise = async (exerciseId) => {
-    if (!window.confirm('Are you sure you want to delete this exercise?')) {
+    if (!window.confirm(t('exercises:confirmDelete'))) {
       return;
     }
 
@@ -119,7 +121,7 @@ function ExerciseList({ onBack }) {
       await apiService.deleteExercise(exerciseId);
       await loadExercises();
     } catch (err) {
-      setError(err.message || 'Failed to delete exercise');
+      setError(err.message || t('exercises:errors.deleteFailed'));
     }
   };
 
@@ -142,14 +144,14 @@ function ExerciseList({ onBack }) {
     <div {...swipeHandlers} className="exercise-list-container">
       <div className="exercise-content">
         <div className="page-header">
-          <h1 className="page-title">Exercise Library</h1>
-          <p className="page-subtitle">Manage your exercise database</p>
+          <h1 className="page-title">{t('exercises:title')}</h1>
+          <p className="page-subtitle">{t('exercises:subtitle')}</p>
         </div>
 
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Loading exercises...</p>
+            <p>{t('exercises:loading')}</p>
           </div>
         ) : (
           <>
@@ -171,15 +173,15 @@ function ExerciseList({ onBack }) {
         <div className="exercise-stats">
           <div className="stat-item">
             <span className="stat-value">{exerciseCount.total}</span>
-            <span className="stat-label">Total</span>
+            <span className="stat-label">{t('exercises:stats.total')}</span>
           </div>
           <div className="stat-item">
             <span className="stat-value">{exerciseCount.default}</span>
-            <span className="stat-label">Default</span>
+            <span className="stat-label">{t('exercises:stats.default')}</span>
           </div>
           <div className="stat-item">
             <span className="stat-value">{exerciseCount.custom}</span>
-            <span className="stat-label">Custom</span>
+            <span className="stat-label">{t('exercises:stats.custom')}</span>
           </div>
         </div>
 
@@ -187,7 +189,7 @@ function ExerciseList({ onBack }) {
         <div className="action-bar">
           <input
             type="text"
-            placeholder="Search exercises..."
+            placeholder={t('exercises:search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="input-field"
@@ -196,7 +198,7 @@ function ExerciseList({ onBack }) {
             onClick={() => setShowAddForm(true)}
             className="btn-primary"
           >
-            + Add Exercise
+            + {t('exercises:actions.addExercise')}
           </button>
         </div>
 
@@ -208,30 +210,30 @@ function ExerciseList({ onBack }) {
             setError('');
           }}>
             <div className="add-form-card" onClick={(e) => e.stopPropagation()}>
-              <h2 className="form-title">Add New Exercise</h2>
-              <p className="form-subtitle">Type: {selectedType}</p>
+              <h2 className="form-title">{t('exercises:form.addTitle')}</h2>
+              <p className="form-subtitle">{t('exercises:form.typeLabel', { type: selectedType })}</p>
 
               <form onSubmit={handleAddExercise}>
                 <div className="form-group">
-                  <label htmlFor="exerciseName">Exercise Name *</label>
+                  <label htmlFor="exerciseName">{t('exercises:form.nameLabel')}</label>
                   <input
                     type="text"
                     id="exerciseName"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g., Incline Dumbbell Press"
+                    placeholder={t('exercises:form.namePlaceholder')}
                     className="input-field"
                     autoFocus
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="exerciseDescription">Description</label>
+                  <label htmlFor="exerciseDescription">{t('exercises:form.descriptionLabel')}</label>
                   <textarea
                     id="exerciseDescription"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Optional: Add instructions or notes about this exercise"
+                    placeholder={t('exercises:form.descriptionPlaceholder')}
                     className="input-field"
                     rows="3"
                   />
@@ -249,10 +251,10 @@ function ExerciseList({ onBack }) {
                     }}
                     className="btn-secondary"
                   >
-                    Cancel
+                    {t('common:cancel')}
                   </button>
                   <button type="submit" className="btn-primary">
-                    Add Exercise
+                    {t('exercises:actions.addExercise')}
                   </button>
                 </div>
               </form>
@@ -269,30 +271,30 @@ function ExerciseList({ onBack }) {
             setError('');
           }}>
             <div className="add-form-card" onClick={(e) => e.stopPropagation()}>
-              <h2 className="form-title">Edit Exercise</h2>
-              <p className="form-subtitle">Type: {selectedType}</p>
+              <h2 className="form-title">{t('exercises:form.editTitle')}</h2>
+              <p className="form-subtitle">{t('exercises:form.typeLabel', { type: selectedType })}</p>
 
               <form onSubmit={handleEditExercise}>
                 <div className="form-group">
-                  <label htmlFor="editExerciseName">Exercise Name *</label>
+                  <label htmlFor="editExerciseName">{t('exercises:form.nameLabel')}</label>
                   <input
                     type="text"
                     id="editExerciseName"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g., Incline Dumbbell Press"
+                    placeholder={t('exercises:form.namePlaceholder')}
                     className="input-field"
                     autoFocus
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="editExerciseDescription">Description</label>
+                  <label htmlFor="editExerciseDescription">{t('exercises:form.descriptionLabel')}</label>
                   <textarea
                     id="editExerciseDescription"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Optional: Add instructions or notes about this exercise"
+                    placeholder={t('exercises:form.descriptionPlaceholder')}
                     className="input-field"
                     rows="3"
                   />
@@ -311,10 +313,10 @@ function ExerciseList({ onBack }) {
                     }}
                     className="btn-secondary"
                   >
-                    Cancel
+                    {t('common:cancel')}
                   </button>
                   <button type="submit" className="btn-primary">
-                    Update Exercise
+                    {t('exercises:actions.updateExercise')}
                   </button>
                 </div>
               </form>
@@ -336,11 +338,15 @@ function ExerciseList({ onBack }) {
                     <p className="exercise-description">{exercise.description}</p>
                   )}
                   {exercise.isCustom && (
-                    <span className="custom-badge">Custom</span>
+                    <span className="custom-badge">{t('exercises:card.customBadge')}</span>
                   )}
                   {exercise.lastWeight && (
                     <div className="exercise-stats">
-                      <span>Last: {exercise.lastWeight}kg × {exercise.lastSeries} sets × {exercise.lastRepetitions} reps</span>
+                      <span>{t('exercises:card.lastStats', {
+                        weight: exercise.lastWeight,
+                        sets: exercise.lastSeries,
+                        reps: exercise.lastRepetitions
+                      })}</span>
                     </div>
                   )}
                 </div>
@@ -349,14 +355,14 @@ function ExerciseList({ onBack }) {
                     <button
                       onClick={() => openEditForm(exercise)}
                       className="edit-btn"
-                      title="Edit exercise"
+                      title={t('exercises:card.editTitle')}
                     >
                       ✏️
                     </button>
                     <button
                       onClick={() => handleDeleteExercise(exercise.id)}
                       className="delete-btn"
-                      title="Delete exercise"
+                      title={t('exercises:card.deleteTitle')}
                     >
                       🗑️
                     </button>
@@ -367,8 +373,8 @@ function ExerciseList({ onBack }) {
           ) : (
             <div className="no-exercises">
               {searchQuery
-                ? 'No exercises match your search'
-                : 'No exercises in this category yet'}
+                ? t('exercises:empty.noResults')
+                : t('exercises:empty.noExercises')}
             </div>
           )}
         </div>

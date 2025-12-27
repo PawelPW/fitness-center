@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/Welcome.css';
 
 function Welcome({ user, onComplete }) {
+  const { t } = useTranslation('common');
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
@@ -26,9 +28,9 @@ function Welcome({ user, onComplete }) {
 
       <div className="welcome-content">
         <div className="welcome-icon">💪</div>
-        <h1 className="welcome-title">Welcome back,</h1>
+        <h1 className="welcome-title">{t('welcomeScreen.title')}</h1>
         <h2 className="welcome-username">{user.username}!</h2>
-        <p className="welcome-message">Let's crush your goals today</p>
+        <p className="welcome-message">{t('welcomeScreen.message')}</p>
         <div className="welcome-loader">
           <div className="loader-bar"></div>
         </div>

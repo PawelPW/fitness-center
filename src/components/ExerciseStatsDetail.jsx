@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import VolumeChart from './VolumeChart';
 import ProgressionChart from './ProgressionChart';
 import '../styles/ExerciseStatsDetail.css';
 
 function ExerciseStatsDetail({ exerciseName, onBack }) {
+  const { t } = useTranslation('stats');
   const [history, setHistory] = useState([]);
   const [prs, setPRs] = useState(null);
   const [volumeData, setVolumeData] = useState(null);
@@ -57,7 +59,7 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
       <div className="exercise-detail-container">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading exercise data...</p>
+          <p>{t('exerciseStatsDetail.loading')}</p>
         </div>
       </div>
     );
@@ -66,19 +68,19 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
   return (
     <div className="exercise-detail-container">
       <header className="detail-header">
-        <button onClick={onBack} className="back-btn">← Back</button>
+        <button onClick={onBack} className="back-btn">{t('exerciseStatsDetail.back')}</button>
         <h1 className="detail-title">{exerciseName}</h1>
       </header>
 
       {/* Personal Records Section */}
       {prs && (prs.maxWeight || prs.maxReps || prs.maxVolumeSession) && (
         <section className="prs-section">
-          <h2 className="section-title">Personal Records</h2>
+          <h2 className="section-title">{t('exerciseStatsDetail.personalRecords')}</h2>
           <div className="prs-grid">
             {prs.maxWeight && (
               <div className="pr-card">
                 <div className="pr-icon">🏆</div>
-                <div className="pr-label">Max Weight</div>
+                <div className="pr-label">{t('exerciseStatsDetail.maxWeight')}</div>
                 <div className="pr-value">{prs.maxWeight.value} kg</div>
                 <div className="pr-date">{formatDate(prs.maxWeight.achievedDate)}</div>
               </div>
@@ -86,7 +88,7 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
             {prs.maxReps && (
               <div className="pr-card">
                 <div className="pr-icon">💪</div>
-                <div className="pr-label">Max Reps</div>
+                <div className="pr-label">{t('exerciseStatsDetail.maxReps')}</div>
                 <div className="pr-value">{prs.maxReps.value}</div>
                 <div className="pr-date">{formatDate(prs.maxReps.achievedDate)}</div>
               </div>
@@ -94,7 +96,7 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
             {prs.maxVolumeSession && (
               <div className="pr-card">
                 <div className="pr-icon">📈</div>
-                <div className="pr-label">Max Volume</div>
+                <div className="pr-label">{t('exerciseStatsDetail.maxVolume')}</div>
                 <div className="pr-value">{prs.maxVolumeSession.value.toFixed(0)} kg</div>
                 <div className="pr-date">{formatDate(prs.maxVolumeSession.achievedDate)}</div>
               </div>
@@ -109,19 +111,19 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
           className={`tab-btn ${activeTab === 'history' ? 'active' : ''}`}
           onClick={() => setActiveTab('history')}
         >
-          History
+          {t('exerciseStatsDetail.tabs.history')}
         </button>
         <button
           className={`tab-btn ${activeTab === 'progression' ? 'active' : ''}`}
           onClick={() => setActiveTab('progression')}
         >
-          Progression
+          {t('exerciseStatsDetail.tabs.progression')}
         </button>
         <button
           className={`tab-btn ${activeTab === 'volume' ? 'active' : ''}`}
           onClick={() => setActiveTab('volume')}
         >
-          Volume
+          {t('exerciseStatsDetail.tabs.volume')}
         </button>
       </div>
 
@@ -129,9 +131,9 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
       <div className="tab-content">
         {activeTab === 'history' && (
           <section className="history-section">
-            <h2 className="section-title">Session History</h2>
+            <h2 className="section-title">{t('exerciseStatsDetail.sessionHistory')}</h2>
             {history.length === 0 ? (
-              <p className="empty-message">No session history available</p>
+              <p className="empty-message">{t('exerciseStatsDetail.noHistory')}</p>
             ) : (
               <div className="history-list">
                 {history.map((session) => (
@@ -139,13 +141,13 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
                     <div className="history-date">{formatDate(session.sessionDate)}</div>
                     <div className="history-stats">
                       <span className="history-stat">
-                        <strong>{session.totalSets}</strong> sets
+                        <strong>{session.totalSets}</strong> {t('exerciseStatsDetail.sets')}
                       </span>
                       <span className="history-stat">
-                        <strong>{session.avgWeight.toFixed(1)}</strong> kg avg
+                        <strong>{session.avgWeight.toFixed(1)}</strong> {t('exerciseStatsDetail.avgWeight')}
                       </span>
                       <span className="history-stat">
-                        <strong>{session.totalVolume.toFixed(0)}</strong> kg volume
+                        <strong>{session.totalVolume.toFixed(0)}</strong> {t('exerciseStatsDetail.volume')}
                       </span>
                     </div>
                     {session.sets && session.sets.length > 0 && (
@@ -166,7 +168,7 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
 
         {activeTab === 'progression' && (
           <section className="progression-section">
-            <h2 className="section-title">Weight Progression</h2>
+            <h2 className="section-title">{t('exerciseStatsDetail.weightProgression')}</h2>
             <ProgressionChart data={history} />
           </section>
         )}
@@ -174,25 +176,25 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
         {activeTab === 'volume' && (
           <section className="volume-section">
             <div className="volume-header">
-              <h2 className="section-title">Volume Over Time</h2>
+              <h2 className="section-title">{t('exerciseStatsDetail.volumeOverTime')}</h2>
               <div className="period-selector">
                 <button
                   className={`period-btn ${selectedPeriod === 'month' ? 'active' : ''}`}
                   onClick={() => setSelectedPeriod('month')}
                 >
-                  Month
+                  {t('exerciseStatsDetail.periods.month')}
                 </button>
                 <button
                   className={`period-btn ${selectedPeriod === 'year' ? 'active' : ''}`}
                   onClick={() => setSelectedPeriod('year')}
                 >
-                  Year
+                  {t('exerciseStatsDetail.periods.year')}
                 </button>
                 <button
                   className={`period-btn ${selectedPeriod === 'all' ? 'active' : ''}`}
                   onClick={() => setSelectedPeriod('all')}
                 >
-                  All Time
+                  {t('exerciseStatsDetail.periods.allTime')}
                 </button>
               </div>
             </div>

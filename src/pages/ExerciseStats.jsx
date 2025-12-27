@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import ExerciseStatsDetail from '../components/ExerciseStatsDetail';
 import '../styles/ExerciseStats.css';
 
 function ExerciseStats({ onBack }) {
+  const { t } = useTranslation('stats');
   const [exercises, setExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,7 @@ function ExerciseStats({ onBack }) {
       setExercises(data.exercises);
     } catch (err) {
       console.error('Failed to load exercise stats:', err);
-      setError('Failed to load exercise statistics');
+      setError(t('exerciseStats.errors.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -40,10 +42,10 @@ function ExerciseStats({ onBack }) {
     const now = new Date();
     const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    if (diffDays === 0) return t('exerciseStats.dateRelative.today');
+    if (diffDays === 1) return t('exerciseStats.dateRelative.yesterday');
+    if (diffDays < 7) return t('exerciseStats.dateRelative.daysAgo', { count: diffDays });
+    if (diffDays < 30) return t('exerciseStats.dateRelative.weeksAgo', { count: Math.floor(diffDays / 7) });
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
@@ -59,27 +61,27 @@ function ExerciseStats({ onBack }) {
   return (
     <div className="exercise-stats-container">
       <header className="stats-header">
-        <button onClick={onBack} className="back-btn">← Back</button>
-        <h1 className="stats-title">Exercise Statistics</h1>
+        <button onClick={onBack} className="back-btn">← {t('exerciseStats.back')}</button>
+        <h1 className="stats-title">{t('exerciseStats.title')}</h1>
       </header>
 
       {loading ? (
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading exercise statistics...</p>
+          <p>{t('exerciseStats.loading')}</p>
         </div>
       ) : error ? (
         <div className="error-container">
           <p className="error-message">{error}</p>
           <button onClick={loadExerciseStats} className="btn-primary">
-            Retry
+            {t('exerciseStats.retry')}
           </button>
         </div>
       ) : exercises.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📊</div>
-          <h3>No Exercise Data Yet</h3>
-          <p>Complete workouts to see your exercise statistics here</p>
+          <h3>{t('exerciseStats.empty.title')}</h3>
+          <p>{t('exerciseStats.empty.message')}</p>
         </div>
       ) : (
         <div className="exercise-stats-grid">
@@ -92,36 +94,36 @@ function ExerciseStats({ onBack }) {
               <div className="exercise-stat-header">
                 <h3 className="exercise-stat-name">{exercise.exerciseName}</h3>
                 <div className="exercise-stat-badge">
-                  {exercise.totalSessions} sessions
+                  {t('exerciseStats.badges.sessions', { count: exercise.totalSessions })}
                 </div>
               </div>
 
               <div className="exercise-stat-metrics">
                 <div className="stat-metric">
-                  <div className="stat-metric-label">Total Volume</div>
+                  <div className="stat-metric-label">{t('exerciseStats.metrics.totalVolume')}</div>
                   <div className="stat-metric-value">
-                    {formatVolume(exercise.totalVolume)} kg
+                    {formatVolume(exercise.totalVolume)} {t('exerciseStats.units.kg')}
                   </div>
                 </div>
 
                 <div className="stat-metric">
-                  <div className="stat-metric-label">Total Sets</div>
+                  <div className="stat-metric-label">{t('exerciseStats.metrics.totalSets')}</div>
                   <div className="stat-metric-value">
                     {exercise.totalSets}
                   </div>
                 </div>
 
                 <div className="stat-metric">
-                  <div className="stat-metric-label">Max Weight</div>
+                  <div className="stat-metric-label">{t('exerciseStats.metrics.maxWeight')}</div>
                   <div className="stat-metric-value">
-                    {exercise.maxWeight} kg
+                    {exercise.maxWeight} {t('exerciseStats.units.kg')}
                   </div>
                 </div>
               </div>
 
               <div className="exercise-stat-footer">
                 <span className="last-performed">
-                  Last: {formatDate(exercise.lastPerformed)}
+                  {t('exerciseStats.lastPerformed', { date: formatDate(exercise.lastPerformed) })}
                 </span>
                 <span className="view-details-arrow">→</span>
               </div>

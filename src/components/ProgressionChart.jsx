@@ -1,9 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/Charts.css';
 
 function ProgressionChart({ data }) {
+  const { t } = useTranslation('stats');
+
   if (!data || data.length === 0) {
-    return <div className="chart-empty">No progression data available</div>;
+    return <div className="chart-empty">{t('progressionChart.noData')}</div>;
   }
 
   // Reverse to show oldest to newest

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { App as CapacitorApp } from '@capacitor/app';
 import { useCapacitorBackButton } from './hooks/useCapacitorBackButton';
 import apiService from './services/api.js';
@@ -13,9 +14,11 @@ import TrainingBuilder from './pages/TrainingBuilder';
 import WorkoutSession from './pages/WorkoutSession';
 import ExerciseStats from './pages/ExerciseStats';
 import TrainingCalendar from './pages/TrainingCalendar';
+import Settings from './pages/Settings';
 import './styles/App.css';
 
 function App() {
+  const { t } = useTranslation('common');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -28,6 +31,7 @@ function App() {
   const [workoutCompleted, setWorkoutCompleted] = useState(null);
   const [showStats, setShowStats] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [navigationStack, setNavigationStack] = useState(['dashboard']);
 
   // Check for existing session on mount
@@ -158,6 +162,22 @@ function App() {
     setNavigationStack(prev => prev.slice(0, -1));
   };
 
+  const handleViewSettings = () => {
+    setShowSettings(true);
+    setShowExerciseList(false);
+    setShowTrainingList(false);
+    setShowTrainingBuilder(false);
+    setSelectedSession(null);
+    setShowStats(false);
+    setShowCalendar(false);
+    setNavigationStack(prev => [...prev, 'settings']);
+  };
+
+  const handleSettingsBack = () => {
+    setShowSettings(false);
+    setNavigationStack(prev => prev.slice(0, -1));
+  };
+
   // Capacitor back button handler
   const handleBackButton = () => {
     // Check navigation stack depth
@@ -184,6 +204,9 @@ function App() {
         case 'calendar':
           handleCalendarBack();
           break;
+        case 'settings':
+          handleSettingsBack();
+          break;
         case 'workoutSession':
           handleWorkoutCancel();
           break;
@@ -192,7 +215,7 @@ function App() {
       }
     } else {
       // At root dashboard - show exit confirmation
-      if (window.confirm('Exit app?')) {
+      if (window.confirm(t('app.exitConfirm'))) {
         CapacitorApp.exitApp();
       }
     }
@@ -217,7 +240,7 @@ function App() {
   };
 
   const handleWorkoutCancel = () => {
-    if (window.confirm('Are you sure you want to cancel this workout? Your progress will not be saved.')) {
+    if (window.confirm(t('app.cancelWorkoutConfirm'))) {
       setActiveWorkout(null);
       setNavigationStack(prev => prev.slice(0, -1));
     }
@@ -257,23 +280,23 @@ function App() {
     return (
       <div className="completion-screen">
         <div className="completion-card">
-          <h1 className="completion-title">Workout Complete! 🎉</h1>
+          <h1 className="completion-title">{t('app.workoutComplete.title')}</h1>
           <div className="completion-stats">
             <div className="stat-item">
               <span className="stat-value">{workoutCompleted.duration}</span>
-              <span className="stat-label">Minutes</span>
+              <span className="stat-label">{t('app.workoutComplete.minutes')}</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">{workoutCompleted.calories}</span>
-              <span className="stat-label">Calories</span>
+              <span className="stat-label">{t('app.workoutComplete.calories')}</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">{workoutCompleted.exercisesCompleted}/{workoutCompleted.totalExercises}</span>
-              <span className="stat-label">Exercises</span>
+              <span className="stat-label">{t('app.workoutComplete.exercises')}</span>
             </div>
           </div>
           <button onClick={handleCloseWorkoutSummary} className="return-dashboard-btn">
-            Return to Dashboard
+            {t('app.workoutComplete.returnToDashboard')}
           </button>
         </div>
       </div>
@@ -317,6 +340,11 @@ function App() {
     return <TrainingCalendar onBack={handleCalendarBack} />;
   }
 
+  // Show settings if showSettings is true
+  if (user && showSettings) {
+    return <Settings onBack={handleSettingsBack} />;
+  }
+
   // Show training detail if a session is selected
   if (user && selectedSession) {
     return (
@@ -338,6 +366,7 @@ function App() {
         onManageTrainings={handleManageTrainings}
         onViewStats={handleViewStats}
         onViewCalendar={handleViewCalendar}
+        onViewSettings={handleViewSettings}
       />
     );
   }

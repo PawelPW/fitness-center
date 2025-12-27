@@ -47,6 +47,37 @@
   letter-spacing: var(--tracking-wider);
 }
 
+.header-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 2px solid rgba(249, 115, 22, 0.3);
+  border-radius: var(--radius-xl);
+  color: var(--orange-600);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-icon:hover {
+  background: rgba(249, 115, 22, 0.25);
+  border-color: var(--orange-600);
+  transform: scale(1.05);
+}
+
+.btn-icon:active {
+  transform: scale(0.95);
+}
+
 /* ============================================
    MAIN CONTENT
    ============================================ */

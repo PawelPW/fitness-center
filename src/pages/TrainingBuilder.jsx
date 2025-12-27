@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import { TRAINING_TYPES } from '../utils/trainingData';
 import { getExercisesByType } from '../utils/exerciseDatabase';
@@ -9,6 +10,7 @@ import {
 import '../styles/TrainingBuilder.css';
 
 function TrainingBuilder({ onBack, existingProgram }) {
+  const { t } = useTranslation(['training', 'common']);
   const swipeHandlers = useSwipeNavigation(onBack);
   const [programName, setProgramName] = useState('');
   const [programType, setProgramType] = useState(TRAINING_TYPES.STRENGTH);
@@ -73,12 +75,12 @@ function TrainingBuilder({ onBack, existingProgram }) {
     setError('');
 
     if (!programName.trim()) {
-      setError('Please enter a program name');
+      setError(t('training:errors.nameRequired'));
       return;
     }
 
     if (exercises.length === 0) {
-      setError('Please add at least one exercise');
+      setError(t('training:errors.exercisesRequired'));
       return;
     }
 
@@ -112,7 +114,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
         {(isStrength || isCalisthenics) && (
           <>
             <div className="field">
-              <label>Sets</label>
+              <label>{t('training:builder.fields.sets')}</label>
               <input
                 type="number"
                 min="1"
@@ -122,7 +124,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
               />
             </div>
             <div className="field">
-              <label>Reps</label>
+              <label>{t('training:builder.fields.reps')}</label>
               <input
                 type="number"
                 min="1"
@@ -133,7 +135,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
             </div>
             {isStrength && (
               <div className="field">
-                <label>Weight (kg)</label>
+                <label>{t('training:builder.fields.weight')}</label>
                 <input
                   type="number"
                   min="0"
@@ -144,7 +146,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
               </div>
             )}
             <div className="field">
-              <label>Rest (sec)</label>
+              <label>{t('training:builder.fields.rest')}</label>
               <input
                 type="number"
                 min="0"
@@ -159,7 +161,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
         {(isCardio || isSwimming) && (
           <>
             <div className="field">
-              <label>Duration (min)</label>
+              <label>{t('training:builder.fields.duration')}</label>
               <input
                 type="number"
                 min="1"
@@ -179,34 +181,34 @@ function TrainingBuilder({ onBack, existingProgram }) {
       <div className="builder-content">
         <div className="page-header">
           <h1 className="page-title">
-            {existingProgram ? 'Edit Training Program' : 'Create Training Program'}
+            {existingProgram ? t('training:builder.title.edit') : t('training:builder.title.create')}
           </h1>
         </div>
 
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Loading exercises...</p>
+            <p>{t('training:builder.loading')}</p>
           </div>
         ) : (
           <>
         {/* Program Details */}
         <div className="section">
-          <h2 className="section-title">Program Details</h2>
+          <h2 className="section-title">{t('training:builder.programDetails')}</h2>
           <div className="form-grid">
             <div className="form-group">
-              <label>Program Name</label>
+              <label>{t('training:builder.form.nameLabel')}</label>
               <input
                 type="text"
                 value={programName}
                 onChange={(e) => setProgramName(e.target.value)}
-                placeholder="e.g., Upper Body Strength"
+                placeholder={t('training:builder.form.namePlaceholder')}
                 className="input-field"
               />
             </div>
 
             <div className="form-group">
-              <label>Training Type</label>
+              <label>{t('training:builder.form.typeLabel')}</label>
               <select
                 value={programType}
                 onChange={(e) => setProgramType(e.target.value)}
@@ -221,11 +223,11 @@ function TrainingBuilder({ onBack, existingProgram }) {
             </div>
 
             <div className="form-group full-width">
-              <label>Description (optional)</label>
+              <label>{t('training:builder.form.descriptionLabel')}</label>
               <textarea
                 value={programDescription}
                 onChange={(e) => setProgramDescription(e.target.value)}
-                placeholder="Describe this training program..."
+                placeholder={t('training:builder.form.descriptionPlaceholder')}
                 className="input-field"
                 rows="3"
               />
@@ -236,12 +238,12 @@ function TrainingBuilder({ onBack, existingProgram }) {
         {/* Exercises */}
         <div className="section">
           <div className="section-header">
-            <h2 className="section-title">Exercises ({exercises.length})</h2>
+            <h2 className="section-title">{t('training:builder.exercisesSection', { count: exercises.length })}</h2>
             <button
               onClick={() => setShowExercisePicker(true)}
               className="btn-primary"
             >
-              + Add Exercise
+              + {t('training:actions.addExercise')}
             </button>
           </div>
 
@@ -264,7 +266,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
               ))
             ) : (
               <div className="no-exercises">
-                Click "Add Exercise" to start building your training program
+                {t('training:builder.empty.noExercises')}
               </div>
             )}
           </div>
@@ -275,10 +277,10 @@ function TrainingBuilder({ onBack, existingProgram }) {
         {/* Save Button */}
         <div className="actions">
           <button onClick={onBack} className="btn-secondary">
-            Cancel
+            {t('common:cancel')}
           </button>
           <button onClick={handleSave} className="btn-primary">
-            {existingProgram ? 'Update Program' : 'Create Program'}
+            {existingProgram ? t('training:builder.actions.save.update') : t('training:builder.actions.save.create')}
           </button>
         </div>
         </>
@@ -290,7 +292,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
         <div className="modal-overlay" onClick={() => setShowExercisePicker(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Select Exercise</h2>
+              <h2>{t('training:builder.modal.title')}</h2>
               <button
                 onClick={() => setShowExercisePicker(false)}
                 className="close-btn"
@@ -307,7 +309,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
                 >
                   <span className="picker-exercise-name">{exercise.name}</span>
                   {exercise.isCustom && (
-                    <span className="custom-badge-small">Custom</span>
+                    <span className="custom-badge-small">{t('training:builder.modal.customBadge')}</span>
                   )}
                 </button>
               ))}

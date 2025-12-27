@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import { TRAINING_TYPES } from '../utils/trainingData';
 import '../styles/TrainingDetail.css';
 
 function TrainingDetail({ session, onBack }) {
+  const { t } = useTranslation('training');
   const swipeHandlers = useSwipeNavigation(onBack);
 
   // State for expand/collapse exercise details
@@ -24,9 +26,9 @@ function TrainingDetail({ session, onBack }) {
     return (
       <div className="training-detail-container">
         <div className="detail-header">
-          <button onClick={onBack} className="back-button">← Back</button>
+          <button onClick={onBack} className="back-button">← {t('detail.back')}</button>
         </div>
-        <div className="no-data">No session data available</div>
+        <div className="no-data">{t('detail.noData')}</div>
       </div>
     );
   }
@@ -55,7 +57,7 @@ function TrainingDetail({ session, onBack }) {
           <div className="exercise-header-left">
             <h3 className="exercise-name">{exercise.name || exercise.exerciseName}</h3>
             <span className="exercise-badge">
-              {exercise.sets} sets
+              {t('detail.badges.sets', { count: exercise.sets })}
             </span>
           </div>
           {hasDetailedSets && (
@@ -66,16 +68,16 @@ function TrainingDetail({ session, onBack }) {
         {/* Summary - always visible */}
         <div className="exercise-details">
           <div className="detail-item">
-            <span className="detail-label">Reps</span>
+            <span className="detail-label">{t('detail.fields.reps')}</span>
             <span className="detail-value">{exercise.reps}</span>
           </div>
           <div className="detail-item">
-            <span className="detail-label">Weight</span>
-            <span className="detail-value">{exercise.weight} kg</span>
+            <span className="detail-label">{t('detail.fields.weight')}</span>
+            <span className="detail-value">{exercise.weight} {t('detail.units.kg')}</span>
           </div>
           <div className="detail-item">
-            <span className="detail-label">Rest</span>
-            <span className="detail-value">{exercise.restTime}s</span>
+            <span className="detail-label">{t('detail.fields.rest')}</span>
+            <span className="detail-value">{exercise.restTime}{t('detail.units.sec')}</span>
           </div>
         </div>
 
@@ -83,17 +85,17 @@ function TrainingDetail({ session, onBack }) {
         {isExpanded && hasDetailedSets && (
           <div className="sets-breakdown">
             <div className="sets-breakdown-header">
-              <span className="breakdown-title">Set Details</span>
+              <span className="breakdown-title">{t('detail.setDetails.title')}</span>
             </div>
             <div className="sets-list">
               {exercise.setsData.map((set, setIndex) => (
                 <div key={setIndex} className="set-item">
-                  <span className="set-number">Set {set.setNumber}</span>
+                  <span className="set-number">{t('detail.setDetails.setNumber', { number: set.setNumber })}</span>
                   <span className="set-details">
-                    {set.reps} reps @ {set.weight} kg
+                    {set.reps} {t('detail.units.reps')} @ {set.weight} {t('detail.units.kg')}
                   </span>
                   {set.restTime > 0 && (
-                    <span className="set-rest">{set.restTime}s rest</span>
+                    <span className="set-rest">{set.restTime}{t('detail.units.sec')} {t('detail.units.rest')}</span>
                   )}
                 </div>
               ))}
@@ -109,21 +111,21 @@ function TrainingDetail({ session, onBack }) {
       <div className="exercise-header">
         <h3 className="exercise-name">{exercise.exerciseName}</h3>
         <span className="exercise-badge bodyweight">
-          Bodyweight
+          {t('detail.badges.bodyweight')}
         </span>
       </div>
       <div className="exercise-details">
         <div className="detail-item">
-          <span className="detail-label">Sets</span>
+          <span className="detail-label">{t('detail.fields.sets')}</span>
           <span className="detail-value">{exercise.sets}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Reps</span>
+          <span className="detail-label">{t('detail.fields.reps')}</span>
           <span className="detail-value">{exercise.reps}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Rest</span>
-          <span className="detail-value">{exercise.restTime}s</span>
+          <span className="detail-label">{t('detail.fields.rest')}</span>
+          <span className="detail-value">{exercise.restTime}{t('detail.units.sec')}</span>
         </div>
       </div>
     </div>
@@ -134,25 +136,25 @@ function TrainingDetail({ session, onBack }) {
       <div className="exercise-header">
         <h3 className="exercise-name">{exercise.exerciseName}</h3>
         <span className="exercise-badge cardio">
-          Cardio
+          {t('detail.badges.cardio')}
         </span>
       </div>
       <div className="exercise-details">
         <div className="detail-item">
-          <span className="detail-label">Duration</span>
-          <span className="detail-value">{exercise.duration} min</span>
+          <span className="detail-label">{t('detail.fields.duration')}</span>
+          <span className="detail-value">{exercise.duration} {t('detail.units.min')}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Distance</span>
-          <span className="detail-value">{exercise.distance} km</span>
+          <span className="detail-label">{t('detail.fields.distance')}</span>
+          <span className="detail-value">{exercise.distance} {t('detail.units.km')}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Calories</span>
+          <span className="detail-label">{t('detail.fields.calories')}</span>
           <span className="detail-value">{exercise.calories}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Avg HR</span>
-          <span className="detail-value">{exercise.avgHeartRate} bpm</span>
+          <span className="detail-label">{t('detail.fields.avgHR')}</span>
+          <span className="detail-value">{exercise.avgHeartRate} {t('detail.units.bpm')}</span>
         </div>
       </div>
     </div>
@@ -163,20 +165,20 @@ function TrainingDetail({ session, onBack }) {
       <div className="exercise-header">
         <h3 className="exercise-name">{exercise.exerciseName}</h3>
         <span className="exercise-badge boxing">
-          {exercise.rounds} rounds
+          {t('detail.badges.rounds', { count: exercise.rounds })}
         </span>
       </div>
       <div className="exercise-details">
         <div className="detail-item">
-          <span className="detail-label">Round Duration</span>
-          <span className="detail-value">{exercise.roundDuration} min</span>
+          <span className="detail-label">{t('detail.fields.roundDuration')}</span>
+          <span className="detail-value">{exercise.roundDuration} {t('detail.units.min')}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Rest</span>
-          <span className="detail-value">{exercise.restBetweenRounds}s</span>
+          <span className="detail-label">{t('detail.fields.rest')}</span>
+          <span className="detail-value">{exercise.restBetweenRounds}{t('detail.units.sec')}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Calories</span>
+          <span className="detail-label">{t('detail.fields.calories')}</span>
           <span className="detail-value">{exercise.calories}</span>
         </div>
       </div>
@@ -188,20 +190,20 @@ function TrainingDetail({ session, onBack }) {
       <div className="exercise-header">
         <h3 className="exercise-name">{exercise.exerciseName}</h3>
         <span className="exercise-badge swimming">
-          {exercise.laps} laps
+          {t('detail.badges.laps', { count: exercise.laps })}
         </span>
       </div>
       <div className="exercise-details">
         <div className="detail-item">
-          <span className="detail-label">Duration</span>
-          <span className="detail-value">{exercise.duration} min</span>
+          <span className="detail-label">{t('detail.fields.duration')}</span>
+          <span className="detail-value">{exercise.duration} {t('detail.units.min')}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Distance</span>
-          <span className="detail-value">{exercise.distance.toFixed(2)} km</span>
+          <span className="detail-label">{t('detail.fields.distance')}</span>
+          <span className="detail-value">{exercise.distance.toFixed(2)} {t('detail.units.km')}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Calories</span>
+          <span className="detail-label">{t('detail.fields.calories')}</span>
           <span className="detail-value">{exercise.calories}</span>
         </div>
       </div>
@@ -232,7 +234,7 @@ function TrainingDetail({ session, onBack }) {
           <div className="session-type-badge" data-type={session.type.toLowerCase()}>
             {session.type}
           </div>
-          <h1 className="session-title">{session.type} Training</h1>
+          <h1 className="session-title">{t('detail.title', { type: session.type })}</h1>
           <p className="session-date">{formatDate(session.date)}</p>
         </div>
 
@@ -240,40 +242,40 @@ function TrainingDetail({ session, onBack }) {
           <div className="summary-item">
             <div className="summary-icon">⏱️</div>
             <div className="summary-content">
-              <div className="summary-label">Duration</div>
-              <div className="summary-value">{session.duration} min</div>
+              <div className="summary-label">{t('detail.summary.duration')}</div>
+              <div className="summary-value">{session.duration} {t('detail.units.min')}</div>
             </div>
           </div>
           <div className="summary-item">
             <div className="summary-icon">🔥</div>
             <div className="summary-content">
-              <div className="summary-label">Calories</div>
+              <div className="summary-label">{t('detail.summary.calories')}</div>
               <div className="summary-value">{session.calories}</div>
             </div>
           </div>
           <div className="summary-item">
             <div className="summary-icon">💪</div>
             <div className="summary-content">
-              <div className="summary-label">Exercises</div>
+              <div className="summary-label">{t('detail.summary.exercises')}</div>
               <div className="summary-value">{session.exercises?.length || 0}</div>
             </div>
           </div>
         </div>
 
         <div className="exercises-section">
-          <h2 className="section-title">Exercises</h2>
+          <h2 className="section-title">{t('detail.exercisesSection')}</h2>
           <div className="exercises-list">
             {session.exercises && session.exercises.length > 0 ? (
               session.exercises.map((exercise, index) => renderExercise(exercise, index))
             ) : (
-              <div className="no-exercises">No exercises recorded</div>
+              <div className="no-exercises">{t('detail.empty.noExercises')}</div>
             )}
           </div>
         </div>
 
         {session.notes && (
           <div className="notes-section">
-            <h2 className="section-title">Notes</h2>
+            <h2 className="section-title">{t('detail.notesSection')}</h2>
             <div className="notes-content">
               {session.notes}
             </div>
