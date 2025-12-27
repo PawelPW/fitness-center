@@ -9,13 +9,16 @@ import {
 import './MiniCalendar.css';
 
 function MiniCalendar({ sessions, onClick }) {
-  const { t } = useTranslation('calendar');
+  const { t, i18n } = useTranslation('calendar');
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
+  // Get current locale from i18n
+  const locale = i18n.language === 'pl' ? 'pl-PL' : 'en-US';
+
   const calendarGrid = generateCalendarGrid(year, month, sessions);
-  const dayNames = getDayNames();
+  const dayNames = getDayNames(locale);
   const currentStreak = calculateCurrentStreak(sessions);
 
   // Count training days this month
@@ -31,7 +34,7 @@ function MiniCalendar({ sessions, onClick }) {
           {t('mini.title')}
         </div>
         <div className="mini-calendar-month">
-          {getMonthName(month)} {year}
+          {getMonthName(month, locale)} {year}
         </div>
       </div>
 

@@ -211,18 +211,25 @@
 
 .calendar-content {
   flex: 1;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   padding: var(--space-4);
-  max-width: 900px;
+  max-width: 100%;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .calendar-days-header {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: var(--space-2);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .day-name {
@@ -238,12 +245,16 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   gap: var(--space-2);
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
 }
 
 .calendar-day {
   position: relative;
-  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -253,7 +264,8 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-base);
-  min-height: 56px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .calendar-day:hover {
@@ -488,7 +500,7 @@
 
 @media (max-width: 640px) {
   .calendar-header {
-    padding: var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-3);
   }
 
   .calendar-page-title {
@@ -496,15 +508,24 @@
   }
 
   .month-navigation {
-    padding: var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-3);
   }
 
   .month-name {
     font-size: var(--text-xl);
   }
 
-  .calendar-content {
+  .calendar-stats-section {
     padding: var(--space-3);
+  }
+
+  .calendar-content {
+    padding: var(--space-2);
+  }
+
+  .calendar-days-header {
+    gap: var(--space-1);
+    margin-bottom: var(--space-1);
   }
 
   .calendar-grid {
@@ -512,12 +533,12 @@
   }
 
   .day-name {
-    font-size: var(--text-xs);
+    font-size: 10px;
     padding: var(--space-1);
   }
 
   .day-number {
-    font-size: var(--text-sm);
+    font-size: 11px;
   }
 
   .monthly-stats-grid {
@@ -539,5 +560,14 @@
 
   .session-modal {
     padding: var(--space-5);
+  }
+
+  .training-indicator {
+    bottom: 2px;
+    padding: 1px 4px;
+  }
+
+  .session-count {
+    font-size: 8px;
   }
 }

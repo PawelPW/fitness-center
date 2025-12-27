@@ -5,6 +5,8 @@ import { Preferences } from '@capacitor/preferences';
 
 // Import all translation files
 // English
+import enAuth from './locales/en/auth/translations.json';
+import enCalendar from './locales/en/calendar/translations.json';
 import enCommon from './locales/en/common/translations.json';
 import enDashboard from './locales/en/dashboard/translations.json';
 import enWorkout from './locales/en/workout/translations.json';
@@ -50,6 +52,8 @@ import itStats from './locales/it/stats/translations.json';
 import itSettings from './locales/it/settings/translations.json';
 
 // Polish
+import plAuth from './locales/pl/auth/translations.json';
+import plCalendar from './locales/pl/calendar/translations.json';
 import plCommon from './locales/pl/common/translations.json';
 import plDashboard from './locales/pl/dashboard/translations.json';
 import plWorkout from './locales/pl/workout/translations.json';
@@ -81,6 +85,8 @@ export const SUPPORTED_LANGUAGES = [
 // Translation resources
 const resources = {
   en: {
+    auth: enAuth,
+    calendar: enCalendar,
     common: enCommon,
     dashboard: enDashboard,
     workout: enWorkout,
@@ -126,6 +132,8 @@ const resources = {
     settings: itSettings,
   },
   pl: {
+    auth: plAuth,
+    calendar: plCalendar,
     common: plCommon,
     dashboard: plDashboard,
     workout: plWorkout,
@@ -203,7 +211,7 @@ i18n
     resources,
     fallbackLng: 'en',
     defaultNS: 'common',
-    ns: ['common', 'dashboard', 'workout', 'exercises', 'training', 'stats', 'settings'],
+    ns: ['auth', 'calendar', 'common', 'dashboard', 'workout', 'exercises', 'training', 'stats', 'settings'],
 
     interpolation: {
       escapeValue: false, // React already escapes values

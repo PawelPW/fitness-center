@@ -192,27 +192,33 @@ export function calculateMonthlyStats(year, month, sessions) {
 /**
  * Get month name from month number
  */
-export function getMonthName(month) {
-  const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-  return months[month];
+export function getMonthName(month, locale = 'en-US') {
+  const date = new Date(2024, month, 1);
+  return new Intl.DateTimeFormat(locale, { month: 'long' }).format(date);
 }
 
 /**
  * Get short month name
  */
-export function getShortMonthName(month) {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return months[month];
+export function getShortMonthName(month, locale = 'en-US') {
+  const date = new Date(2024, month, 1);
+  return new Intl.DateTimeFormat(locale, { month: 'short' }).format(date);
 }
 
 /**
  * Get day names
  */
-export function getDayNames() {
-  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export function getDayNames(locale = 'en-US') {
+  const days = [];
+  // Start from Sunday (0) through Saturday (6)
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(2024, 0, i); // January 2024 starts on Monday, so day 0 is Sunday (Dec 31, 2023)
+    const baseDate = new Date(2024, 0, 7); // January 7, 2024 is a Sunday
+    const targetDate = new Date(baseDate);
+    targetDate.setDate(baseDate.getDate() + i);
+    days.push(new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(targetDate));
+  }
+  return days;
 }
 
 /**

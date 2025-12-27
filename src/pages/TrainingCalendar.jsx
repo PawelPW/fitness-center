@@ -14,7 +14,7 @@ import apiService from '../services/api';
 import '../styles/TrainingCalendar.css';
 
 function TrainingCalendar({ onBack }) {
-  const { t } = useTranslation('calendar');
+  const { t, i18n } = useTranslation('calendar');
   const swipeHandlers = useSwipeNavigation(onBack);
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +26,9 @@ function TrainingCalendar({ onBack }) {
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
+
+  // Get current locale from i18n
+  const locale = i18n.language === 'pl' ? 'pl-PL' : 'en-US';
 
   useEffect(() => {
     fetchSessions();
@@ -62,7 +65,7 @@ function TrainingCalendar({ onBack }) {
   };
 
   const calendarGrid = generateCalendarGrid(year, month, sessions);
-  const dayNames = getDayNames();
+  const dayNames = getDayNames(locale);
   const currentStreak = calculateCurrentStreak(sessions);
   const monthlyStats = calculateMonthlyStats(year, month, sessions);
 
@@ -93,7 +96,7 @@ function TrainingCalendar({ onBack }) {
           ←
         </button>
         <div className="current-month">
-          <span className="month-name">{getMonthName(month)}</span>
+          <span className="month-name">{getMonthName(month, locale)}</span>
           <span className="year-name">{year}</span>
         </div>
         <button onClick={handleNextMonth} className="month-nav-btn">
