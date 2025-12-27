@@ -1,0 +1,31 @@
+{
+  "title": "Kalendarz treningowy",
+  "back": "Wróć",
+  "loading": "Ładowanie kalendarza...",
+  "errors": {
+    "loadFailed": "Nie udało się załadować danych kalendarza"
+  },
+  "streak": {
+    "label": "Seria dni"
+  },
+  "stats": {
+    "sessions": "Sesje",
+    "calories": "Kalorie",
+    "minutes": "Minuty"
+  },
+  "modal": {
+    "close": "Zamknij",
+    "workoutDefault": "Trening",
+    "exercises": "{{count}} ćwiczeń"
+  },
+  "units": {
+    "min": "min",
+    "cal": "kcal"
+  },
+  "mini": {
+    "title": "Kalendarz treningowy",
+    "days": "dni",
+    "streak": "seria",
+    "viewDetails": "Zobacz szczegóły"
+  }
+}

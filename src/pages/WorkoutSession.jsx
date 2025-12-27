@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import SetLogger from '../components/SetLogger';
@@ -7,6 +8,7 @@ import apiService from '../services/api';
 import '../styles/WorkoutSession.css';
 
 function WorkoutSession({ program, onComplete, onCancel }) {
+  const { t } = useTranslation(['workout', 'common']);
   const swipeHandlers = useSwipeNavigation(onCancel);
   const {
     state,
@@ -66,7 +68,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       });
     } catch (err) {
       console.error('Failed to start workout:', err);
-      setError('Failed to start workout. Please try again.');
+      setError(t('errors.startFailed'));
     } finally {
       setLoading(false);
     }
@@ -98,7 +100,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
 
     // Validate that at least one set is completed
     if (currentExercise.completedSets.length === 0) {
-      setError('Please complete at least one set before finishing this exercise');
+      setError(t('errors.minOneSet'));
       return;
     }
 
@@ -112,7 +114,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
   };
 
   const handleSkipExercise = () => {
-    if (window.confirm('Are you sure you want to skip this exercise?')) {
+    if (window.confirm(t('confirmSkip'))) {
       skipCurrentExercise();
       setError('');
 
@@ -180,7 +182,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       }
     } catch (err) {
       console.error('Failed to finish workout:', err);
-      setError('Failed to save workout. Please try again.');
+      setError(t('errors.saveFailed'));
     } finally {
       setLoading(false);
     }
@@ -209,7 +211,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       <div className="workout-session-container">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Starting your workout...</p>
+          <p>{t('session.loading')}</p>
         </div>
       </div>
     );
@@ -240,9 +242,9 @@ function WorkoutSession({ program, onComplete, onCancel }) {
           onClick={handleFinishWorkout}
           className="finish-btn"
           disabled={loading || !hasCompletedExercises}
-          title={!hasCompletedExercises ? "Complete at least one exercise to finish" : ""}
+          title={!hasCompletedExercises ? t('session.finishDisabledHint') : ""}
         >
-          {loading ? 'Saving...' : 'Finish'}
+          {loading ? t('session.saving') : t('session.finish')}
         </button>
       </div>
 
@@ -259,10 +261,10 @@ function WorkoutSession({ program, onComplete, onCancel }) {
           />
         </div>
         <div className="progress-text">
-          {state.completedExercises.filter(idx => !state.exercises[idx]?.skipped).length} / {state.exercises.length} exercises completed
+          {state.completedExercises.filter(idx => !state.exercises[idx]?.skipped).length} / {state.exercises.length} {t('progress.exercisesCompleted')}
           {state.exercises.filter(ex => ex.skipped).length > 0 && (
             <span style={{color: 'var(--text-tertiary)', marginLeft: 'var(--space-2)'}}>
-              ({state.exercises.filter(ex => ex.skipped).length} skipped)
+              ({state.exercises.filter(ex => ex.skipped).length} {t('progress.skipped')})
             </span>
           )}
         </div>
@@ -273,17 +275,17 @@ function WorkoutSession({ program, onComplete, onCancel }) {
         <div className="exercise-section">
           <div className="exercise-header">
             <div className="workout-exercise-number">
-              Exercise {state.currentExerciseIndex + 1} of {state.exercises.length}
+              {t('exercise.number', { current: state.currentExerciseIndex + 1, total: state.exercises.length })}
             </div>
             <h2 className="exercise-name">{currentExercise.exerciseName}</h2>
             {currentExercise.description && (
               <p className="exercise-description">{currentExercise.description}</p>
             )}
             {currentExercise.skipped && (
-              <div className="skipped-badge">⏭️ Skipped</div>
+              <div className="skipped-badge">⏭️ {t('exercise.skippedBadge')}</div>
             )}
             {currentExercise.completed && !currentExercise.skipped && (
-              <div className="completed-badge">✓ Completed</div>
+              <div className="completed-badge">✓ {t('exercise.completedBadge')}</div>
             )}
           </div>
 
@@ -319,7 +321,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
                 type="button"
               >
                 <span className="btn-icon">📝</span>
-                {currentExercise.notes?.trim() ? 'Edit Notes' : 'Add Notes'}
+                {currentExercise.notes?.trim() ? t('notes.edit') : t('notes.add')}
                 {currentExercise.notes?.trim() && <span className="notes-indicator">•</span>}
               </button>
 
@@ -332,7 +334,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
                   className="skip-exercise-btn"
                   type="button"
                 >
-                  Skip Exercise
+                  {t('actions.skip')}
                 </button>
                 <button
                   onClick={handleCompleteExercise}
@@ -340,7 +342,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
                   disabled={!canCompleteExercise}
                   type="button"
                 >
-                  {canCompleteExercise ? '✓ Complete Exercise' : 'Add at least 1 set'}
+                  {canCompleteExercise ? `✓ ${t('actions.complete')}` : t('actions.minOneSet')}
                 </button>
               </div>
             </>
@@ -353,20 +355,20 @@ function WorkoutSession({ program, onComplete, onCancel }) {
               className="nav-btn"
               disabled={isFirstExercise}
             >
-              ← Previous
+              ← {t('actions.previous')}
             </button>
             <button
               onClick={goToNextExercise}
               className="nav-btn"
               disabled={isLastExercise}
             >
-              Next →
+              {t('actions.next')} →
             </button>
           </div>
         </div>
       ) : (
         <div className="no-exercise">
-          <p>No exercises in this program</p>
+          <p>{t('empty.noExercises')}</p>
         </div>
       )}
 
@@ -374,11 +376,11 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       {showNotesModal && currentExercise && (
         <div className="modal-overlay" onClick={() => setShowNotesModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h2 className="modal-title">Exercise Notes</h2>
+            <h2 className="modal-title">{t('workout:notes.title')}</h2>
             <p className="modal-subtitle">{currentExercise.exerciseName}</p>
             <textarea
               className="notes-textarea"
-              placeholder="Add notes about form, pain, observations..."
+              placeholder={t('workout:notes.placeholder')}
               value={currentExercise.notes || ''}
               onChange={(e) => updateCurrentExercise({ notes: e.target.value })}
               rows="6"
@@ -388,13 +390,13 @@ function WorkoutSession({ program, onComplete, onCancel }) {
                 onClick={() => setShowNotesModal(false)}
                 className="modal-btn cancel"
               >
-                Cancel
+                {t('common:cancel')}
               </button>
               <button
                 onClick={() => handleSaveNotes(currentExercise.notes)}
                 className="modal-btn confirm"
               >
-                Save Notes
+                {t('workout:notes.save')}
               </button>
             </div>
           </div>
@@ -405,20 +407,20 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       {showExitConfirm && (
         <div className="modal-overlay" onClick={() => setShowExitConfirm(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h2 className="modal-title">Exit Workout?</h2>
-            <p className="modal-subtitle">Your progress will not be saved. Are you sure you want to exit?</p>
+            <h2 className="modal-title">{t('workout:exitModal.title')}</h2>
+            <p className="modal-subtitle">{t('workout:exitModal.message')}</p>
             <div className="modal-actions">
               <button
                 onClick={() => setShowExitConfirm(false)}
                 className="modal-btn cancel"
               >
-                Continue Workout
+                {t('workout:exitModal.continue')}
               </button>
               <button
                 onClick={confirmExit}
                 className="modal-btn confirm"
               >
-                Exit Without Saving
+                {t('workout:exitModal.exitWithoutSaving')}
               </button>
             </div>
           </div>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import apiService from '../services/api.js';
 import '../styles/Login.css';
 
 function Login({ onLogin }) {
+  const { t } = useTranslation('auth');
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -25,40 +27,40 @@ function Login({ onLogin }) {
     setError('');
 
     if (!formData.username || !formData.password) {
-      setError('Please enter both username and password');
+      setError(t('errors.requiredFields'));
       return;
     }
 
     if (isSignUp) {
       // Sign up validation
       if (!formData.email) {
-        setError('Please enter your email');
+        setError(t('errors.emailRequired'));
         return;
       }
       if (formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match');
+        setError(t('errors.passwordsMismatch'));
         return;
       }
 
       // Validate password strength (must match backend requirements)
       if (formData.password.length < 12) {
-        setError('Password must be at least 12 characters long');
+        setError(t('errors.passwordTooShort'));
         return;
       }
       if (!/[A-Z]/.test(formData.password)) {
-        setError('Password must contain at least one uppercase letter');
+        setError(t('errors.passwordNeedsUppercase'));
         return;
       }
       if (!/[a-z]/.test(formData.password)) {
-        setError('Password must contain at least one lowercase letter');
+        setError(t('errors.passwordNeedsLowercase'));
         return;
       }
       if (!/[0-9]/.test(formData.password)) {
-        setError('Password must contain at least one number');
+        setError(t('errors.passwordNeedsNumber'));
         return;
       }
       if (!/[@$!%*?&#]/.test(formData.password)) {
-        setError('Password must contain at least one special character (@$!%*?&#)');
+        setError(t('errors.passwordNeedsSpecial'));
         return;
       }
 
@@ -72,7 +74,7 @@ function Login({ onLogin }) {
         );
         onLogin(response.user);
       } catch (error) {
-        setError(error.message || 'Registration failed');
+        setError(error.message || t('errors.registrationFailed'));
       } finally {
         setLoading(false);
       }
@@ -83,7 +85,7 @@ function Login({ onLogin }) {
         const response = await apiService.login(formData.username, formData.password);
         onLogin(response.user);
       } catch (error) {
-        setError(error.message || 'Login failed');
+        setError(error.message || t('errors.loginFailed'));
       } finally {
         setLoading(false);
       }
@@ -112,23 +114,23 @@ function Login({ onLogin }) {
             </svg>
           </div>
 
-          <h1 className="login-title">FITNESS CENTER</h1>
+          <h1 className="login-title">{t('appName')}</h1>
 
           <p className="login-subtitle">
-            {isSignUp ? 'Create your account' : 'Sign in to your account'}
+            {isSignUp ? t('signUp.title') : t('signIn.title')}
           </p>
 
           <form onSubmit={handleSubmit} className="form">
             {isSignUp && (
               <div className="form-group">
-                <label htmlFor="email">Email Address</label>
+                <label htmlFor="email">{t('form.emailLabel')}</label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="your.email@example.com"
+                  placeholder={t('form.emailPlaceholder')}
                   className="input-field"
                   autoComplete="email"
                 />
@@ -136,28 +138,28 @@ function Login({ onLogin }) {
             )}
 
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">{t('form.usernameLabel')}</label>
               <input
                 type="text"
                 id="username"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="Enter your username"
+                placeholder={t('form.usernamePlaceholder')}
                 className="input-field"
                 autoComplete="username"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('form.passwordLabel')}</label>
               <input
                 type="password"
                 id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Enter your password"
+                placeholder={t('form.passwordPlaceholder')}
                 className="input-field"
                 autoComplete={isSignUp ? "new-password" : "current-password"}
               />
@@ -165,14 +167,14 @@ function Login({ onLogin }) {
 
             {isSignUp && (
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
+                <label htmlFor="confirmPassword">{t('form.confirmPasswordLabel')}</label>
                 <input
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  placeholder="Confirm your password"
+                  placeholder={t('form.confirmPasswordPlaceholder')}
                   className="input-field"
                   autoComplete="new-password"
                 />
@@ -193,31 +195,31 @@ function Login({ onLogin }) {
               {loading ? (
                 <>
                   <span className="spinner"></span>
-                  Processing...
+                  {t('processing')}
                 </>
               ) : isSignUp ? (
-                'Create Account'
+                t('signUp.button')
               ) : (
-                'Sign In'
+                t('signIn.button')
               )}
             </button>
           </form>
 
           <div className="auth-divider">
             <span></span>
-            <span>OR</span>
+            <span>{t('or')}</span>
             <span></span>
           </div>
 
           <button onClick={toggleMode} className="btn-ghost btn-full">
             {isSignUp
-              ? 'Already have an account? Sign In'
-              : "Don't have an account? Sign Up"}
+              ? t('signUp.hasAccount')
+              : t('signIn.noAccount')}
           </button>
 
           {!isSignUp && (
             <a href="#" className="forgot-link">
-              Forgot password?
+              {t('signIn.forgotPassword')}
             </a>
           )}
         </div>

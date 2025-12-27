@@ -1,0 +1,38 @@
+{
+  "appName": "FITNESS CENTER",
+  "signIn": {
+    "title": "Zaloguj się na swoje konto",
+    "button": "Zaloguj się",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "noAccount": "Nie masz konta? Zarejestruj się"
+  },
+  "signUp": {
+    "title": "Utwórz swoje konto",
+    "button": "Utwórz konto",
+    "hasAccount": "Masz już konto? Zaloguj się"
+  },
+  "form": {
+    "emailLabel": "Adres e-mail",
+    "emailPlaceholder": "twoj.email@przyklad.pl",
+    "usernameLabel": "Nazwa użytkownika",
+    "usernamePlaceholder": "Wprowadź nazwę użytkownika",
+    "passwordLabel": "Hasło",
+    "passwordPlaceholder": "Wprowadź hasło",
+    "confirmPasswordLabel": "Potwierdź hasło",
+    "confirmPasswordPlaceholder": "Potwierdź swoje hasło"
+  },
+  "processing": "Przetwarzanie...",
+  "or": "LUB",
+  "errors": {
+    "requiredFields": "Wprowadź nazwę użytkownika i hasło",
+    "emailRequired": "Wprowadź swój adres e-mail",
+    "passwordsMismatch": "Hasła nie są zgodne",
+    "passwordTooShort": "Hasło musi mieć co najmniej 12 znaków",
+    "passwordNeedsUppercase": "Hasło musi zawierać co najmniej jedną wielką literę",
+    "passwordNeedsLowercase": "Hasło musi zawierać co najmniej jedną małą literę",
+    "passwordNeedsNumber": "Hasło musi zawierać co najmniej jedną cyfrę",
+    "passwordNeedsSpecial": "Hasło musi zawierać co najmniej jeden znak specjalny (@$!%*?&#)",
+    "registrationFailed": "Rejestracja nie powiodła się",
+    "loginFailed": "Logowanie nie powiodło się"
+  }
+}

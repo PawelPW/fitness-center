@@ -1,0 +1,70 @@
+{
+  "title": "Biblioteka ćwiczeń",
+  "subtitle": "Zarządzaj swoją bazą ćwiczeń",
+  "loading": "Ładowanie ćwiczeń...",
+  "stats": {
+    "total": "Łącznie",
+    "default": "Domyślne",
+    "custom": "Własne"
+  },
+  "search": {
+    "placeholder": "Szukaj ćwiczeń..."
+  },
+  "actions": {
+    "addExercise": "Dodaj ćwiczenie",
+    "editExercise": "Edytuj ćwiczenie",
+    "updateExercise": "Zaktualizuj ćwiczenie"
+  },
+  "form": {
+    "addTitle": "Dodaj nowe ćwiczenie",
+    "editTitle": "Edytuj ćwiczenie",
+    "typeLabel": "Typ: {{type}}",
+    "nameLabel": "Nazwa ćwiczenia *",
+    "namePlaceholder": "np. Wyciskanie hantli na ławce skośnej",
+    "descriptionLabel": "Opis",
+    "descriptionPlaceholder": "Opcjonalnie: Dodaj instrukcje lub notatki o tym ćwiczeniu"
+  },
+  "card": {
+    "customBadge": "Własne",
+    "lastStats": "Ostatnio: {{weight}}kg × {{sets}} serii × {{reps}} powtórzeń",
+    "editTitle": "Edytuj ćwiczenie",
+    "deleteTitle": "Usuń ćwiczenie"
+  },
+  "empty": {
+    "noResults": "Brak ćwiczeń pasujących do wyszukiwania",
+    "noExercises": "Brak ćwiczeń w tej kategorii"
+  },
+  "confirmDelete": "Czy na pewno chcesz usunąć to ćwiczenie?",
+  "errors": {
+    "loadFailed": "Nie udało się załadować ćwiczeń",
+    "nameRequired": "Wprowadź nazwę ćwiczenia",
+    "createFailed": "Nie udało się utworzyć ćwiczenia",
+    "updateFailed": "Nie udało się zaktualizować ćwiczenia",
+    "deleteFailed": "Nie udało się usunąć ćwiczenia"
+  },
+  "add_exercise": "Dodaj ćwiczenie",
+  "edit_exercise": "Edytuj ćwiczenie",
+  "delete_exercise": "Usuń ćwiczenie",
+  "exercise_name": "Nazwa ćwiczenia",
+  "exercise_type": "Typ ćwiczenia",
+  "muscle_group": "Partia mięśniowa",
+  "equipment": "Sprzęt",
+  "description": "Opis",
+  "instructions": "Instrukcje",
+  "no_exercises": "Nie znaleziono ćwiczeń",
+  "search_exercises": "Szukaj ćwiczeń...",
+  "types": {
+    "strength": "Siłowe",
+    "cardio": "Cardio",
+    "flexibility": "Rozciąganie",
+    "balance": "Równowaga"
+  },
+  "muscle_groups": {
+    "chest": "Klatka piersiowa",
+    "back": "Plecy",
+    "legs": "Nogi",
+    "shoulders": "Barki",
+    "arms": "Ramiona",
+    "core": "Brzuch"
+  }
+}

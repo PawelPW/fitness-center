@@ -1,0 +1,15 @@
+{
+  "title": "Statistics",
+  "exercise_stats": "Exercise Statistics",
+  "workout_history": "Workout History",
+  "total_workouts": "Total Workouts",
+  "total_duration": "Total Duration",
+  "total_calories": "Total Calories Burned",
+  "average_duration": "Average Duration",
+  "personal_records": "Personal Records",
+  "progress_chart": "Progress Chart",
+  "last_7_days": "Last 7 Days",
+  "last_30_days": "Last 30 Days",
+  "all_time": "All Time",
+  "no_data": "No data available"
+}

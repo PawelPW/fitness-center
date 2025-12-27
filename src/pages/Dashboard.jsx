@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import MiniCalendar from '../components/MiniCalendar';
 import '../styles/Dashboard.css';
 
-function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar }) {
+function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar, onViewSettings }) {
+  const { t } = useTranslation(['dashboard', 'common', 'workout']);
   const [sessions, setSessions] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('week');
@@ -62,9 +64,9 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     if (date.toDateString() === today.toDateString()) {
-      return 'Today';
+      return t('common:date_relative.today');
     } else if (date.toDateString() === tomorrow.toDateString()) {
-      return 'Tomorrow';
+      return t('common:date_relative.tomorrow');
     } else {
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
@@ -83,12 +85,21 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       <header className="dashboard-header">
         <div className="header-content">
           <div>
-            <h1 className="dashboard-title">Hello, {user?.username}!</h1>
-            <p className="dashboard-subtitle">Track your fitness journey</p>
+            <h1 className="dashboard-title">{t('dashboard:header.greeting', { username: user?.username })}</h1>
+            <p className="dashboard-subtitle">{t('dashboard:header.subtitle')}</p>
           </div>
-          <button onClick={onLogout} className="btn-secondary">
-            Logout
-          </button>
+          <div className="header-actions">
+            <button onClick={onViewSettings} className="btn-icon" title={t('common:settings')} aria-label={t('common:settings')}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"/>
+                <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24m0-13.38-4.24 4.24m-5.66 5.66-4.24 4.24"/>
+              </svg>
+            </button>
+            <button onClick={onLogout} className="btn-secondary">
+              {t('common:logout')}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -96,32 +107,32 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Loading your training data...</p>
+            <p>{t('dashboard:loading.trainingData')}</p>
           </div>
         ) : (
           <>
         {/* Training Sessions Summary */}
         <section className="section">
           <div className="section-header">
-            <h2 className="section-title">Training Sessions</h2>
+            <h2 className="section-title">{t('dashboard:trainingSessions.title')}</h2>
             <div className="period-selector">
               <button
                 className={`period-btn ${selectedPeriod === 'week' ? 'active' : ''}`}
                 onClick={() => setSelectedPeriod('week')}
               >
-                Week
+                {t('common:period.week')}
               </button>
               <button
                 className={`period-btn ${selectedPeriod === 'month' ? 'active' : ''}`}
                 onClick={() => setSelectedPeriod('month')}
               >
-                Month
+                {t('common:period.month')}
               </button>
               <button
                 className={`period-btn ${selectedPeriod === 'year' ? 'active' : ''}`}
                 onClick={() => setSelectedPeriod('year')}
               >
-                Year
+                {t('common:period.year')}
               </button>
             </div>
           </div>
@@ -131,26 +142,26 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
               <div className="stat-card-icon">🏋️</div>
               <div className="stat-card-value">{getStatValue('totalSessions', 0)}</div>
               <div className="stat-card-label">
-                Sessions this {selectedPeriod}
+                {t('dashboard:trainingSessions.sessionsCount', { period: selectedPeriod })}
               </div>
             </div>
 
             <div className="stat-card">
               <div className="stat-card-icon">🔥</div>
               <div className="stat-card-value">{getStatValue('totalCalories', 0)}</div>
-              <div className="stat-card-label">Calories burned</div>
+              <div className="stat-card-label">{t('dashboard:trainingSessions.caloriesBurned')}</div>
             </div>
 
             <div className="stat-card">
               <div className="stat-card-icon">⏱️</div>
               <div className="stat-card-value">{getStatValue('totalDuration', 0)}</div>
-              <div className="stat-card-label">Minutes trained</div>
+              <div className="stat-card-label">{t('dashboard:trainingSessions.minutesTrained')}</div>
             </div>
 
             <div className="stat-card">
               <div className="stat-card-icon">💪</div>
               <div className="stat-card-value">{getStatValue('totalExercises', 0)}</div>
-              <div className="stat-card-label">Exercises completed</div>
+              <div className="stat-card-label">{t('dashboard:trainingSessions.exercisesCompleted')}</div>
             </div>
           </div>
         </section>
@@ -159,20 +170,20 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         <section className="section">
           {lastSession ? (
             <>
-              <h2 className="section-title">Last Training Session</h2>
+              <h2 className="section-title">{t('dashboard:lastTraining.title')}</h2>
               <div
                 className="card card-clickable session-card"
                 onClick={() => onViewSession && onViewSession(lastSession)}
               >
                 <div className="session-icon">✅</div>
                 <div className="session-details">
-                  <h3 className="session-type">{lastSession.type || 'Workout'}</h3>
+                  <h3 className="session-type">{lastSession.type || t('workout:session.defaultType')}</h3>
                   <div className="session-meta">
                     <span>
                       {formatDate(lastSession.date)}
                     </span>
-                    <span>{lastSession.duration || 0} min</span>
-                    <span>{lastSession.calories || 0} cal</span>
+                    <span>{lastSession.duration || 0} {t('common:units.minutes_short')}</span>
+                    <span>{lastSession.calories || 0} {t('common:units.calories_short')}</span>
                   </div>
                 </div>
                 <div className="view-arrow">→</div>
@@ -182,10 +193,10 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
             completedSessions.length === 0 && !loading && (
               <div className="empty-state">
                 <div className="empty-icon">🏋️</div>
-                <h3>No workouts yet</h3>
-                <p>Start your first workout to see your progress here!</p>
+                <h3>{t('dashboard:emptyState.title')}</h3>
+                <p>{t('dashboard:emptyState.message')}</p>
                 <button onClick={onManageTrainings} className="btn-primary">
-                  View Training Programs
+                  {t('dashboard:emptyState.action')}
                 </button>
               </div>
             )
@@ -199,23 +210,23 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
 
         {/* Quick Actions */}
         <section className="section">
-          <h2 className="section-title">Quick Actions</h2>
+          <h2 className="section-title">{t('dashboard:quickActions.title')}</h2>
           <div className="quick-actions-grid">
             <button className="action-card" onClick={onManageTrainings}>
               <div className="action-icon">📋</div>
-              <div className="action-title">Trainings</div>
+              <div className="action-title">{t('dashboard:quickActions.trainings')}</div>
             </button>
             <button className="action-card" onClick={onManageExercises}>
               <div className="action-icon">💪</div>
-              <div className="action-title">Exercises</div>
-            </button>
-            <button className="action-card">
-              <div className="action-icon">🍎</div>
-              <div className="action-title">Track Diet</div>
+              <div className="action-title">{t('dashboard:quickActions.exercises')}</div>
             </button>
             <button className="action-card" onClick={onViewStats}>
               <div className="action-icon">📊</div>
-              <div className="action-title">Statistics</div>
+              <div className="action-title">{t('dashboard:quickActions.statistics')}</div>
+            </button>
+            <button className="action-card" onClick={onViewSettings}>
+              <div className="action-icon">⚙️</div>
+              <div className="action-title">{t('dashboard:quickActions.settings')}</div>
             </button>
           </div>
         </section>

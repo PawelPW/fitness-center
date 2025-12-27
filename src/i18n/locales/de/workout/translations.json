@@ -1,0 +1,18 @@
+{
+  "start_workout": "Start Workout",
+  "cancel_workout": "Cancel Workout",
+  "complete_workout": "Complete Workout",
+  "workout_complete": "Workout Complete!",
+  "workout_cancelled": "Are you sure you want to cancel this workout? Your progress will not be saved.",
+  "current_exercise": "Current Exercise",
+  "next_exercise": "Next Exercise",
+  "exercises_completed": "Exercises Completed",
+  "total_exercises": "Total Exercises",
+  "rest_time": "Rest Time",
+  "timer": "Timer",
+  "start_timer": "Start Timer",
+  "stop_timer": "Stop Timer",
+  "reset_timer": "Reset Timer",
+  "set_completed": "Set Completed",
+  "return_to_dashboard": "Return to Dashboard"
+}

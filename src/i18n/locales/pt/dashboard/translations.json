@@ -1,0 +1,12 @@
+{
+  "title": "Dashboard",
+  "welcome_message": "Welcome back, {{name}}!",
+  "recent_sessions": "Recent Sessions",
+  "no_sessions": "No recent sessions",
+  "manage_exercises": "Manage Exercises",
+  "manage_trainings": "Manage Training Programs",
+  "view_stats": "View Statistics",
+  "view_calendar": "Training Calendar",
+  "session_type": "Session Type",
+  "workout_stats": "Workout Stats"
+}

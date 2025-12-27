@@ -1,0 +1,31 @@
+{
+  "title": "Training Calendar",
+  "back": "Back",
+  "loading": "Loading calendar...",
+  "errors": {
+    "loadFailed": "Failed to load calendar data"
+  },
+  "streak": {
+    "label": "Day Streak"
+  },
+  "stats": {
+    "sessions": "Sessions",
+    "calories": "Calories",
+    "minutes": "Minutes"
+  },
+  "modal": {
+    "close": "Close",
+    "workoutDefault": "Workout",
+    "exercises": "{{count}} exercises"
+  },
+  "units": {
+    "min": "min",
+    "cal": "cal"
+  },
+  "mini": {
+    "title": "Training Calendar",
+    "days": "days",
+    "streak": "streak",
+    "viewDetails": "View Details"
+  }
+}

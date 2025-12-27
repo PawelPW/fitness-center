@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   generateCalendarGrid,
   getMonthName,
@@ -8,6 +9,7 @@ import {
 import './MiniCalendar.css';
 
 function MiniCalendar({ sessions, onClick }) {
+  const { t } = useTranslation('calendar');
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -26,7 +28,7 @@ function MiniCalendar({ sessions, onClick }) {
       <div className="mini-calendar-header">
         <div className="mini-calendar-title">
           <span className="calendar-icon">📅</span>
-          Training Calendar
+          {t('mini.title')}
         </div>
         <div className="mini-calendar-month">
           {getMonthName(month)} {year}
@@ -71,17 +73,17 @@ function MiniCalendar({ sessions, onClick }) {
         <div className="mini-stat">
           <span className="mini-stat-icon">🏋️</span>
           <span className="mini-stat-value">{trainingDaysThisMonth}</span>
-          <span className="mini-stat-label">days</span>
+          <span className="mini-stat-label">{t('mini.days')}</span>
         </div>
         {currentStreak > 0 && (
           <div className="mini-stat">
             <span className="mini-stat-icon">🔥</span>
             <span className="mini-stat-value">{currentStreak}</span>
-            <span className="mini-stat-label">streak</span>
+            <span className="mini-stat-label">{t('mini.streak')}</span>
           </div>
         )}
         <div className="mini-calendar-cta">
-          <span>View Details</span>
+          <span>{t('mini.viewDetails')}</span>
           <span className="arrow-icon">→</span>
         </div>
       </div>

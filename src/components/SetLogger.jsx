@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './SetLogger.css';
 
 function SetLogger({
@@ -9,6 +10,7 @@ function SetLogger({
   suggestedWeight,
   suggestedReps,
 }) {
+  const { t } = useTranslation(['workout', 'common']);
   const [weight, setWeight] = useState(suggestedWeight || 0);
   const [reps, setReps] = useState(suggestedReps || 0);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -26,7 +28,7 @@ function SetLogger({
 
     // Require at least weight OR reps to be greater than 0
     if (weightValue === 0 && repsValue === 0) {
-      alert('Please enter at least weight or reps (both cannot be zero)');
+      alert(t('workout:setLogger.errors.zeroValues'));
       return;
     }
 
@@ -50,7 +52,7 @@ function SetLogger({
   };
 
   const handleDeleteSetClick = (setNumber) => {
-    if (window.confirm('Delete this set?')) {
+    if (window.confirm(t('workout:setLogger.confirmDelete'))) {
       onDeleteSet(setNumber);
     }
   };
@@ -71,9 +73,13 @@ function SetLogger({
       {/* Previous Performance */}
       {exercise.previousWeight && (
         <div className="previous-performance">
-          <span className="previous-label">Last Workout:</span>
+          <span className="previous-label">{t('workout:setLogger.previousLabel')}</span>
           <span className="previous-value">
-            {exercise.previousSets} sets × {exercise.previousReps} reps @ {exercise.previousWeight}kg
+            {t('workout:setLogger.previousValue', {
+              sets: exercise.previousSets,
+              reps: exercise.previousReps,
+              weight: exercise.previousWeight
+            })}
           </span>
         </div>
       )}
@@ -82,17 +88,19 @@ function SetLogger({
       <div className="current-set-section">
         <div className="set-header">
           <h3 className="set-title">
-            Set {currentSetNumber}
-            {exercise.plannedSets > 0 && ` of ${exercise.plannedSets}`}
+            {exercise.plannedSets > 0
+              ? t('workout:setLogger.setTitleOf', { current: currentSetNumber, total: exercise.plannedSets })
+              : t('workout:setLogger.setTitle', { current: currentSetNumber })
+            }
           </h3>
           {isPlannedSetsComplete && (
-            <span className="extra-set-badge">Extra Set</span>
+            <span className="extra-set-badge">{t('workout:setLogger.extraSetBadge')}</span>
           )}
         </div>
 
         {/* Weight Input with Quick Adjustments */}
         <div className="input-section">
-          <label className="input-label">Weight (kg)</label>
+          <label className="input-label">{t('workout:setLogger.weightLabel')}</label>
           <div className="weight-input-group">
             <button
               className="adjust-btn"
@@ -164,7 +172,7 @@ function SetLogger({
 
         {/* Reps Input with Quick Adjustments */}
         <div className="input-section">
-          <label className="input-label">Reps</label>
+          <label className="input-label">{t('workout:setLogger.repsLabel')}</label>
           <div className="reps-input-group">
             <button
               className="adjust-btn"
@@ -190,7 +198,7 @@ function SetLogger({
             </button>
           </div>
           {exercise.plannedReps > 0 && (
-            <span className="planned-hint">Planned: {exercise.plannedReps} reps</span>
+            <span className="planned-hint">{t('workout:setLogger.plannedHint', { reps: exercise.plannedReps })}</span>
           )}
         </div>
 
@@ -201,21 +209,21 @@ function SetLogger({
           type="button"
         >
           <span className="btn-icon">✓</span>
-          Add Set
+          {t('workout:setLogger.addSet')}
         </button>
       </div>
 
       {/* Completed Sets List */}
       {exercise.completedSets.length > 0 && (
         <div className="completed-sets-section">
-          <h4 className="completed-sets-title">Completed Sets</h4>
+          <h4 className="completed-sets-title">{t('workout:setLogger.completedSetsTitle')}</h4>
           <div className="completed-sets-list">
             {exercise.completedSets.map((set) => (
               <div key={set.setNumber} className="completed-set-item">
                 <div className="set-info">
-                  <span className="set-number">Set {set.setNumber}</span>
+                  <span className="set-number">{t('workout:setLogger.setNumber', { number: set.setNumber })}</span>
                   <span className="set-details">
-                    {set.weight}kg × {set.reps} reps
+                    {t('workout:setLogger.setDetails', { weight: set.weight, reps: set.reps })}
                   </span>
                 </div>
                 <div className="set-actions">
@@ -241,7 +249,7 @@ function SetLogger({
           {/* Set Summary */}
           <div className="set-summary">
             <div className="summary-stat">
-              <span className="summary-label">Total Volume:</span>
+              <span className="summary-label">{t('workout:setLogger.summary.totalVolume')}</span>
               <span className="summary-value">
                 {exercise.completedSets.reduce((sum, set) =>
                   sum + (set.weight * set.reps), 0
@@ -249,7 +257,7 @@ function SetLogger({
               </span>
             </div>
             <div className="summary-stat">
-              <span className="summary-label">Avg Weight:</span>
+              <span className="summary-label">{t('workout:setLogger.summary.avgWeight')}</span>
               <span className="summary-value">
                 {(exercise.completedSets.reduce((sum, set) =>
                   sum + set.weight, 0) / exercise.completedSets.length
@@ -264,10 +272,10 @@ function SetLogger({
       {showEditModal && editingSet && (
         <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
           <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title">Edit Set {editingSet.setNumber}</h3>
+            <h3 className="modal-title">{t('workout:setLogger.editModal.title', { number: editingSet.setNumber })}</h3>
 
             <div className="modal-input-group">
-              <label className="modal-label">Weight (kg)</label>
+              <label className="modal-label">{t('workout:setLogger.editModal.weightLabel')}</label>
               <input
                 type="number"
                 className="modal-input"
@@ -282,7 +290,7 @@ function SetLogger({
             </div>
 
             <div className="modal-input-group">
-              <label className="modal-label">Reps</label>
+              <label className="modal-label">{t('workout:setLogger.editModal.repsLabel')}</label>
               <input
                 type="number"
                 className="modal-input"
@@ -300,13 +308,13 @@ function SetLogger({
                 className="modal-btn cancel-btn"
                 onClick={() => setShowEditModal(false)}
               >
-                Cancel
+                {t('common:cancel')}
               </button>
               <button
                 className="modal-btn save-btn"
                 onClick={handleSaveEdit}
               >
-                Save
+                {t('common:save')}
               </button>
             </div>
           </div>

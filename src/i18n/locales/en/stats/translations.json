@@ -1,0 +1,78 @@
+{
+  "title": "Statistics",
+  "exercise_stats": "Exercise Statistics",
+  "workout_history": "Workout History",
+  "total_workouts": "Total Workouts",
+  "total_duration": "Total Duration",
+  "total_calories": "Total Calories Burned",
+  "average_duration": "Average Duration",
+  "personal_records": "Personal Records",
+  "progress_chart": "Progress Chart",
+  "last_7_days": "Last 7 Days",
+  "last_30_days": "Last 30 Days",
+  "all_time": "All Time",
+  "no_data": "No data available",
+  "exerciseStats": {
+    "title": "Exercise Statistics",
+    "back": "Back",
+    "loading": "Loading exercise statistics...",
+    "retry": "Retry",
+    "badges": {
+      "sessions": "{{count}} sessions"
+    },
+    "metrics": {
+      "totalVolume": "Total Volume",
+      "totalSets": "Total Sets",
+      "maxWeight": "Max Weight"
+    },
+    "units": {
+      "kg": "kg"
+    },
+    "lastPerformed": "Last: {{date}}",
+    "empty": {
+      "title": "No Exercise Data Yet",
+      "message": "Complete workouts to see your exercise statistics here"
+    },
+    "errors": {
+      "loadFailed": "Failed to load exercise statistics"
+    },
+    "dateRelative": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{{count}} days ago",
+      "weeksAgo": "{{count}} weeks ago"
+    }
+  },
+  "exerciseStatsDetail": {
+    "loading": "Loading exercise data...",
+    "back": "← Back",
+    "personalRecords": "Personal Records",
+    "maxWeight": "Max Weight",
+    "maxReps": "Max Reps",
+    "maxVolume": "Max Volume",
+    "tabs": {
+      "history": "History",
+      "progression": "Progression",
+      "volume": "Volume"
+    },
+    "sessionHistory": "Session History",
+    "noHistory": "No session history available",
+    "sets": "sets",
+    "avgWeight": "kg avg",
+    "volume": "kg volume",
+    "weightProgression": "Weight Progression",
+    "volumeOverTime": "Volume Over Time",
+    "periods": {
+      "month": "Month",
+      "year": "Year",
+      "allTime": "All Time"
+    }
+  },
+  "progressionChart": {
+    "noData": "No progression data available"
+  },
+  "volumeChart": {
+    "noData": "No volume data available",
+    "legend": "Total Volume (kg)"
+  }
+}

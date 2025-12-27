@@ -1,0 +1,70 @@
+{
+  "title": "Exercise Library",
+  "subtitle": "Manage your exercise database",
+  "loading": "Loading exercises...",
+  "stats": {
+    "total": "Total",
+    "default": "Default",
+    "custom": "Custom"
+  },
+  "search": {
+    "placeholder": "Search exercises..."
+  },
+  "actions": {
+    "addExercise": "Add Exercise",
+    "editExercise": "Edit Exercise",
+    "updateExercise": "Update Exercise"
+  },
+  "form": {
+    "addTitle": "Add New Exercise",
+    "editTitle": "Edit Exercise",
+    "typeLabel": "Type: {{type}}",
+    "nameLabel": "Exercise Name *",
+    "namePlaceholder": "e.g., Incline Dumbbell Press",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Optional: Add instructions or notes about this exercise"
+  },
+  "card": {
+    "customBadge": "Custom",
+    "lastStats": "Last: {{weight}}kg × {{sets}} sets × {{reps}} reps",
+    "editTitle": "Edit exercise",
+    "deleteTitle": "Delete exercise"
+  },
+  "empty": {
+    "noResults": "No exercises match your search",
+    "noExercises": "No exercises in this category yet"
+  },
+  "confirmDelete": "Are you sure you want to delete this exercise?",
+  "errors": {
+    "loadFailed": "Failed to load exercises",
+    "nameRequired": "Please enter an exercise name",
+    "createFailed": "Failed to create exercise",
+    "updateFailed": "Failed to update exercise",
+    "deleteFailed": "Failed to delete exercise"
+  },
+  "add_exercise": "Add Exercise",
+  "edit_exercise": "Edit Exercise",
+  "delete_exercise": "Delete Exercise",
+  "exercise_name": "Exercise Name",
+  "exercise_type": "Exercise Type",
+  "muscle_group": "Muscle Group",
+  "equipment": "Equipment",
+  "description": "Description",
+  "instructions": "Instructions",
+  "no_exercises": "No exercises found",
+  "search_exercises": "Search exercises...",
+  "types": {
+    "strength": "Strength",
+    "cardio": "Cardio",
+    "flexibility": "Flexibility",
+    "balance": "Balance"
+  },
+  "muscle_groups": {
+    "chest": "Chest",
+    "back": "Back",
+    "legs": "Legs",
+    "shoulders": "Shoulders",
+    "arms": "Arms",
+    "core": "Core"
+  }
+}

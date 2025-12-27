@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import { TRAINING_TYPES } from '../utils/trainingData';
 import {
@@ -10,6 +11,7 @@ import {
 import '../styles/TrainingList.css';
 
 function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout }) {
+  const { t } = useTranslation('training');
   const swipeHandlers = useSwipeNavigation(onBack);
   const [programs, setPrograms] = useState([]);
   const [stats, setStats] = useState(null);
@@ -34,13 +36,13 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this training program?')) {
+    if (window.confirm(t('confirmDelete'))) {
       try {
         await deleteTrainingProgram(id);
         await loadPrograms();
       } catch (error) {
         console.error('Failed to delete training program:', error);
-        alert('Failed to delete training program');
+        alert(t('errors.deleteFailed'));
       }
     }
   };
@@ -51,7 +53,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
       await loadPrograms();
     } catch (error) {
       console.error('Failed to duplicate training program:', error);
-      alert('Failed to duplicate training program');
+      alert(t('errors.duplicateFailed'));
     }
   };
 
@@ -68,14 +70,14 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
     <div {...swipeHandlers} className="training-list-container">
       <div className="training-content">
         <div className="page-header">
-          <h1 className="page-title">Training Programs</h1>
-          <p className="page-subtitle">Create and manage your workout routines</p>
+          <h1 className="page-title">{t('title')}</h1>
+          <p className="page-subtitle">{t('subtitle')}</p>
         </div>
 
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Loading training programs...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <>
@@ -84,11 +86,11 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
           <div className="training-stats">
             <div className="stat-item">
               <span className="stat-value">{stats.total}</span>
-              <span className="stat-label">Total Programs</span>
+              <span className="stat-label">{t('stats.totalPrograms')}</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">{stats.totalExercises}</span>
-              <span className="stat-label">Total Exercises</span>
+              <span className="stat-label">{t('stats.totalExercises')}</span>
             </div>
           </div>
         )}
@@ -100,7 +102,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
             onChange={(e) => setFilterType(e.target.value)}
             className="select-field"
           >
-            <option value="all">All Types</option>
+            <option value="all">{t('filter.allTypes')}</option>
             {Object.values(TRAINING_TYPES).map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -108,7 +110,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
             ))}
           </select>
           <button onClick={onCreateTraining} className="btn-primary">
-            + Create Training
+            + {t('actions.createTraining')}
           </button>
         </div>
 
@@ -133,12 +135,12 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
                 <div className="program-info">
                   <div className="info-item">
                     <span className="info-icon">💪</span>
-                    <span className="info-text">{program.exercises.length} exercises</span>
+                    <span className="info-text">{t('program.exercises_count', { count: program.exercises.length })}</span>
                   </div>
                   <div className="info-item">
                     <span className="info-icon">📅</span>
                     <span className="info-text">
-                      Created {new Date(program.createdAt).toLocaleDateString()}
+                      {t('program.created', { date: new Date(program.createdAt).toLocaleDateString() })}
                     </span>
                   </div>
                 </div>
@@ -148,25 +150,25 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
                     onClick={() => onStartWorkout && onStartWorkout(program)}
                     className="btn-primary btn-sm"
                   >
-                    🏋️ Start Workout
+                    🏋️ {t('actions.startWorkout')}
                   </button>
                   <button
                     onClick={() => onEditTraining(program)}
                     className="btn-secondary btn-sm"
                   >
-                    Edit
+                    {t('actions.edit')}
                   </button>
                   <button
                     onClick={() => handleDuplicate(program.id)}
                     className="btn-ghost btn-sm"
                   >
-                    Duplicate
+                    {t('actions.duplicate')}
                   </button>
                   <button
                     onClick={() => handleDelete(program.id)}
                     className="btn-danger btn-sm"
                   >
-                    Delete
+                    {t('actions.delete')}
                   </button>
                 </div>
               </div>
@@ -174,10 +176,10 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
           ) : (
             <div className="no-programs">
               <div className="empty-icon">🏋️</div>
-              <h3>No training programs yet</h3>
-              <p>Create your first training program to get started</p>
+              <h3>{t('empty.title')}</h3>
+              <p>{t('empty.message')}</p>
               <button onClick={onCreateTraining} className="btn-primary">
-                Create Training Program
+                {t('empty.action')}
               </button>
             </div>
           )}

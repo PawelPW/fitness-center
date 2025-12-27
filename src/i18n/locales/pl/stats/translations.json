@@ -1,0 +1,78 @@
+{
+  "title": "Statystyki",
+  "exercise_stats": "Statystyki ćwiczeń",
+  "workout_history": "Historia treningów",
+  "total_workouts": "Wszystkie treningi",
+  "total_duration": "Łączny czas",
+  "total_calories": "Spalone kalorie",
+  "average_duration": "Średni czas",
+  "personal_records": "Rekordy osobiste",
+  "progress_chart": "Wykres postępów",
+  "last_7_days": "Ostatnie 7 dni",
+  "last_30_days": "Ostatnie 30 dni",
+  "all_time": "Cały czas",
+  "no_data": "Brak danych",
+  "exerciseStats": {
+    "title": "Statystyki ćwiczeń",
+    "back": "Wróć",
+    "loading": "Ładowanie statystyk ćwiczeń...",
+    "retry": "Spróbuj ponownie",
+    "badges": {
+      "sessions": "{{count}} sesji"
+    },
+    "metrics": {
+      "totalVolume": "Łączny wolumen",
+      "totalSets": "Łączne serie",
+      "maxWeight": "Maks. ciężar"
+    },
+    "units": {
+      "kg": "kg"
+    },
+    "lastPerformed": "Ostatnio: {{date}}",
+    "empty": {
+      "title": "Brak danych o ćwiczeniach",
+      "message": "Ukończ treningi, aby zobaczyć statystyki ćwiczeń"
+    },
+    "errors": {
+      "loadFailed": "Nie udało się załadować statystyk ćwiczeń"
+    },
+    "dateRelative": {
+      "today": "Dziś",
+      "yesterday": "Wczoraj",
+      "daysAgo": "{{count}} dni temu",
+      "weeksAgo": "{{count}} tygodni temu"
+    }
+  },
+  "exerciseStatsDetail": {
+    "loading": "Ładowanie danych ćwiczenia...",
+    "back": "← Wróć",
+    "personalRecords": "Rekordy osobiste",
+    "maxWeight": "Maks. ciężar",
+    "maxReps": "Maks. powtórzenia",
+    "maxVolume": "Maks. wolumen",
+    "tabs": {
+      "history": "Historia",
+      "progression": "Postępy",
+      "volume": "Wolumen"
+    },
+    "sessionHistory": "Historia sesji",
+    "noHistory": "Brak historii sesji",
+    "sets": "serie",
+    "avgWeight": "kg średnio",
+    "volume": "kg wolumen",
+    "weightProgression": "Postępy w ciężarze",
+    "volumeOverTime": "Wolumen w czasie",
+    "periods": {
+      "month": "Miesiąc",
+      "year": "Rok",
+      "allTime": "Cały czas"
+    }
+  },
+  "progressionChart": {
+    "noData": "Brak danych o postępach"
+  },
+  "volumeChart": {
+    "noData": "Brak danych o wolumenie",
+    "legend": "Łączny wolumen (kg)"
+  }
+}

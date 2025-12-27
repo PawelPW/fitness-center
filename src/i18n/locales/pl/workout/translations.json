@@ -1,0 +1,100 @@
+{
+  "start_workout": "Rozpocznij trening",
+  "cancel_workout": "Anuluj trening",
+  "complete_workout": "Zakończ trening",
+  "workout_complete": "Trening ukończony!",
+  "workout_cancelled": "Czy na pewno chcesz anulować ten trening? Twój postęp nie zostanie zapisany.",
+  "session": {
+    "defaultType": "Trening",
+    "loading": "Rozpoczynanie treningu...",
+    "saving": "Zapisywanie...",
+    "finish": "Zakończ",
+    "finishDisabledHint": "Ukończ co najmniej jedno ćwiczenie, aby zakończyć"
+  },
+  "progress": {
+    "exercisesCompleted": "ćwiczeń ukończono",
+    "skipped": "pominięto"
+  },
+  "exercise": {
+    "number": "Ćwiczenie {{current}} z {{total}}",
+    "skippedBadge": "Pominięto",
+    "completedBadge": "Ukończono"
+  },
+  "notes": {
+    "edit": "Edytuj notatki",
+    "add": "Dodaj notatki",
+    "title": "Notatki do ćwiczenia",
+    "placeholder": "Dodaj notatki o technice, bólu, obserwacjach...",
+    "save": "Zapisz notatki"
+  },
+  "errors": {
+    "minOneSet": "Wykonaj co najmniej jedną serię przed zakończeniem tego ćwiczenia",
+    "startFailed": "Nie udało się rozpocząć treningu. Spróbuj ponownie.",
+    "saveFailed": "Nie udało się zapisać treningu. Spróbuj ponownie."
+  },
+  "actions": {
+    "skip": "Pomiń ćwiczenie",
+    "complete": "Ukończ ćwiczenie",
+    "minOneSet": "Dodaj co najmniej 1 serię",
+    "previous": "Poprzednie",
+    "next": "Następne"
+  },
+  "empty": {
+    "noExercises": "Brak ćwiczeń w tym programie"
+  },
+  "exitModal": {
+    "title": "Opuścić trening?",
+    "message": "Twój postęp nie zostanie zapisany. Czy na pewno chcesz wyjść?",
+    "continue": "Kontynuuj trening",
+    "exitWithoutSaving": "Wyjdź bez zapisywania"
+  },
+  "confirmSkip": "Czy na pewno chcesz pominąć to ćwiczenie?",
+  "current_exercise": "Bieżące ćwiczenie",
+  "next_exercise": "Następne ćwiczenie",
+  "exercises_completed": "Ukończone ćwiczenia",
+  "total_exercises": "Wszystkie ćwiczenia",
+  "rest_time": "Czas przerwy",
+  "timer": "Stoper",
+  "start_timer": "Start",
+  "stop_timer": "Stop",
+  "reset_timer": "Reset",
+  "set_completed": "Seria ukończona",
+  "return_to_dashboard": "Wróć do pulpitu",
+  "setLogger": {
+    "previousLabel": "Ostatni trening:",
+    "previousValue": "{{sets}} serii × {{reps}} powt. @ {{weight}}kg",
+    "setTitle": "Seria {{current}}",
+    "setTitleOf": "Seria {{current}} z {{total}}",
+    "extraSetBadge": "Dodatkowa seria",
+    "weightLabel": "Ciężar (kg)",
+    "repsLabel": "Powtórzenia",
+    "plannedHint": "Zaplanowano: {{reps}} powt.",
+    "addSet": "Dodaj serię",
+    "completedSetsTitle": "Ukończone serie",
+    "setNumber": "Seria {{number}}",
+    "setDetails": "{{weight}}kg × {{reps}} powt.",
+    "summary": {
+      "totalVolume": "Łączny wolumen:",
+      "avgWeight": "Śr. ciężar:"
+    },
+    "editModal": {
+      "title": "Edytuj serię {{number}}",
+      "weightLabel": "Ciężar (kg)",
+      "repsLabel": "Powtórzenia"
+    },
+    "confirmDelete": "Usunąć tę serię?",
+    "errors": {
+      "zeroValues": "Wprowadź ciężar lub liczbę powtórzeń (oba nie mogą być równe zero)"
+    }
+  },
+  "restTimer": {
+    "label": "Stoper przerwy",
+    "prompt": "Czy rozpocząć odmierzanie przerwy?",
+    "startRest": "Rozpocznij przerwę {{duration}}s",
+    "skipRest": "Pomiń przerwę",
+    "addTime": "+30s",
+    "done": "Gotowe!",
+    "restComplete": "Przerwa zakończona - Gotowy na następną serię!",
+    "seconds": "{{count}}s"
+  }
+}

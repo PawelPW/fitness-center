@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './RestTimer.css';
 
 function RestTimer({
@@ -10,6 +11,7 @@ function RestTimer({
   onAddTime,
   onStartManually,
 }) {
+  const { t } = useTranslation('workout');
   const progressPercentage = duration > 0 ? (remaining / duration) * 100 : 0;
   const isAlmostDone = remaining <= 10 && remaining > 0;
 
@@ -22,21 +24,21 @@ function RestTimer({
       {!isActive ? (
         /* Manual Start Option */
         <div className="rest-timer-start">
-          <p className="rest-timer-prompt">Ready to start rest timer?</p>
+          <p className="rest-timer-prompt">{t('restTimer.prompt')}</p>
           <button
             className="start-rest-btn"
             onClick={onStartManually}
             type="button"
           >
             <span className="btn-icon">⏱️</span>
-            Start {duration}s Rest
+            {t('restTimer.startRest', { duration })}
           </button>
         </div>
       ) : (
         /* Active Rest Timer */
         <>
           <div className="rest-timer-header">
-            <span className="rest-timer-label">Rest Timer</span>
+            <span className="rest-timer-label">{t('restTimer.label')}</span>
             <span className={`rest-timer-time ${isAlmostDone ? 'pulsing' : ''}`}>
               {formattedTime}
             </span>
@@ -62,7 +64,7 @@ function RestTimer({
               />
             </svg>
             <div className="progress-ring-text">
-              {remaining > 0 ? `${remaining}s` : 'Done!'}
+              {remaining > 0 ? t('restTimer.seconds', { count: remaining }) : t('restTimer.done')}
             </div>
           </div>
 
@@ -74,7 +76,7 @@ function RestTimer({
               type="button"
             >
               <span className="btn-icon">⏭️</span>
-              Skip Rest
+              {t('restTimer.skipRest')}
             </button>
             <button
               className="rest-action-btn add-time-btn"
@@ -82,14 +84,14 @@ function RestTimer({
               type="button"
             >
               <span className="btn-icon">➕</span>
-              +30s
+              {t('restTimer.addTime')}
             </button>
           </div>
 
           {remaining === 0 && (
             <div className="rest-complete-message">
               <span className="complete-icon">✓</span>
-              Rest Complete - Ready for Next Set!
+              {t('restTimer.restComplete')}
             </div>
           )}
         </>

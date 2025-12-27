@@ -1,0 +1,38 @@
+{
+  "appName": "FITNESS CENTER",
+  "signIn": {
+    "title": "Sign in to your account",
+    "button": "Sign In",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account? Sign Up"
+  },
+  "signUp": {
+    "title": "Create your account",
+    "button": "Create Account",
+    "hasAccount": "Already have an account? Sign In"
+  },
+  "form": {
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your.email@example.com",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password"
+  },
+  "processing": "Processing...",
+  "or": "OR",
+  "errors": {
+    "requiredFields": "Please enter both username and password",
+    "emailRequired": "Please enter your email",
+    "passwordsMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 12 characters long",
+    "passwordNeedsUppercase": "Password must contain at least one uppercase letter",
+    "passwordNeedsLowercase": "Password must contain at least one lowercase letter",
+    "passwordNeedsNumber": "Password must contain at least one number",
+    "passwordNeedsSpecial": "Password must contain at least one special character (@$!%*?&#)",
+    "registrationFailed": "Registration failed",
+    "loginFailed": "Login failed"
+  }
+}
