@@ -1,0 +1,28 @@
+{
+  "title": "Exercise Library",
+  "add_exercise": "Add Exercise",
+  "edit_exercise": "Edit Exercise",
+  "delete_exercise": "Delete Exercise",
+  "exercise_name": "Exercise Name",
+  "exercise_type": "Exercise Type",
+  "muscle_group": "Muscle Group",
+  "equipment": "Equipment",
+  "description": "Description",
+  "instructions": "Instructions",
+  "no_exercises": "No exercises found",
+  "search_exercises": "Search exercises...",
+  "types": {
+    "strength": "Strength",
+    "cardio": "Cardio",
+    "flexibility": "Flexibility",
+    "balance": "Balance"
+  },
+  "muscle_groups": {
+    "chest": "Chest",
+    "back": "Back",
+    "legs": "Legs",
+    "shoulders": "Shoulders",
+    "arms": "Arms",
+    "core": "Core"
+  }
+}

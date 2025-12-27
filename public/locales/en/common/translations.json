@@ -1,0 +1,64 @@
+{
+  "app_name": "Fitness Center",
+  "welcome": "Welcome",
+  "logout": "Logout",
+  "back": "Back",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "create": "Create",
+  "confirm": "Confirm",
+  "yes": "Yes",
+  "no": "No",
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "retry": "Retry",
+  "close": "Close",
+  "settings": "Settings",
+  "minutes": "minutes",
+  "seconds": "seconds",
+  "calories": "calories",
+  "reps": "reps",
+  "sets": "sets",
+  "kg": "kg",
+  "lbs": "lbs",
+  "date": "Date",
+  "time": "Time",
+  "duration": "Duration",
+  "total": "Total",
+  "search": "Search",
+  "filter": "Filter",
+  "sort": "Sort",
+  "select_language": "Select Language",
+  "language_changed": "Language changed successfully",
+  "period": {
+    "week": "Week",
+    "month": "Month",
+    "year": "Year"
+  },
+  "date_relative": {
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
+  "units": {
+    "minutes_short": "min",
+    "calories_short": "cal"
+  },
+  "welcomeScreen": {
+    "title": "Welcome back,",
+    "message": "Let's crush your goals today"
+  },
+  "app": {
+    "exitConfirm": "Exit app?",
+    "cancelWorkoutConfirm": "Are you sure you want to cancel this workout? Your progress will not be saved.",
+    "workoutComplete": {
+      "title": "Workout Complete! 🎉",
+      "minutes": "Minutes",
+      "calories": "Calories",
+      "exercises": "Exercises",
+      "returnToDashboard": "Return to Dashboard"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "start_workout": "Start Workout",
+  "cancel_workout": "Cancel Workout",
+  "complete_workout": "Complete Workout",
+  "workout_complete": "Workout Complete!",
+  "workout_cancelled": "Are you sure you want to cancel this workout? Your progress will not be saved.",
+  "session": {
+    "defaultType": "Workout",
+    "loading": "Starting your workout...",
+    "saving": "Saving...",
+    "finish": "Finish",
+    "finishDisabledHint": "Complete at least one exercise to finish"
+  },
+  "progress": {
+    "exercisesCompleted": "exercises completed",
+    "skipped": "skipped"
+  },
+  "exercise": {
+    "number": "Exercise {{current}} of {{total}}",
+    "skippedBadge": "Skipped",
+    "completedBadge": "Completed"
+  },
+  "notes": {
+    "edit": "Edit Notes",
+    "add": "Add Notes",
+    "title": "Exercise Notes",
+    "placeholder": "Add notes about form, pain, observations...",
+    "save": "Save Notes"
+  },
+  "errors": {
+    "minOneSet": "Please complete at least one set before finishing this exercise",
+    "startFailed": "Failed to start workout. Please try again.",
+    "saveFailed": "Failed to save workout. Please try again."
+  },
+  "actions": {
+    "skip": "Skip Exercise",
+    "complete": "Complete Exercise",
+    "minOneSet": "Add at least 1 set",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "empty": {
+    "noExercises": "No exercises in this program"
+  },
+  "exitModal": {
+    "title": "Exit Workout?",
+    "message": "Your progress will not be saved. Are you sure you want to exit?",
+    "continue": "Continue Workout",
+    "exitWithoutSaving": "Exit Without Saving"
+  },
+  "confirmSkip": "Are you sure you want to skip this exercise?",
+  "current_exercise": "Current Exercise",
+  "next_exercise": "Next Exercise",
+  "exercises_completed": "Exercises Completed",
+  "total_exercises": "Total Exercises",
+  "rest_time": "Rest Time",
+  "timer": "Timer",
+  "start_timer": "Start Timer",
+  "stop_timer": "Stop Timer",
+  "reset_timer": "Reset Timer",
+  "set_completed": "Set Completed",
+  "return_to_dashboard": "Return to Dashboard",
+  "setLogger": {
+    "previousLabel": "Last Workout:",
+    "previousValue": "{{sets}} sets × {{reps}} reps @ {{weight}}kg",
+    "setTitle": "Set {{current}}",
+    "setTitleOf": "Set {{current}} of {{total}}",
+    "extraSetBadge": "Extra Set",
+    "weightLabel": "Weight (kg)",
+    "repsLabel": "Reps",
+    "plannedHint": "Planned: {{reps}} reps",
+    "addSet": "Add Set",
+    "completedSetsTitle": "Completed Sets",
+    "setNumber": "Set {{number}}",
+    "setDetails": "{{weight}}kg × {{reps}} reps",
+    "summary": {
+      "totalVolume": "Total Volume:",
+      "avgWeight": "Avg Weight:"
+    },
+    "editModal": {
+      "title": "Edit Set {{number}}",
+      "weightLabel": "Weight (kg)",
+      "repsLabel": "Reps"
+    },
+    "confirmDelete": "Delete this set?",
+    "errors": {
+      "zeroValues": "Please enter at least weight or reps (both cannot be zero)"
+    }
+  },
+  "restTimer": {
+    "label": "Rest Timer",
+    "prompt": "Ready to start rest timer?",
+    "startRest": "Start {{duration}}s Rest",
+    "skipRest": "Skip Rest",
+    "addTime": "+30s",
+    "done": "Done!",
+    "restComplete": "Rest Complete - Ready for Next Set!",
+    "seconds": "{{count}}s"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "app_name": "Fitness Center",
+  "welcome": "Witaj",
+  "logout": "Wyloguj",
+  "back": "Wróć",
+  "cancel": "Anuluj",
+  "save": "Zapisz",
+  "delete": "Usuń",
+  "edit": "Edytuj",
+  "create": "Utwórz",
+  "confirm": "Potwierdź",
+  "yes": "Tak",
+  "no": "Nie",
+  "loading": "Ładowanie...",
+  "error": "Błąd",
+  "success": "Sukces",
+  "retry": "Spróbuj ponownie",
+  "close": "Zamknij",
+  "settings": "Ustawienia",
+  "minutes": "minuty",
+  "seconds": "sekundy",
+  "calories": "kalorie",
+  "reps": "powtórzenia",
+  "sets": "serie",
+  "kg": "kg",
+  "lbs": "lbs",
+  "date": "Data",
+  "time": "Czas",
+  "duration": "Czas trwania",
+  "total": "Łącznie",
+  "search": "Szukaj",
+  "filter": "Filtruj",
+  "sort": "Sortuj",
+  "select_language": "Wybierz język",
+  "language_changed": "Język zmieniony pomyślnie",
+  "period": {
+    "week": "Tydzień",
+    "month": "Miesiąc",
+    "year": "Rok"
+  },
+  "date_relative": {
+    "today": "Dziś",
+    "tomorrow": "Jutro"
+  },
+  "units": {
+    "minutes_short": "min",
+    "calories_short": "kcal"
+  },
+  "welcomeScreen": {
+    "title": "Witaj ponownie,",
+    "message": "Osiągnijmy dziś Twoje cele"
+  },
+  "app": {
+    "exitConfirm": "Wyjść z aplikacji?",
+    "cancelWorkoutConfirm": "Czy na pewno chcesz anulować ten trening? Twój postęp nie zostanie zapisany.",
+    "workoutComplete": {
+      "title": "Trening ukończony! 🎉",
+      "minutes": "Minuty",
+      "calories": "Kalorie",
+      "exercises": "Ćwiczenia",
+      "returnToDashboard": "Wróć do pulpitu"
+    }
+  }
+}

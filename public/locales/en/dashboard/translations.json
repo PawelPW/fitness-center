@@ -1,0 +1,41 @@
+{
+  "title": "Dashboard",
+  "header": {
+    "greeting": "Hello, {{username}}!",
+    "subtitle": "Track your fitness journey"
+  },
+  "loading": {
+    "trainingData": "Loading your training data..."
+  },
+  "trainingSessions": {
+    "title": "Training Sessions",
+    "sessionsCount": "Sessions this {{period}}",
+    "caloriesBurned": "Calories burned",
+    "minutesTrained": "Minutes trained",
+    "exercisesCompleted": "Exercises completed"
+  },
+  "lastTraining": {
+    "title": "Last Training Session"
+  },
+  "emptyState": {
+    "title": "No workouts yet",
+    "message": "Start your first workout to see your progress here!",
+    "action": "View Training Programs"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "trainings": "Trainings",
+    "exercises": "Exercises",
+    "statistics": "Statistics",
+    "settings": "Settings"
+  },
+  "welcome_message": "Welcome back, {{name}}!",
+  "recent_sessions": "Recent Sessions",
+  "no_sessions": "No recent sessions",
+  "manage_exercises": "Manage Exercises",
+  "manage_trainings": "Manage Training Programs",
+  "view_stats": "View Statistics",
+  "view_calendar": "Training Calendar",
+  "session_type": "Session Type",
+  "workout_stats": "Workout Stats"
+}

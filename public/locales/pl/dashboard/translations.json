@@ -1,0 +1,41 @@
+{
+  "title": "Pulpit",
+  "header": {
+    "greeting": "Cześć, {{username}}!",
+    "subtitle": "Śledź swoją drogę do sprawności"
+  },
+  "loading": {
+    "trainingData": "Ładowanie danych treningowych..."
+  },
+  "trainingSessions": {
+    "title": "Sesje treningowe",
+    "sessionsCount": "Sesji w tym {{period}}",
+    "caloriesBurned": "Spalone kalorie",
+    "minutesTrained": "Minut treningu",
+    "exercisesCompleted": "Ukończonych ćwiczeń"
+  },
+  "lastTraining": {
+    "title": "Ostatnia sesja treningowa"
+  },
+  "emptyState": {
+    "title": "Brak treningów",
+    "message": "Rozpocznij swój pierwszy trening, aby zobaczyć postępy tutaj!",
+    "action": "Zobacz programy treningowe"
+  },
+  "quickActions": {
+    "title": "Szybkie akcje",
+    "trainings": "Treningi",
+    "exercises": "Ćwiczenia",
+    "statistics": "Statystyki",
+    "settings": "Ustawienia"
+  },
+  "welcome_message": "Witaj ponownie, {{name}}!",
+  "recent_sessions": "Ostatnie sesje",
+  "no_sessions": "Brak ostatnich sesji",
+  "manage_exercises": "Zarządzaj ćwiczeniami",
+  "manage_trainings": "Zarządzaj programami treningowymi",
+  "view_stats": "Zobacz statystyki",
+  "view_calendar": "Kalendarz treningowy",
+  "session_type": "Typ sesji",
+  "workout_stats": "Statystyki treningu"
+}

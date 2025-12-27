@@ -1,0 +1,136 @@
+{
+  "title": "Programy treningowe",
+  "subtitle": "Twórz i zarządzaj swoimi planami treningowymi",
+  "loading": "Ładowanie programów treningowych...",
+  "stats": {
+    "totalPrograms": "Wszystkie programy",
+    "totalExercises": "Wszystkie ćwiczenia"
+  },
+  "filter": {
+    "allTypes": "Wszystkie typy"
+  },
+  "actions": {
+    "createTraining": "Utwórz trening",
+    "startWorkout": "Rozpocznij trening",
+    "edit": "Edytuj",
+    "duplicate": "Duplikuj",
+    "delete": "Usuń",
+    "addExercise": "Dodaj ćwiczenie"
+  },
+  "program": {
+    "exercises_count": "{{count}} ćwiczeń",
+    "exercises_count_plural": "{{count}} ćwiczeń",
+    "created": "Utworzono {{date}}"
+  },
+  "empty": {
+    "title": "Brak programów treningowych",
+    "message": "Utwórz swój pierwszy program treningowy, aby zacząć",
+    "action": "Utwórz program treningowy"
+  },
+  "confirmDelete": "Czy na pewno chcesz usunąć ten program treningowy?",
+  "errors": {
+    "deleteFailed": "Nie udało się usunąć programu treningowego",
+    "duplicateFailed": "Nie udało się zduplikować programu treningowego",
+    "nameRequired": "Wprowadź nazwę programu",
+    "exercisesRequired": "Dodaj co najmniej jedno ćwiczenie"
+  },
+  "builder": {
+    "title": {
+      "create": "Utwórz program treningowy",
+      "edit": "Edytuj program treningowy"
+    },
+    "loading": "Ładowanie ćwiczeń...",
+    "programDetails": "Szczegóły programu",
+    "exercisesSection": "Ćwiczenia ({{count}})",
+    "form": {
+      "nameLabel": "Nazwa programu",
+      "namePlaceholder": "np. Trening górnych partii mięśniowych",
+      "typeLabel": "Typ treningu",
+      "descriptionLabel": "Opis (opcjonalnie)",
+      "descriptionPlaceholder": "Opisz ten program treningowy..."
+    },
+    "fields": {
+      "sets": "Serie",
+      "reps": "Powtórzenia",
+      "weight": "Ciężar (kg)",
+      "rest": "Przerwa (sek)",
+      "duration": "Czas (min)"
+    },
+    "empty": {
+      "noExercises": "Kliknij \"Dodaj ćwiczenie\", aby zacząć budować program treningowy"
+    },
+    "modal": {
+      "title": "Wybierz ćwiczenie",
+      "customBadge": "Własne"
+    },
+    "actions": {
+      "save": {
+        "create": "Utwórz program",
+        "update": "Zaktualizuj program"
+      }
+    }
+  },
+  "detail": {
+    "back": "Wróć",
+    "noData": "Brak danych sesji",
+    "title": "Trening {{type}}",
+    "summary": {
+      "duration": "Czas trwania",
+      "calories": "Kalorie",
+      "exercises": "Ćwiczenia"
+    },
+    "exercisesSection": "Ćwiczenia",
+    "notesSection": "Notatki",
+    "empty": {
+      "noExercises": "Brak zapisanych ćwiczeń"
+    },
+    "badges": {
+      "sets": "{{count}} serii",
+      "bodyweight": "Z własną masą ciała",
+      "cardio": "Cardio",
+      "rounds": "{{count}} rund",
+      "laps": "{{count}} okrążeń"
+    },
+    "fields": {
+      "sets": "Serie",
+      "reps": "Powtórzenia",
+      "weight": "Ciężar",
+      "rest": "Przerwa",
+      "duration": "Czas",
+      "distance": "Dystans",
+      "calories": "Kalorie",
+      "avgHR": "Śr. tętno",
+      "roundDuration": "Czas rundy",
+      "restBetweenRounds": "Przerwa"
+    },
+    "units": {
+      "kg": "kg",
+      "sec": "s",
+      "min": "min",
+      "km": "km",
+      "bpm": "bpm",
+      "reps": "powt.",
+      "rest": "przerwa"
+    },
+    "setDetails": {
+      "title": "Szczegóły serii",
+      "setNumber": "Seria {{number}}",
+      "format": "{{reps}} powt. @ {{weight}} kg",
+      "rest": "{{time}}s przerwa"
+    }
+  },
+  "create_program": "Utwórz program",
+  "edit_program": "Edytuj program",
+  "delete_program": "Usuń program",
+  "program_name": "Nazwa programu",
+  "program_description": "Opis programu",
+  "no_programs": "Nie znaleziono programów treningowych",
+  "add_exercise_to_program": "Dodaj ćwiczenie",
+  "remove_exercise": "Usuń ćwiczenie",
+  "exercises_in_program": "Ćwiczenia w programie",
+  "save_program": "Zapisz program",
+  "program_saved": "Program zapisany pomyślnie",
+  "program_deleted": "Program usunięty pomyślnie",
+  "confirm_delete": "Czy na pewno chcesz usunąć ten program?",
+  "select_exercises": "Wybierz ćwiczenia"
+}
