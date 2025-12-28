@@ -90,7 +90,14 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <div className="header-content">
+        <div className="header-top-bar">
+          <button onClick={onViewSettings} className="btn-icon settings-button" title={t('common:settings')} aria-label={t('common:settings')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"/>
+              <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24m0-13.38-4.24 4.24m-5.66 5.66-4.24 4.24"/>
+            </svg>
+          </button>
           <div className="header-greeting">
             <h1 className="dashboard-title">
               {t('dashboard:header.greeting', { username: user?.username })}
@@ -111,15 +118,6 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
                 <span className="stat-badge-label">{t('dashboard:header.workouts_this_month', { count: monthlyWorkouts })}</span>
               </span>
             </div>
-          </div>
-          <div className="header-actions">
-            <button onClick={onViewSettings} className="btn-icon" title={t('common:settings')} aria-label={t('common:settings')}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"/>
-                <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24m0-13.38-4.24 4.24m-5.66 5.66-4.24 4.24"/>
-              </svg>
-            </button>
           </div>
         </div>
       </header>
