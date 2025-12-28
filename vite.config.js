@@ -4,6 +4,9 @@ import viteCompression from 'vite-plugin-compression';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
+  // Use relative paths for assets (required for Capacitor mobile apps)
+  base: './',
+
   plugins: [
     react(),
 
@@ -60,23 +63,13 @@ export default defineConfig({
   },
 
   build: {
-    // Target modern browsers for smaller bundle
+    // Target ES2015 for better Android WebView compatibility
     target: 'es2015',
 
-    // Minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.logs in production
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
-      },
-      format: {
-        comments: false, // Remove comments
-      },
-    },
+    // Minification - use esbuild for production
+    minify: 'esbuild',
 
-    // Source maps (disable in production for smaller bundles)
+    // Source maps disabled for production
     sourcemap: false,
 
     // Chunk size warnings
@@ -84,67 +77,11 @@ export default defineConfig({
 
     rollupOptions: {
       output: {
-        // Manual chunk splitting strategy
-        manualChunks: (id) => {
-          // Vendor chunks - separate large libraries
-          if (id.includes('node_modules')) {
-            // React core
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor-react';
-            }
+        // Use legacy format for better compatibility
+        format: 'es',
 
-            // i18n libraries (separate chunk for better caching)
-            if (id.includes('i18next') || id.includes('react-i18next')) {
-              return 'vendor-i18n';
-            }
-
-            // Capacitor plugins
-            if (id.includes('@capacitor')) {
-              return 'vendor-capacitor';
-            }
-
-            // Claude Agent SDK
-            if (id.includes('@anthropic-ai')) {
-              return 'vendor-claude';
-            }
-
-            // Other vendor code
-            return 'vendor-other';
-          }
-
-          // i18n translation files - create separate chunks per language
-          if (id.includes('/i18n/locales/')) {
-            const match = id.match(/locales\/([a-z]{2})\//);
-            if (match) {
-              const lang = match[1];
-              // Further split by namespace for granular loading
-              if (id.includes('/common/')) return `i18n-${lang}-common`;
-              if (id.includes('/dashboard/')) return `i18n-${lang}-dashboard`;
-              if (id.includes('/workout/')) return `i18n-${lang}-workout`;
-              if (id.includes('/exercises/')) return `i18n-${lang}-exercises`;
-              if (id.includes('/training/')) return `i18n-${lang}-training`;
-              if (id.includes('/stats/')) return `i18n-${lang}-stats`;
-              if (id.includes('/settings/')) return `i18n-${lang}-settings`;
-              if (id.includes('/auth/')) return `i18n-${lang}-auth`;
-              if (id.includes('/calendar/')) return `i18n-${lang}-calendar`;
-
-              return `i18n-${lang}`;
-            }
-          }
-
-          // Component chunks - group by feature
-          if (id.includes('/src/components/')) {
-            return 'components';
-          }
-
-          if (id.includes('/src/pages/')) {
-            return 'pages';
-          }
-
-          if (id.includes('/src/hooks/')) {
-            return 'hooks';
-          }
-        },
+        // Simpler chunk splitting - bundle everything together for now
+        manualChunks: undefined,
 
         // Naming pattern for chunks
         chunkFileNames: 'assets/[name]-[hash].js',
