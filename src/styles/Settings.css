@@ -590,3 +590,477 @@
 .logout-button span {
   font-weight: var(--font-bold);
 }
+
+/* ============================================
+   HUB CARD LAYOUT (Option 3)
+   ============================================ */
+
+.hub-card {
+  background: var(--graphite-800);
+  border: 2px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.hub-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.2);
+  transform: translateY(-2px);
+}
+
+.hub-card:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Profile Card - Special styling */
+.profile-hub-card {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.03) 100%);
+  border-left: 4px solid var(--orange-600);
+}
+
+/* Preferences Card - Neutral */
+.preferences-hub-card {
+  cursor: default;
+}
+
+.preferences-hub-card:hover {
+  transform: none;
+}
+
+/* Account Card - Neutral */
+.account-hub-card {
+  cursor: default;
+}
+
+.account-hub-card:hover {
+  transform: none;
+  border-color: rgba(249, 115, 22, 0.15);
+}
+
+/* Hub Card Header */
+.hub-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.hub-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(249, 115, 22, 0.12);
+  border-radius: var(--radius-xl);
+  color: var(--orange-600);
+  flex-shrink: 0;
+}
+
+.hub-card-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-extrabold);
+  color: var(--text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Hub Card Content */
+.hub-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Hub Card Action (arrow button) */
+.hub-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(249, 115, 22, 0.1);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--orange-600);
+}
+
+.hub-card-action svg {
+  transition: transform var(--transition-base);
+}
+
+.hub-card:hover .hub-card-action svg {
+  transform: translateX(4px);
+}
+
+/* ============================================
+   PROFILE HUB CARD COMPONENTS
+   ============================================ */
+
+.profile-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.profile-avatar-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  background: linear-gradient(135deg, var(--orange-600) 0%, var(--orange-700) 100%);
+  border-radius: var(--radius-full);
+  color: white;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.profile-summary-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-summary-name {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-summary-email {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-stats-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  transition: all var(--transition-base);
+}
+
+.stat-pill:hover {
+  background: rgba(249, 115, 22, 0.18);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.stat-pill-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.stat-pill-value {
+  color: var(--orange-600);
+  font-weight: var(--font-bold);
+}
+
+.profile-incomplete {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  font-style: italic;
+  padding: var(--space-3);
+  background: rgba(249, 115, 22, 0.05);
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(249, 115, 22, 0.2);
+  text-align: center;
+}
+
+.profile-goal-progress {
+  margin-top: var(--space-2);
+}
+
+.goal-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  font-weight: var(--font-semibold);
+}
+
+.goal-remaining {
+  color: var(--orange-600);
+  font-size: var(--text-xs);
+}
+
+.goal-progress-bar {
+  height: 8px;
+  background: var(--graphite-900);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.goal-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange-600) 0%, var(--orange-500) 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+/* ============================================
+   PREFERENCES HUB CARD COMPONENTS
+   ============================================ */
+
+.preference-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: rgba(249, 115, 22, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: 64px;
+}
+
+.preference-item:hover:not(.preference-item-disabled) {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.25);
+  transform: translateX(4px);
+}
+
+.preference-item-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.preference-item-disabled:hover {
+  background: rgba(249, 115, 22, 0.05);
+  transform: none;
+}
+
+.preference-icon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.preference-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.preference-label {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.preference-value {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   ACCOUNT HUB CARD COMPONENTS
+   ============================================ */
+
+.account-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: rgba(249, 115, 22, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-lg);
+}
+
+.account-avatar-hub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  background: linear-gradient(135deg, var(--orange-600) 0%, var(--orange-700) 100%);
+  border-radius: var(--radius-full);
+  color: white;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.account-summary-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.account-summary-name {
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-summary-email {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hub-logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  min-height: 56px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: 2px solid #dc2626;
+  border-radius: var(--radius-lg);
+  color: white;
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  margin-top: var(--space-4);
+}
+
+.hub-logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.hub-logout-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* ============================================
+   HUB RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .hub-card {
+    padding: var(--space-5);
+  }
+
+  .hub-card-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .hub-card-title {
+    font-size: var(--text-lg);
+  }
+
+  .profile-avatar-small {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+
+  .profile-summary-name {
+    font-size: var(--text-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .hub-card {
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .hub-card-header {
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+  }
+
+  .hub-card-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hub-card-title {
+    font-size: var(--text-base);
+  }
+
+  .profile-stats-pills {
+    gap: var(--space-2);
+  }
+
+  .stat-pill {
+    font-size: var(--text-xs);
+    padding: var(--space-2);
+  }
+
+  .profile-summary-name {
+    font-size: var(--text-sm);
+  }
+
+  .preference-item {
+    padding: var(--space-3);
+    min-height: 56px;
+  }
+
+  .preference-icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* ============================================
+   HUB ACCESSIBILITY
+   ============================================ */
+
+.hub-card:focus-visible,
+.preference-item:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-card,
+  .preference-item,
+  .hub-logout-button {
+    transition: none;
+  }
+
+  .goal-progress-fill {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .hub-card,
+  .preference-item,
+  .account-summary {
+    border-width: 3px;
+  }
+}

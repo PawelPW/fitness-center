@@ -50,6 +50,11 @@ class ApiService {
       const data = await response.json();
 
       if (!response.ok) {
+        // If validation errors exist, include them in the error message
+        if (data.errors && Array.isArray(data.errors)) {
+          const error = new Error(JSON.stringify(data));
+          throw error;
+        }
         throw new Error(data.error || 'Request failed');
       }
 
@@ -82,6 +87,18 @@ class ApiService {
   async logout() {
     await this.setToken(null);
     this._tokenLoaded = false;
+  }
+
+  // User profile endpoints
+  async getUserProfile() {
+    return this.request('/user/profile');
+  }
+
+  async updateUserProfile(profileData) {
+    return this.request('/user/profile', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
   }
 
   // Exercise endpoints

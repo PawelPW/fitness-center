@@ -15,6 +15,7 @@ import WorkoutSession from './pages/WorkoutSession';
 import ExerciseStats from './pages/ExerciseStats';
 import TrainingCalendar from './pages/TrainingCalendar';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 import './styles/App.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
   const [showStats, setShowStats] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [navigationStack, setNavigationStack] = useState(['dashboard']);
 
   // Check for existing session on mount
@@ -178,6 +180,22 @@ function App() {
     setNavigationStack(prev => prev.slice(0, -1));
   };
 
+  const handleViewProfile = () => {
+    setShowProfile(true);
+    setShowSettings(false);
+    setNavigationStack(prev => [...prev, 'profile']);
+  };
+
+  const handleProfileBack = () => {
+    setShowProfile(false);
+    setShowSettings(true);
+    setNavigationStack(prev => prev.slice(0, -1));
+  };
+
+  const handleUpdateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
+
   // Capacitor back button handler
   const handleBackButton = () => {
     // Check navigation stack depth
@@ -206,6 +224,9 @@ function App() {
           break;
         case 'settings':
           handleSettingsBack();
+          break;
+        case 'profile':
+          handleProfileBack();
           break;
         case 'workoutSession':
           handleWorkoutCancel();
@@ -340,9 +361,14 @@ function App() {
     return <TrainingCalendar onBack={handleCalendarBack} />;
   }
 
+  // Show profile if showProfile is true
+  if (user && showProfile) {
+    return <Profile onBack={handleProfileBack} user={user} onUpdateUser={handleUpdateUser} />;
+  }
+
   // Show settings if showSettings is true
   if (user && showSettings) {
-    return <Settings onBack={handleSettingsBack} onLogout={handleLogout} user={user} />;
+    return <Settings onBack={handleSettingsBack} onLogout={handleLogout} onViewProfile={handleViewProfile} user={user} />;
   }
 
   // Show training detail if a session is selected

@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
+import userRoutes from './routes/user.js';
 import exerciseRoutes from './routes/exercises.js';
 import trainingRoutes from './routes/trainings.js';
 import sessionRoutes from './routes/sessions.js';
@@ -72,12 +73,14 @@ app.use('/api/auth', authLimiter);
 app.use(express.json({ limit: '10mb' }));
 
 // Routes
+// IMPORTANT: Register more specific routes BEFORE general ones
 app.use('/api/auth', authRoutes);
+app.use('/api/user/preferences', preferencesRoutes); // Specific route first
+app.use('/api/user', userRoutes); // General route second
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/trainings', trainingRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/stats', statsRoutes);
-app.use('/api/user/preferences', preferencesRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
