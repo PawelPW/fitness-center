@@ -31,7 +31,8 @@
     "trainings": "Trainings",
     "exercises": "Exercises",
     "statistics": "Statistics",
-    "settings": "Settings"
+    "settings": "Settings",
+    "diet": "Diet"
   },
   "welcome_message": "Welcome back, {{name}}!",
   "recent_sessions": "Recent Sessions",

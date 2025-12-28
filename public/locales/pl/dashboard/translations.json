@@ -27,7 +27,8 @@
     "trainings": "Treningi",
     "exercises": "Ćwiczenia",
     "statistics": "Statystyki",
-    "settings": "Ustawienia"
+    "settings": "Ustawienia",
+    "diet": "Dieta"
   },
   "welcome_message": "Witaj ponownie, {{name}}!",
   "recent_sessions": "Ostatnie sesje",

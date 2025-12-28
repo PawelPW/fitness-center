@@ -246,7 +246,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
             <div className="action-card action-card-coming-soon">
               <div className="coming-soon-badge">Coming Soon</div>
               <div className="action-icon">🥗</div>
-              <div className="action-title">Diet</div>
+              <div className="action-title">{t('dashboard:quickActions.diet')}</div>
             </div>
           </div>
         </section>
