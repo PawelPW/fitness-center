@@ -33,6 +33,7 @@ async function runMigrations() {
       { version: 1, file: '001_create_session_exercise_sets.sql' },
       { version: 2, file: '002_add_notes_to_session_exercises.sql' },
       { version: 3, file: '003_add_user_preferences.sql' },
+      { version: 4, file: '004_add_user_profile_fields.sql' },
       // Add future migrations here
     ];
 

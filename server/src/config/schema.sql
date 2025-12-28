@@ -5,6 +5,14 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   joined_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  age INTEGER,
+  gender VARCHAR(50),
+  weight_kg DECIMAL(10, 2),
+  height_cm DECIMAL(10, 2),
+  target_weight_kg DECIMAL(10, 2),
+  fitness_goal VARCHAR(100),
+  activity_level VARCHAR(50),
+  weekly_workout_target INTEGER,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
