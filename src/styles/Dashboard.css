@@ -32,19 +32,58 @@
   gap: var(--space-4);
 }
 
+.header-greeting {
+  flex: 1;
+}
+
 .dashboard-title {
   font-size: var(--text-3xl);
   font-weight: var(--font-extrabold);
   color: var(--text-primary);
   letter-spacing: var(--tracking-tight);
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.dashboard-subtitle {
+.streak-emoji {
+  font-size: var(--text-2xl);
+  animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.dashboard-stats-subtitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.stat-badge-value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--orange-600);
+}
+
+.stat-badge-label {
   font-size: var(--text-sm);
   color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
+}
+
+.stat-divider {
+  color: var(--text-quaternary);
+  font-size: var(--text-sm);
 }
 
 .header-actions {

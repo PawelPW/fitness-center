@@ -6,7 +6,7 @@ import { getLanguageByCode } from '../i18n/languages';
 import LanguageSelector from '../components/LanguageSelector';
 import '../styles/Settings.css';
 
-function Settings({ onBack }) {
+function Settings({ onBack, onLogout, user }) {
   const { t, i18n } = useTranslation(['settings', 'common']);
   const currentLanguage = getCurrentLanguage();
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
@@ -296,22 +296,43 @@ function Settings({ onBack }) {
           </div>
         </div>
 
-        {/* Logout Section */}
+        {/* Account Section */}
         <div className="settings-section">
-          <div className="settings-card">
-            <div className="settings-row settings-row-danger settings-row-disabled">
-              <div className="settings-row-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                  <polyline points="16 17 21 12 16 7"/>
-                  <line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-              </div>
-              <div className="settings-row-content">
-                <div className="settings-row-title">{t('settings:logout')}</div>
-                <div className="settings-row-subtitle">Sign out of your account</div>
+          <h2 className="section-title">{t('settings:account', 'Account')}</h2>
+          <p className="section-description">{t('settings:account_description', 'Manage your account settings')}</p>
+
+          {/* User Info Card */}
+          {user && (
+            <div className="settings-card account-info-card">
+              <div className="account-info">
+                <div className="account-avatar">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </div>
+                <div className="account-details">
+                  <div className="account-name">{user.username}</div>
+                  <div className="account-email">{user.email || 'No email provided'}</div>
+                </div>
               </div>
             </div>
+          )}
+
+          {/* Logout Button */}
+          <div className="logout-section">
+            <button
+              className="logout-button"
+              onClick={onLogout}
+              aria-label={t('common:logout')}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span>{t('common:logout')}</span>
+            </button>
           </div>
         </div>
 

@@ -1,8 +1,12 @@
 {
   "title": "Dashboard",
   "header": {
-    "greeting": "Hello, {{username}}!",
-    "subtitle": "Track your fitness journey"
+    "greeting": "Welcome back, {{username}}!",
+    "subtitle": "Track your fitness journey",
+    "day_streak": "day streak",
+    "day_streak_plural": "day streak",
+    "workouts_this_month": "workouts this month",
+    "workouts_this_month_plural": "workouts this month"
   },
   "loading": {
     "trainingData": "Loading your training data..."

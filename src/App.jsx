@@ -342,7 +342,7 @@ function App() {
 
   // Show settings if showSettings is true
   if (user && showSettings) {
-    return <Settings onBack={handleSettingsBack} />;
+    return <Settings onBack={handleSettingsBack} onLogout={handleLogout} user={user} />;
   }
 
   // Show training detail if a session is selected

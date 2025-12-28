@@ -80,13 +80,37 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
     return defaultValue;
   };
 
+  // Calculate current streak and monthly workouts
+  const currentStreak = sessions.filter(s => s.completed).length > 0
+    ? Math.min(getStatValue('currentStreak', 0), 365)
+    : 0;
+
+  const monthlyWorkouts = getStatValue('totalSessions', completedSessions.length);
+
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
         <div className="header-content">
-          <div>
-            <h1 className="dashboard-title">{t('dashboard:header.greeting', { username: user?.username })}</h1>
-            <p className="dashboard-subtitle">{t('dashboard:header.subtitle')}</p>
+          <div className="header-greeting">
+            <h1 className="dashboard-title">
+              {t('dashboard:header.greeting', { username: user?.username })}
+              {currentStreak > 0 && <span className="streak-emoji">🔥</span>}
+            </h1>
+            <div className="dashboard-stats-subtitle">
+              {currentStreak > 0 && (
+                <>
+                  <span className="stat-badge">
+                    <span className="stat-badge-value">{currentStreak}</span>
+                    <span className="stat-badge-label">{t('dashboard:header.day_streak', { count: currentStreak })}</span>
+                  </span>
+                  <span className="stat-divider">•</span>
+                </>
+              )}
+              <span className="stat-badge">
+                <span className="stat-badge-value">{monthlyWorkouts}</span>
+                <span className="stat-badge-label">{t('dashboard:header.workouts_this_month', { count: monthlyWorkouts })}</span>
+              </span>
+            </div>
           </div>
           <div className="header-actions">
             <button onClick={onViewSettings} className="btn-icon" title={t('common:settings')} aria-label={t('common:settings')}>
@@ -95,9 +119,6 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
                 <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"/>
                 <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24m0-13.38-4.24 4.24m-5.66 5.66-4.24 4.24"/>
               </svg>
-            </button>
-            <button onClick={onLogout} className="btn-secondary">
-              {t('common:logout')}
             </button>
           </div>
         </div>

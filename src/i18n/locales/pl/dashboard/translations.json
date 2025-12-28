@@ -2,7 +2,11 @@
   "title": "Pulpit",
   "header": {
     "greeting": "Cześć, {{username}}!",
-    "subtitle": "Śledź swoją drogę do sprawności"
+    "subtitle": "Śledź swoją drogę do sprawności",
+    "day_streak": "dni z rzędu",
+    "day_streak_plural": "dni z rzędu",
+    "workouts_this_month": "treningi w tym miesiącu",
+    "workouts_this_month_plural": "treningi w tym miesiącu"
   },
   "loading": {
     "trainingData": "Ładowanie danych treningowych..."
