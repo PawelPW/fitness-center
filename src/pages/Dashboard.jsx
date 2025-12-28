@@ -243,10 +243,11 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
               <div className="action-icon">📊</div>
               <div className="action-title">{t('dashboard:quickActions.statistics')}</div>
             </button>
-            <button className="action-card" onClick={onViewSettings}>
-              <div className="action-icon">⚙️</div>
-              <div className="action-title">{t('dashboard:quickActions.settings')}</div>
-            </button>
+            <div className="action-card action-card-coming-soon">
+              <div className="coming-soon-badge">Coming Soon</div>
+              <div className="action-icon">🥗</div>
+              <div className="action-title">Diet</div>
+            </div>
           </div>
         </section>
         </>

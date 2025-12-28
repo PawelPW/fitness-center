@@ -534,6 +534,8 @@
   align-items: center;
   gap: var(--space-3);
   min-height: 120px;
+  position: relative;
+  overflow: hidden;
 }
 
 .action-card:hover {
@@ -546,12 +548,94 @@
 .action-icon {
   font-size: 3rem;
   display: block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .action-title {
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   COMING SOON ACTION CARD
+   ============================================ */
+
+/* Coming Soon variant - uses div instead of button for semantic correctness */
+.action-card-coming-soon {
+  cursor: not-allowed;
+  opacity: 0.75;
+  background: linear-gradient(135deg,
+    var(--graphite-900) 0%,
+    rgba(45, 45, 50, 0.8) 100%
+  );
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  position: relative;
+  overflow: visible;
+}
+
+/* Subtle glow effect for coming soon card */
+.action-card-coming-soon::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg,
+    rgba(249, 115, 22, 0.1) 0%,
+    transparent 50%,
+    rgba(249, 115, 22, 0.05) 100%
+  );
+  border-radius: var(--radius-lg);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Disable hover effect for coming soon */
+.action-card-coming-soon:hover {
+  background: linear-gradient(135deg,
+    var(--graphite-900) 0%,
+    rgba(45, 45, 50, 0.8) 100%
+  );
+  border-color: rgba(249, 115, 22, 0.2);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Reduce icon opacity for coming soon */
+.action-card-coming-soon .action-icon {
+  opacity: 0.7;
+  filter: grayscale(0.2);
+}
+
+/* Reduce title opacity for coming soon */
+.action-card-coming-soon .action-title {
+  opacity: 0.85;
+}
+
+/* Coming Soon Badge - Futuristic glassmorphism design */
+.coming-soon-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  font-size: 0.625rem;
+  font-weight: var(--font-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--orange-500);
+  background: rgba(249, 115, 22, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(249, 115, 22, 0.15);
+  z-index: 10;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 /* ============================================
