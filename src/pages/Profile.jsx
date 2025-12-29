@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import apiService from '../services/api';
@@ -31,6 +31,24 @@ function Profile({ onBack, user, onUpdateUser }) {
 
   // Swipe navigation
   const swipeHandlers = useSwipeNavigation(onBack);
+
+  // Update form data when user prop changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username || '',
+        email: user.email || '',
+        age: user.age || '',
+        gender: user.gender || 'male',
+        weight_kg: user.weight_kg || '',
+        height_cm: user.height_cm || '',
+        target_weight_kg: user.target_weight_kg || '',
+        fitness_goal: user.fitness_goal || 'maintenance',
+        activity_level: user.activity_level || 'moderate',
+        weekly_workout_target: user.weekly_workout_target || 3
+      });
+    }
+  }, [user]);
 
   // Calculate BMI
   const calculateBMI = () => {
@@ -86,9 +104,19 @@ function Profile({ onBack, user, onUpdateUser }) {
     return null;
   };
 
-  const bmi = calculateBMI();
-  const dailyCalories = calculateDailyCalories();
-  const dailyProtein = calculateProtein();
+  // Recalculate stats whenever formData changes
+  const bmi = useMemo(() => calculateBMI(), [formData.weight_kg, formData.height_cm]);
+  const dailyCalories = useMemo(() => calculateDailyCalories(), [
+    formData.weight_kg,
+    formData.height_cm,
+    formData.age,
+    formData.gender,
+    formData.activity_level
+  ]);
+  const dailyProtein = useMemo(() => calculateProtein(), [
+    formData.weight_kg,
+    formData.fitness_goal
+  ]);
 
   // Handle input changes
   const handleInputChange = (e) => {

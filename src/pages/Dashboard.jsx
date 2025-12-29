@@ -105,18 +105,36 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
             </h1>
             <div className="dashboard-stats-subtitle">
               {currentStreak > 0 && (
-                <>
-                  <span className="stat-badge">
-                    <span className="stat-badge-value">{currentStreak}</span>
-                    <span className="stat-badge-label">{t('dashboard:header.day_streak', { count: currentStreak })}</span>
-                  </span>
-                  <span className="stat-divider">•</span>
-                </>
+                <span className="stat-badge">
+                  <span className="stat-badge-value">{currentStreak}</span>
+                  <span className="stat-badge-label">{t('dashboard:header.day_streak', { count: currentStreak })}</span>
+                </span>
               )}
               <span className="stat-badge">
                 <span className="stat-badge-value">{monthlyWorkouts}</span>
                 <span className="stat-badge-label">{t('dashboard:header.workouts_this_month', { count: monthlyWorkouts })}</span>
               </span>
+
+              {/* Compact Goal Progress Badge */}
+              {user?.weight_kg && user?.target_weight_kg && user?.fitness_goal && (
+                <span className="stat-badge goal-badge" title={`Goal: ${user.fitness_goal === 'weight_loss' ? 'Weight Loss' : user.fitness_goal === 'muscle_gain' ? 'Muscle Gain' : user.fitness_goal === 'maintenance' ? 'Maintenance' : 'Endurance'} - ${user.weight_kg}kg → ${user.target_weight_kg}kg`}>
+                    <span className="goal-badge-icon">
+                      {user.fitness_goal === 'weight_loss' && '🔥'}
+                      {user.fitness_goal === 'muscle_gain' && '💪'}
+                      {user.fitness_goal === 'maintenance' && '⚖️'}
+                      {user.fitness_goal === 'endurance' && '🏃'}
+                    </span>
+                    <span className="stat-badge-value">
+                      {(() => {
+                        const current = parseFloat(user.weight_kg);
+                        const target = parseFloat(user.target_weight_kg);
+                        const remaining = Math.abs(current - target);
+                        return remaining.toFixed(1);
+                      })()}kg
+                    </span>
+                    <span className="stat-badge-label">to goal</span>
+                  </span>
+              )}
             </div>
           </div>
         </div>
