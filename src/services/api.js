@@ -189,6 +189,42 @@ class ApiService {
     });
   }
 
+  // BE-2: Create planned session
+  async createPlannedSession(sessionData) {
+    return this.request('/sessions/planned', {
+      method: 'POST',
+      body: JSON.stringify(sessionData),
+    });
+  }
+
+  // BE-3: Update planned session
+  async updatePlannedSession(id, sessionData) {
+    return this.request(`/sessions/planned/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(sessionData),
+    });
+  }
+
+  // BE-4: Delete planned session
+  async deletePlannedSession(id) {
+    return this.request(`/sessions/planned/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // BE-5: Get upcoming planned sessions
+  async getUpcomingPlannedSessions(days = 7) {
+    return this.request(`/sessions/upcoming?days=${days}`);
+  }
+
+  // BE-6: Bulk create planned sessions
+  async bulkCreatePlannedSessions(sessions) {
+    return this.request('/sessions/planned/bulk', {
+      method: 'POST',
+      body: JSON.stringify({ sessions }),
+    });
+  }
+
   async updateSession(id, sessionData) {
     return this.request(`/sessions/${id}`, {
       method: 'PATCH',
