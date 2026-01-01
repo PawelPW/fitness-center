@@ -88,7 +88,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
-  console.log('Calculating workouts for month:', currentMonth + 1, 'year:', currentYear);
+  
 
   const currentMonthSessions = completedSessions.filter(session => {
     const sessionDate = new Date(session.date);

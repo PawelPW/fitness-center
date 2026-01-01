@@ -2,9 +2,24 @@ import pool from '../config/database.js';
 
 export const getAllSessions = async (req, res) => {
   try {
+    // BE-1: Support query params for filtering planned/completed sessions
+    const { completed } = req.query;
+
+    // Build WHERE clause based on query params
+    let whereClause = 'user_id = $1';
+    const queryParams = [req.user.userId];
+
+    // Filter by completed status if specified
+    if (completed !== undefined) {
+      const isCompleted = completed === 'true' || completed === true;
+      whereClause += ' AND completed = $2';
+      queryParams.push(isCompleted);
+    }
+    // Default: return all sessions (backward compatible)
+
     const sessionsResult = await pool.query(
-      'SELECT * FROM training_sessions WHERE user_id = $1 ORDER BY session_date DESC',
-      [req.user.userId]
+      `SELECT * FROM training_sessions WHERE ${whereClause} ORDER BY session_date DESC`,
+      queryParams
     );
 
     const sessions = await Promise.all(

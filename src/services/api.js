@@ -160,8 +160,18 @@ class ApiService {
   }
 
   // Training session endpoints
-  async getAllSessions() {
-    return this.request('/sessions');
+  async getAllSessions(options = {}) {
+    // BE-1: Support query params for filtering planned/completed sessions
+    const queryParams = new URLSearchParams();
+
+    if (options.completed !== undefined) {
+      queryParams.append('completed', options.completed);
+    }
+
+    const queryString = queryParams.toString();
+    const endpoint = queryString ? `/sessions?${queryString}` : '/sessions';
+
+    return this.request(endpoint);
   }
 
   async getSessionStats(period = 'week') {
