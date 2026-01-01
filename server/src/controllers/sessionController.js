@@ -77,9 +77,11 @@ export const getSessionStats = async (req, res) => {
     let dateFilter = "session_date >= DATE_TRUNC('week', CURRENT_DATE)";
 
     if (period === 'month') {
-      dateFilter = "session_date >= CURRENT_DATE - INTERVAL '1 month'";
+      // Use calendar month (first day of current month)
+      dateFilter = "session_date >= DATE_TRUNC('month', CURRENT_DATE)";
     } else if (period === 'year') {
-      dateFilter = "session_date >= CURRENT_DATE - INTERVAL '1 year'";
+      // Use calendar year (first day of current year)
+      dateFilter = "session_date >= DATE_TRUNC('year', CURRENT_DATE)";
     }
 
     // Get session stats

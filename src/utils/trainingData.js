@@ -36,15 +36,17 @@ export const getSessionsInPeriod = (sessions, period = 'week') => {
     }
 
     if (period === 'month') {
-      const monthAgo = new Date(now);
-      monthAgo.setMonth(monthAgo.getMonth() - 1);
-      return sessionDate >= monthAgo && sessionDate <= now && session.completed;
+      // Use calendar month (first day of current month)
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      startOfMonth.setHours(0, 0, 0, 0);
+      return sessionDate >= startOfMonth && sessionDate <= now && session.completed;
     }
 
     if (period === 'year') {
-      const yearAgo = new Date(now);
-      yearAgo.setFullYear(yearAgo.getFullYear() - 1);
-      return sessionDate >= yearAgo && sessionDate <= now && session.completed;
+      // Use calendar year (first day of current year)
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      startOfYear.setHours(0, 0, 0, 0);
+      return sessionDate >= startOfYear && sessionDate <= now && session.completed;
     }
 
     return false;
