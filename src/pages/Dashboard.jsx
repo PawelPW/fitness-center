@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import MiniCalendar from '../components/MiniCalendar';
+import { calculateCurrentStreak } from '../utils/calendarHelpers';
 import '../styles/Dashboard.css';
 
 function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar, onViewSettings }) {
@@ -80,12 +81,21 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
     return defaultValue;
   };
 
-  // Calculate current streak and monthly workouts
-  const currentStreak = sessions.filter(s => s.completed).length > 0
-    ? Math.min(getStatValue('currentStreak', 0), 365)
-    : 0;
+  // Calculate current streak using the calendar helper function
+  const currentStreak = calculateCurrentStreak(sessions);
 
-  const monthlyWorkouts = getStatValue('totalSessions', completedSessions.length);
+  // Calculate workouts for current calendar month
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  console.log('Calculating workouts for month:', currentMonth + 1, 'year:', currentYear);
+
+  const currentMonthSessions = completedSessions.filter(session => {
+    const sessionDate = new Date(session.date);
+    return sessionDate.getMonth() === currentMonth && sessionDate.getFullYear() === currentYear;
+  });
+
+  const monthlyWorkouts = currentMonthSessions.length;
 
   return (
     <div className="dashboard-container">

@@ -26,9 +26,13 @@ export const getSessionsInPeriod = (sessions, period = 'week') => {
     const sessionDate = new Date(session.date);
 
     if (period === 'week') {
-      const weekAgo = new Date(now);
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      return sessionDate >= weekAgo && sessionDate <= now && session.completed;
+      // Use calendar week (Monday-Sunday) - ISO 8601
+      const startOfWeek = new Date(now);
+      const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Convert Sunday (0) to 6, others to days from Monday
+      startOfWeek.setDate(now.getDate() - daysFromMonday);
+      startOfWeek.setHours(0, 0, 0, 0);
+      return sessionDate >= startOfWeek && sessionDate <= now && session.completed;
     }
 
     if (period === 'month') {

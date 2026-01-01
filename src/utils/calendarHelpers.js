@@ -183,8 +183,9 @@ export function calculateMonthlyStats(year, month, sessions) {
     totalCalories: monthSessions.reduce((sum, s) => sum + (s.calories || 0), 0),
     totalMinutes: monthSessions.reduce((sum, s) => sum + (s.duration || 0), 0),
     totalExercises: monthSessions.reduce((sum, s) => {
-      // Count exercises from session if available
-      return sum + (s.exerciseCount || 0);
+      // Count exercises from session - use exerciseCount field or count exercises array length
+      const exerciseCount = s.exerciseCount || (s.exercises && s.exercises.length) || 0;
+      return sum + exerciseCount;
     }, 0),
   };
 }

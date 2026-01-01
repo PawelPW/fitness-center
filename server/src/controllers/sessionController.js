@@ -58,6 +58,7 @@ export const getAllSessions = async (req, res) => {
           notes: session.notes,
           completed: session.completed,
           exercises: exercisesWithSets,
+          exerciseCount: exercisesWithSets.length,
         };
       })
     );
@@ -72,7 +73,8 @@ export const getAllSessions = async (req, res) => {
 export const getSessionStats = async (req, res) => {
   try {
     const { period = 'week' } = req.query;
-    let dateFilter = "session_date >= CURRENT_DATE - INTERVAL '7 days'";
+    // Use calendar week (Monday-Sunday) instead of rolling 7 days
+    let dateFilter = "session_date >= DATE_TRUNC('week', CURRENT_DATE)";
 
     if (period === 'month') {
       dateFilter = "session_date >= CURRENT_DATE - INTERVAL '1 month'";
@@ -80,6 +82,7 @@ export const getSessionStats = async (req, res) => {
       dateFilter = "session_date >= CURRENT_DATE - INTERVAL '1 year'";
     }
 
+    // Get session stats
     const result = await pool.query(
       `SELECT COUNT(*) as count, SUM(duration) as total_duration, SUM(calories) as total_calories
        FROM training_sessions
@@ -87,10 +90,20 @@ export const getSessionStats = async (req, res) => {
       [req.user.userId]
     );
 
+    // Get total exercises count for the period
+    const exerciseResult = await pool.query(
+      `SELECT COUNT(*) as total_exercises
+       FROM session_exercises se
+       INNER JOIN training_sessions ts ON se.session_id = ts.id
+       WHERE ts.user_id = $1 AND ts.completed = true AND ${dateFilter}`,
+      [req.user.userId]
+    );
+
     res.json({
-      count: parseInt(result.rows[0].count) || 0,
+      totalSessions: parseInt(result.rows[0].count) || 0,
       totalDuration: parseInt(result.rows[0].total_duration) || 0,
       totalCalories: parseInt(result.rows[0].total_calories) || 0,
+      totalExercises: parseInt(exerciseResult.rows[0].total_exercises) || 0,
     });
   } catch (error) {
     console.error('Get session stats error:', error);
