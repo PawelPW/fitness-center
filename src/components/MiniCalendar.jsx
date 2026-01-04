@@ -5,6 +5,8 @@ import {
   getMonthName,
   getDayNames,
   calculateCurrentStreak,
+  getPlannedSessionsForDate,
+  getCompletedSessionsForDate,
 } from '../utils/calendarHelpers';
 import './MiniCalendar.css';
 
@@ -21,10 +23,18 @@ function MiniCalendar({ sessions, onClick }) {
   const dayNames = getDayNames(locale);
   const currentStreak = calculateCurrentStreak(sessions);
 
-  // Count training days this month
-  const trainingDaysThisMonth = calendarGrid.filter(
-    day => day.isCurrentMonth && day.sessions.length > 0
+  // Count completed training days this month
+  const completedDaysThisMonth = calendarGrid.filter(
+    day => day.isCurrentMonth && getCompletedSessionsForDate(day.date, sessions).length > 0
   ).length;
+
+  // Count planned sessions this month
+  const plannedSessionsThisMonth = calendarGrid.reduce((count, day) => {
+    if (day.isCurrentMonth) {
+      return count + getPlannedSessionsForDate(day.date, sessions).length;
+    }
+    return count;
+  }, 0);
 
   return (
     <div className="mini-calendar-card" onClick={onClick}>
@@ -51,7 +61,11 @@ function MiniCalendar({ sessions, onClick }) {
         {/* Calendar grid */}
         <div className="mini-calendar-grid">
           {calendarGrid.map((dayData, index) => {
-            const hasTraining = dayData.sessions && dayData.sessions.length > 0;
+            const planned = getPlannedSessionsForDate(dayData.date, sessions);
+            const completed = getCompletedSessionsForDate(dayData.date, sessions);
+            const hasPlanned = planned.length > 0;
+            const hasCompleted = completed.length > 0;
+            const hasAnySession = hasPlanned || hasCompleted;
             const isToday = dayData.isToday;
             const isCurrentMonth = dayData.isCurrentMonth;
 
@@ -60,12 +74,32 @@ function MiniCalendar({ sessions, onClick }) {
                 key={index}
                 className={`mini-calendar-day
                   ${!isCurrentMonth ? 'other-month' : ''}
-                  ${hasTraining ? 'has-training' : ''}
+                  ${hasAnySession ? 'has-session' : ''}
                   ${isToday ? 'today' : ''}
                 `}
               >
                 <span className="mini-day-number">{dayData.day}</span>
-                {hasTraining && <span className="training-indicator"></span>}
+
+                {/* Dual session indicators */}
+                {hasAnySession && (
+                  <div className="mini-session-indicators">
+                    {/* Completed indicator - solid green dot */}
+                    {hasCompleted && (
+                      <span
+                        className="mini-indicator-dot completed"
+                        aria-label={`${completed.length} completed`}
+                      />
+                    )}
+
+                    {/* Planned indicator - hollow blue ring */}
+                    {hasPlanned && (
+                      <span
+                        className="mini-indicator-dot planned"
+                        aria-label={`${planned.length} planned`}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -74,10 +108,17 @@ function MiniCalendar({ sessions, onClick }) {
 
       <div className="mini-calendar-stats">
         <div className="mini-stat">
-          <span className="mini-stat-icon">🏋️</span>
-          <span className="mini-stat-value">{trainingDaysThisMonth}</span>
-          <span className="mini-stat-label">{t('mini.days')}</span>
+          <span className="mini-stat-icon">✓</span>
+          <span className="mini-stat-value">{completedDaysThisMonth}</span>
+          <span className="mini-stat-label">{t('mini.completed', 'completed')}</span>
         </div>
+        {plannedSessionsThisMonth > 0 && (
+          <div className="mini-stat">
+            <span className="mini-stat-icon">📅</span>
+            <span className="mini-stat-value">{plannedSessionsThisMonth}</span>
+            <span className="mini-stat-label">{t('mini.planned', 'planned')}</span>
+          </div>
+        )}
         {currentStreak > 0 && (
           <div className="mini-stat">
             <span className="mini-stat-icon">🔥</span>

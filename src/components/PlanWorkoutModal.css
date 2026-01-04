@@ -1,0 +1,725 @@
+/**
+ * PLAN WORKOUT MODAL
+ * Orange & Graphite Futuristic Design
+ * Glassmorphism effects, smooth animations, mobile-first
+ */
+
+/* ============================================
+   MODAL BACKDROP
+   ============================================ */
+
+.plan-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-backdrop);
+
+  /* Glassmorphism backdrop */
+  background: rgba(10, 13, 18, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Smooth fade-in animation */
+  animation: planModalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Center the modal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+
+  /* Enable scrolling on small screens */
+  overflow-y: auto;
+}
+
+@keyframes planModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   MODAL CONTAINER
+   ============================================ */
+
+.plan-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+
+  /* Futuristic glassmorphism card */
+  background: linear-gradient(135deg,
+    rgba(26, 30, 36, 0.95) 0%,
+    rgba(18, 21, 26, 0.98) 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: var(--radius-2xl);
+
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(249, 115, 22, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+
+  /* Slide-up animation on desktop */
+  animation: planModalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Ensure modal doesn't get cut off */
+  margin: auto;
+}
+
+@keyframes planModalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animated gradient border effect */
+.plan-modal-container::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-2xl);
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(249, 115, 22, 0.3) 0%,
+    rgba(234, 88, 12, 0.5) 25%,
+    rgba(249, 115, 22, 0.3) 50%,
+    rgba(234, 88, 12, 0.5) 75%,
+    rgba(249, 115, 22, 0.3) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.6;
+  animation: planBorderGlow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes planBorderGlow {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   MODAL HEADER
+   ============================================ */
+
+.plan-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6);
+
+  /* Subtle gradient background */
+  background: linear-gradient(180deg,
+    rgba(249, 115, 22, 0.08) 0%,
+    transparent 100%
+  );
+  border-bottom: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+}
+
+.plan-modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.plan-modal-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.4));
+  animation: planIconFloat 3s ease-in-out infinite;
+}
+
+@keyframes planIconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.plan-modal-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-extrabold);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+
+  /* Gradient text effect */
+  background: linear-gradient(135deg,
+    var(--text-primary) 0%,
+    var(--orange-500) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 12px rgba(249, 115, 22, 0.2);
+}
+
+/* ============================================
+   CLOSE BUTTON
+   ============================================ */
+
+.plan-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+
+  background: rgba(249, 115, 22, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  border-radius: var(--radius-lg);
+
+  color: var(--orange-500);
+  cursor: pointer;
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.plan-modal-close:hover:not(:disabled) {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: rgba(249, 115, 22, 0.4);
+  color: var(--orange-400);
+  transform: translateY(-2px) rotate(90deg);
+  box-shadow:
+    0 8px 20px rgba(249, 115, 22, 0.25),
+    0 0 32px rgba(249, 115, 22, 0.15);
+}
+
+.plan-modal-close:active:not(:disabled) {
+  transform: translateY(0) rotate(90deg) scale(0.95);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+}
+
+.plan-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.plan-modal-close svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   FORM
+   ============================================ */
+
+.plan-modal-form {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ============================================
+   FORM GROUPS
+   ============================================ */
+
+.plan-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.plan-form-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.plan-form-label.label-required::after {
+  content: '*';
+  color: var(--error-500);
+  font-weight: var(--font-bold);
+  filter: drop-shadow(0 1px 4px rgba(239, 68, 68, 0.3));
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+
+.plan-form-input,
+.plan-form-select,
+.plan-form-textarea {
+  width: 100%;
+  padding: var(--space-4);
+
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+
+  color: var(--text-primary);
+  background: rgba(26, 30, 36, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 2px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-lg);
+
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+}
+
+.plan-form-input::placeholder,
+.plan-form-textarea::placeholder {
+  color: var(--text-quaternary);
+}
+
+/* Hover state */
+.plan-form-input:hover:not(:disabled),
+.plan-form-select:hover:not(:disabled),
+.plan-form-textarea:hover:not(:disabled) {
+  border-color: rgba(249, 115, 22, 0.3);
+  background: rgba(26, 30, 36, 0.8);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 0 24px rgba(249, 115, 22, 0.08);
+}
+
+/* Focus state - futuristic glow */
+.plan-form-input:focus,
+.plan-form-select:focus,
+.plan-form-textarea:focus {
+  border-color: var(--orange-600);
+  background: rgba(26, 30, 36, 0.9);
+  box-shadow:
+    0 0 0 4px rgba(249, 115, 22, 0.15),
+    0 4px 16px rgba(249, 115, 22, 0.25),
+    0 0 40px rgba(249, 115, 22, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Error state */
+.plan-form-input.error,
+.plan-form-select.error {
+  border-color: var(--error-600);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.plan-form-input.error:focus,
+.plan-form-select.error:focus {
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.15),
+    0 4px 16px rgba(239, 68, 68, 0.2);
+}
+
+/* Disabled state */
+.plan-form-input:disabled,
+.plan-form-select:disabled,
+.plan-form-textarea:disabled {
+  background: var(--graphite-900);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  border-color: var(--graphite-800);
+  opacity: 0.6;
+}
+
+/* ============================================
+   SELECT DROPDOWN - Custom styled
+   ============================================ */
+
+.plan-form-select {
+  appearance: none;
+  cursor: pointer;
+
+  /* Custom dropdown arrow */
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23fb923c' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+  padding-right: var(--space-12);
+}
+
+.plan-form-select:focus {
+  /* Arrow glows on focus */
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23f97316' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   TEXTAREA
+   ============================================ */
+
+.plan-form-textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: var(--font-primary);
+}
+
+/* ============================================
+   HINT TEXT
+   ============================================ */
+
+.plan-form-hint {
+  font-size: var(--text-xs);
+  color: var(--text-quaternary);
+  line-height: var(--leading-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+
+.plan-form-error {
+  font-size: var(--text-sm);
+  color: var(--error-500);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--error-600);
+  border-radius: var(--radius-sm);
+  animation: planErrorSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes planErrorSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.plan-form-error svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 4px rgba(239, 68, 68, 0.3));
+}
+
+/* ============================================
+   API ERROR MESSAGE
+   ============================================ */
+
+.plan-form-api-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+
+  background: rgba(239, 68, 68, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 2px solid var(--error-600);
+  border-radius: var(--radius-lg);
+
+  color: var(--error-500);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+
+  box-shadow:
+    0 4px 12px rgba(239, 68, 68, 0.2),
+    0 0 32px rgba(239, 68, 68, 0.15);
+
+  animation: planErrorPulse 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes planErrorPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.plan-form-api-error svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(239, 68, 68, 0.4));
+}
+
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
+
+.plan-form-actions {
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.plan-btn-primary,
+.plan-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+
+  padding: var(--space-4) var(--space-6);
+  min-height: 48px;
+
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-normal);
+
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  flex: 1;
+}
+
+/* Primary Button - Orange CTA */
+.plan-btn-primary {
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--orange-600) 0%, var(--orange-700) 100%);
+  box-shadow:
+    0 4px 16px rgba(249, 115, 22, 0.3),
+    0 0 32px rgba(249, 115, 22, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated gradient overlay */
+.plan-btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.plan-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--orange-500) 0%, var(--orange-600) 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(249, 115, 22, 0.4),
+    0 0 48px rgba(249, 115, 22, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+}
+
+.plan-btn-primary:hover:not(:disabled)::before {
+  transform: translateX(100%);
+}
+
+.plan-btn-primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 2px 8px rgba(249, 115, 22, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.plan-btn-primary:disabled {
+  background: var(--graphite-700);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+/* Secondary Button - Graphite */
+.plan-btn-secondary {
+  color: var(--text-primary);
+  background: rgba(45, 50, 59, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+}
+
+.plan-btn-secondary:hover:not(:disabled) {
+  background: rgba(45, 50, 59, 0.8);
+  border-color: rgba(249, 115, 22, 0.35);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    0 0 24px rgba(249, 115, 22, 0.1);
+}
+
+.plan-btn-secondary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.plan-btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+
+.plan-btn-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--text-primary);
+  border-radius: var(--radius-full);
+  animation: planSpinnerRotate 0.6s linear infinite;
+}
+
+@keyframes planSpinnerRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE OPTIMIZATION
+   ============================================ */
+
+@media (max-width: 768px) {
+  .plan-modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .plan-modal-container {
+    max-width: 100%;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+
+    /* Slide up from bottom on mobile */
+    animation: planModalSlideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes planModalSlideUpMobile {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .plan-modal-header {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .plan-modal-title {
+    font-size: var(--text-xl);
+  }
+
+  .plan-modal-icon {
+    font-size: 1.75rem;
+  }
+
+  .plan-modal-form {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .plan-form-actions {
+    flex-direction: column;
+  }
+
+  .plan-btn-primary,
+  .plan-btn-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .plan-modal-header {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .plan-modal-form {
+    padding: var(--space-4) var(--space-3);
+    gap: var(--space-4);
+  }
+
+  .plan-modal-title {
+    font-size: var(--text-lg);
+  }
+
+  .plan-form-input,
+  .plan-form-select,
+  .plan-form-textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY - REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-modal-backdrop,
+  .plan-modal-container,
+  .plan-modal-close,
+  .plan-btn-primary,
+  .plan-btn-secondary,
+  .plan-form-input,
+  .plan-form-select,
+  .plan-form-textarea {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .plan-modal-icon {
+    animation: none;
+  }
+
+  .plan-modal-container::before {
+    animation: none;
+  }
+}
+
+/* ============================================
+   DARK MODE SUPPORT (already optimized)
+   ============================================ */
+
+/* The component is designed for dark theme by default */
+/* Add light mode support if needed in the future */

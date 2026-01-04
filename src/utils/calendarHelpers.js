@@ -96,7 +96,8 @@ export function formatDateKey(date) {
 }
 
 /**
- * Get all sessions for a specific date
+ * Get all sessions for a specific date (both planned and completed)
+ * FE-1: Modified to return all sessions regardless of completion status
  */
 export function getSessionsForDate(date, sessions) {
   const dateKey = formatDateKey(date);
@@ -104,8 +105,54 @@ export function getSessionsForDate(date, sessions) {
     // Parse session date (could be ISO string or Date object)
     const sessionDate = new Date(session.date || session.session_date);
     const sessionKey = formatDateKey(sessionDate);
-    return sessionKey === dateKey && session.completed;
+    return sessionKey === dateKey;
   });
+}
+
+/**
+ * Get only completed sessions for a specific date
+ * FE-1: Filter sessions by date and completion status
+ */
+export function getCompletedSessionsForDate(date, sessions) {
+  const dateKey = formatDateKey(date);
+  return sessions.filter(session => {
+    const sessionDate = new Date(session.date || session.session_date);
+    const sessionKey = formatDateKey(sessionDate);
+    return sessionKey === dateKey && session.completed === true;
+  });
+}
+
+/**
+ * Get only planned sessions for a specific date
+ * FE-1: Filter sessions by date and planned status (not completed)
+ */
+export function getPlannedSessionsForDate(date, sessions) {
+  const dateKey = formatDateKey(date);
+  return sessions.filter(session => {
+    const sessionDate = new Date(session.date || session.session_date);
+    const sessionKey = formatDateKey(sessionDate);
+    return sessionKey === dateKey && session.completed === false;
+  });
+}
+
+/**
+ * Check if a planned session is overdue
+ * FE-1: Returns true if session is planned (not completed) and date has passed
+ */
+export function isOverdue(session) {
+  // Only planned sessions can be overdue
+  if (session.completed === true) {
+    return false;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Start of today
+
+  const sessionDate = new Date(session.date || session.session_date);
+  sessionDate.setHours(0, 0, 0, 0); // Start of session day
+
+  // Session is overdue if it's planned and the date has passed
+  return sessionDate < today;
 }
 
 /**

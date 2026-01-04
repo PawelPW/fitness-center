@@ -4,6 +4,8 @@ import { App as CapacitorApp } from '@capacitor/app';
 import { useCapacitorBackButton } from './hooks/useCapacitorBackButton';
 import apiService from './services/api.js';
 import secureStorage from './utils/secureStorage.js';
+import { ToastProvider } from './contexts/ToastContext';
+import ToastContainer from './components/ToastContainer';
 import Login from './pages/Login';
 import Welcome from './pages/Welcome';
 import Dashboard from './pages/Dashboard';
@@ -16,6 +18,7 @@ import ExerciseStats from './pages/ExerciseStats';
 import TrainingCalendar from './pages/TrainingCalendar';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import WorkoutPlanner from './pages/WorkoutPlanner';
 import './styles/App.css';
 
 function App() {
@@ -34,6 +37,7 @@ function App() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showPlanner, setShowPlanner] = useState(false);
   const [navigationStack, setNavigationStack] = useState(['dashboard']);
 
   // Check for existing session on mount
@@ -196,6 +200,23 @@ function App() {
     setUser(updatedUser);
   };
 
+  const handleViewPlanner = () => {
+    setShowPlanner(true);
+    setShowExerciseList(false);
+    setShowTrainingList(false);
+    setShowTrainingBuilder(false);
+    setSelectedSession(null);
+    setShowStats(false);
+    setShowCalendar(false);
+    setShowSettings(false);
+    setNavigationStack(prev => [...prev, 'planner']);
+  };
+
+  const handlePlannerBack = () => {
+    setShowPlanner(false);
+    setNavigationStack(prev => prev.slice(0, -1));
+  };
+
   // Capacitor back button handler
   const handleBackButton = () => {
     // Check navigation stack depth
@@ -228,6 +249,9 @@ function App() {
         case 'profile':
           handleProfileBack();
           break;
+        case 'planner':
+          handlePlannerBack();
+          break;
         case 'workoutSession':
           handleWorkoutCancel();
           break;
@@ -245,12 +269,34 @@ function App() {
   // Use Capacitor back button hook
   useCapacitorBackButton(handleBackButton);
 
-  const handleStartWorkout = (program) => {
-    setActiveWorkout(program);
+  const handleStartWorkout = (session) => {
+    // Check if this is a planned session (has id and completed=false)
+    if (session && session.id && session.completed === false) {
+      // Starting from planned session
+      setActiveWorkout({
+        type: session.type,
+        plannedSessionId: session.id,
+        plannedDate: session.date,
+        scheduledTime: session.scheduled_time,
+        notes: session.notes,
+      });
+    } else if (session && session.training_program_id) {
+      // Starting from training program (existing behavior)
+      setActiveWorkout(session);
+    } else if (session && session.type) {
+      // Starting a generic workout (fallback)
+      setActiveWorkout(session);
+    } else {
+      console.warn('Invalid session data for starting workout', session);
+      return;
+    }
+
     setShowTrainingList(false);
     setShowTrainingBuilder(false);
     setSelectedSession(null);
     setShowExerciseList(false);
+    setShowCalendar(false);
+    setShowPlanner(false);
     setNavigationStack(prev => [...prev, 'workoutSession']);
   };
 
@@ -274,131 +320,137 @@ function App() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-      </div>
+      <ToastProvider>
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+        </div>
+        <ToastContainer />
+      </ToastProvider>
     );
   }
 
   // Show welcome screen for returning users
   if (user && showWelcome) {
-    return <Welcome user={user} onComplete={handleWelcomeComplete} />;
-  }
-
-  // Show active workout session
-  if (user && activeWorkout) {
     return (
-      <WorkoutSession
-        program={activeWorkout}
-        onComplete={handleWorkoutComplete}
-        onCancel={handleWorkoutCancel}
-      />
+      <ToastProvider>
+        <Welcome user={user} onComplete={handleWelcomeComplete} />
+        <ToastContainer />
+      </ToastProvider>
     );
   }
 
-  // Show workout completion summary
-  if (user && workoutCompleted) {
-    return (
-      <div className="completion-screen">
-        <div className="completion-card">
-          <h1 className="completion-title">{t('app.workoutComplete.title')}</h1>
-          <div className="completion-stats">
-            <div className="stat-item">
-              <span className="stat-value">{workoutCompleted.duration}</span>
-              <span className="stat-label">{t('app.workoutComplete.minutes')}</span>
+  // Wrap all views with ToastProvider
+  return (
+    <ToastProvider>
+      {/* Show active workout session */}
+      {user && activeWorkout && (
+        <WorkoutSession
+          program={activeWorkout}
+          plannedSessionId={activeWorkout.plannedSessionId}
+          onComplete={handleWorkoutComplete}
+          onCancel={handleWorkoutCancel}
+        />
+      )}
+
+      {/* Show workout completion summary */}
+      {user && workoutCompleted && (
+        <div className="completion-screen">
+          <div className="completion-card">
+            <h1 className="completion-title">{t('app.workoutComplete.title')}</h1>
+            <div className="completion-stats">
+              <div className="stat-item">
+                <span className="stat-value">{workoutCompleted.duration}</span>
+                <span className="stat-label">{t('app.workoutComplete.minutes')}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">{workoutCompleted.calories}</span>
+                <span className="stat-label">{t('app.workoutComplete.calories')}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">{workoutCompleted.exercisesCompleted}/{workoutCompleted.totalExercises}</span>
+                <span className="stat-label">{t('app.workoutComplete.exercises')}</span>
+              </div>
             </div>
-            <div className="stat-item">
-              <span className="stat-value">{workoutCompleted.calories}</span>
-              <span className="stat-label">{t('app.workoutComplete.calories')}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{workoutCompleted.exercisesCompleted}/{workoutCompleted.totalExercises}</span>
-              <span className="stat-label">{t('app.workoutComplete.exercises')}</span>
-            </div>
+            <button onClick={handleCloseWorkoutSummary} className="return-dashboard-btn">
+              {t('app.workoutComplete.returnToDashboard')}
+            </button>
           </div>
-          <button onClick={handleCloseWorkoutSummary} className="return-dashboard-btn">
-            {t('app.workoutComplete.returnToDashboard')}
-          </button>
         </div>
-      </div>
-    );
-  }
+      )}
 
-  // Show training builder
-  if (user && showTrainingBuilder) {
-    return (
-      <TrainingBuilder
-        onBack={handleBackToTrainingList}
-        existingProgram={editingTraining}
-      />
-    );
-  }
+      {/* Show training builder */}
+      {user && showTrainingBuilder && (
+        <TrainingBuilder
+          onBack={handleBackToTrainingList}
+          existingProgram={editingTraining}
+        />
+      )}
 
-  // Show training list
-  if (user && showTrainingList) {
-    return (
-      <TrainingList
-        onBack={handleBackToDashboard}
-        onCreateTraining={handleCreateTraining}
-        onEditTraining={handleEditTraining}
-        onStartWorkout={handleStartWorkout}
-      />
-    );
-  }
+      {/* Show training list */}
+      {user && showTrainingList && (
+        <TrainingList
+          onBack={handleBackToDashboard}
+          onCreateTraining={handleCreateTraining}
+          onEditTraining={handleEditTraining}
+          onStartWorkout={handleStartWorkout}
+        />
+      )}
 
-  // Show exercise list
-  if (user && showExerciseList) {
-    return <ExerciseList onBack={handleBackToDashboard} />;
-  }
+      {/* Show exercise list */}
+      {user && showExerciseList && <ExerciseList onBack={handleBackToDashboard} />}
 
-  // Show statistics if showStats is true
-  if (user && showStats) {
-    return <ExerciseStats onBack={handleStatsBack} />;
-  }
+      {/* Show statistics if showStats is true */}
+      {user && showStats && <ExerciseStats onBack={handleStatsBack} />}
 
-  // Show calendar if showCalendar is true
-  if (user && showCalendar) {
-    return <TrainingCalendar onBack={handleCalendarBack} />;
-  }
+      {/* Show calendar if showCalendar is true */}
+      {user && showCalendar && (
+        <TrainingCalendar onBack={handleCalendarBack} onStartWorkout={handleStartWorkout} />
+      )}
 
-  // Show profile if showProfile is true
-  if (user && showProfile) {
-    return <Profile onBack={handleProfileBack} user={user} onUpdateUser={handleUpdateUser} />;
-  }
+      {/* Show profile if showProfile is true */}
+      {user && showProfile && (
+        <Profile onBack={handleProfileBack} user={user} onUpdateUser={handleUpdateUser} />
+      )}
 
-  // Show settings if showSettings is true
-  if (user && showSettings) {
-    return <Settings onBack={handleSettingsBack} onLogout={handleLogout} onViewProfile={handleViewProfile} user={user} />;
-  }
+      {/* Show planner if showPlanner is true */}
+      {user && showPlanner && <WorkoutPlanner onBack={handlePlannerBack} onStartWorkout={handleStartWorkout} />}
 
-  // Show training detail if a session is selected
-  if (user && selectedSession) {
-    return (
-      <TrainingDetail
-        session={selectedSession}
-        onBack={handleBackToDashboard}
-      />
-    );
-  }
+      {/* Show settings if showSettings is true */}
+      {user && showSettings && (
+        <Settings onBack={handleSettingsBack} onLogout={handleLogout} onViewProfile={handleViewProfile} user={user} />
+      )}
 
-  // Show dashboard if logged in
-  if (user) {
-    return (
-      <Dashboard
-        user={user}
-        onLogout={handleLogout}
-        onViewSession={handleViewSession}
-        onManageExercises={handleManageExercises}
-        onManageTrainings={handleManageTrainings}
-        onViewStats={handleViewStats}
-        onViewCalendar={handleViewCalendar}
-        onViewSettings={handleViewSettings}
-      />
-    );
-  }
+      {/* Show training detail if a session is selected */}
+      {user && selectedSession && (
+        <TrainingDetail
+          session={selectedSession}
+          onBack={handleBackToDashboard}
+        />
+      )}
 
-  // Show login/signup if not logged in
-  return <Login onLogin={handleLogin} />;
+      {/* Show dashboard if logged in */}
+      {user && !selectedSession && !showExerciseList && !showTrainingList && !showTrainingBuilder && !showStats && !showCalendar && !showSettings && !showProfile && !showPlanner && !activeWorkout && !workoutCompleted && (
+        <Dashboard
+          user={user}
+          onLogout={handleLogout}
+          onViewSession={handleViewSession}
+          onManageExercises={handleManageExercises}
+          onManageTrainings={handleManageTrainings}
+          onViewStats={handleViewStats}
+          onViewCalendar={handleViewCalendar}
+          onViewSettings={handleViewSettings}
+          onViewPlanner={handleViewPlanner}
+          onStartWorkout={handleStartWorkout}
+        />
+      )}
+
+      {/* Show login/signup if not logged in */}
+      {!user && <Login onLogin={handleLogin} />}
+
+      {/* Toast container for notifications */}
+      <ToastContainer />
+    </ToastProvider>
+  );
 }
 
 export default App;

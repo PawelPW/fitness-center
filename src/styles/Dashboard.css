@@ -622,83 +622,58 @@
 }
 
 /* ============================================
-   COMING SOON ACTION CARD
+   PLAN WORKOUT ACTION CARD
    ============================================ */
 
-/* Coming Soon variant - uses div instead of button for semantic correctness */
-.action-card-coming-soon {
-  cursor: not-allowed;
-  opacity: 0.75;
+/* Plan Workout variant with orange accent */
+.action-card-plan {
   background: linear-gradient(135deg,
-    var(--graphite-900) 0%,
-    rgba(45, 45, 50, 0.8) 100%
+    rgba(249, 115, 22, 0.08) 0%,
+    var(--graphite-900) 100%
   );
-  border: 1px solid rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.3);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
-/* Subtle glow effect for coming soon card */
-.action-card-coming-soon::before {
+/* Animated gradient border for plan card */
+.action-card-plan::before {
   content: '';
   position: absolute;
   inset: -1px;
   background: linear-gradient(135deg,
-    rgba(249, 115, 22, 0.1) 0%,
-    transparent 50%,
-    rgba(249, 115, 22, 0.05) 100%
+    rgba(249, 115, 22, 0.4) 0%,
+    rgba(234, 88, 12, 0.6) 50%,
+    rgba(249, 115, 22, 0.4) 100%
   );
   border-radius: var(--radius-lg);
-  opacity: 0.6;
+  opacity: 0;
   pointer-events: none;
   z-index: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Disable hover effect for coming soon */
-.action-card-coming-soon:hover {
+/* Enhanced hover effect for plan card */
+.action-card-plan:hover {
   background: linear-gradient(135deg,
-    var(--graphite-900) 0%,
-    rgba(45, 45, 50, 0.8) 100%
+    rgba(249, 115, 22, 0.15) 0%,
+    var(--graphite-850) 100%
   );
-  border-color: rgba(249, 115, 22, 0.2);
-  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.08);
-  transform: translateY(-2px);
-}
-
-/* Reduce icon opacity for coming soon */
-.action-card-coming-soon .action-icon {
-  opacity: 0.7;
-  filter: grayscale(0.2);
-}
-
-/* Reduce title opacity for coming soon */
-.action-card-coming-soon .action-title {
-  opacity: 0.85;
-}
-
-/* Coming Soon Badge - Futuristic glassmorphism design */
-.coming-soon-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 4px 10px;
-  font-size: 0.625rem;
-  font-weight: var(--font-extrabold);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--orange-500);
-  background: rgba(249, 115, 22, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  border-radius: 8px;
+  border-color: var(--orange-500);
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.25),
-    inset 0 1px 2px rgba(255, 255, 255, 0.1),
-    0 0 20px rgba(249, 115, 22, 0.15);
-  z-index: 10;
-  white-space: nowrap;
-  pointer-events: none;
+    var(--shadow-md),
+    0 0 24px rgba(249, 115, 22, 0.2);
+  transform: translateY(-4px);
+}
+
+.action-card-plan:hover::before {
+  opacity: 0.3;
+}
+
+/* Icon glow on hover */
+.action-card-plan:hover .action-icon {
+  filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.4));
+  transform: scale(1.1);
 }
 
 /* ============================================
@@ -764,6 +739,132 @@
 .loading-container p {
   font-size: var(--text-base);
   color: var(--text-tertiary);
+}
+
+/* ============================================
+   SCHEDULED WORKOUTS BADGE
+   ============================================ */
+
+/* Scheduled badge with blue accent */
+.scheduled-badge {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.scheduled-badge .stat-badge-icon {
+  font-size: 1rem;
+  margin-right: var(--space-1);
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+}
+
+.scheduled-badge .stat-badge-value {
+  color: rgb(59, 130, 246);
+  text-shadow: 0 1px 4px rgba(59, 130, 246, 0.3);
+}
+
+.scheduled-badge:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow:
+    0 4px 12px rgba(59, 130, 246, 0.2),
+    0 0 24px rgba(59, 130, 246, 0.1);
+}
+
+/* ============================================
+   UPCOMING WORKOUTS SECTION
+   ============================================ */
+
+.upcoming-workouts-section {
+  background: linear-gradient(135deg,
+    rgba(249, 115, 22, 0.02) 0%,
+    transparent 100%
+  );
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+/* Section title wrapper with icon */
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.section-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.3));
+}
+
+/* Floating animation for icons */
+.floating-icon {
+  animation: floatUpDown 3s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.section-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin: 0;
+  font-weight: var(--font-medium);
+}
+
+/* View All link */
+.view-all-link {
+  background: transparent;
+  border: none;
+  color: var(--orange-500);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.view-all-link:hover {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--orange-400);
+  transform: translateX(4px);
+}
+
+.view-all-link:active {
+  transform: translateX(2px);
+}
+
+/* Upcoming sessions grid */
+.upcoming-sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+/* Empty state for upcoming workouts */
+.upcoming-empty {
+  margin-top: var(--space-4);
+  padding: var(--space-10) var(--space-6);
+  background: linear-gradient(135deg,
+    rgba(249, 115, 22, 0.05) 0%,
+    var(--graphite-900) 100%
+  );
+  border: 1px solid rgba(249, 115, 22, 0.15);
+}
+
+.upcoming-empty .empty-icon {
+  animation: floatUpDown 3s ease-in-out infinite;
 }
 
 /* ============================================
@@ -851,6 +952,20 @@
 
   .session-meta span::before {
     font-size: 1.125rem;
+  }
+
+  /* Upcoming workouts section - tablet */
+  .upcoming-sessions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .section-title-wrapper {
+    gap: var(--space-3);
+  }
+
+  .section-icon {
+    font-size: 1.75rem;
   }
 }
 
@@ -960,5 +1075,37 @@
 
   .empty-icon {
     font-size: 4rem;
+  }
+
+  /* Upcoming workouts section - mobile */
+  .upcoming-workouts-section {
+    padding: var(--space-4);
+  }
+
+  .upcoming-sessions-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .section-title-wrapper {
+    gap: var(--space-2);
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: var(--text-xs);
+  }
+
+  .view-all-link {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  /* Scheduled badge - mobile */
+  .scheduled-badge .stat-badge-icon {
+    font-size: 0.875rem;
   }
 }

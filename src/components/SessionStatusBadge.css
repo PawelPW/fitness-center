@@ -1,0 +1,279 @@
+/**
+ * SessionStatusBadge Styles
+ * Futuristic, glassmorphic design matching Orange & Graphite theme
+ */
+
+/* ========================================
+   BASE BADGE STYLES
+   ======================================== */
+
+.session-status-badge {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  /* Typography */
+  font-family: var(--font-primary);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-wide);
+  line-height: 1;
+  white-space: nowrap;
+
+  /* Visual */
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  /* Transitions */
+  transition: all var(--transition-base);
+
+  /* Accessibility */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ========================================
+   SIZE VARIANTS
+   ======================================== */
+
+/* Small: Compact badges for calendar cells, lists */
+.badge-size-small {
+  height: 20px;
+  padding: 0 10px;
+  font-size: var(--text-xs); /* 12px */
+}
+
+.badge-size-small .badge-icon {
+  font-size: 10px;
+}
+
+/* Medium: Default size for cards, general use */
+.badge-size-medium {
+  height: 24px;
+  padding: 0 12px;
+  font-size: var(--text-sm); /* 14px */
+}
+
+.badge-size-medium .badge-icon {
+  font-size: 12px;
+}
+
+/* Large: Prominent badges for headers, modals */
+.badge-size-large {
+  height: 28px;
+  padding: 0 14px;
+  font-size: var(--text-base); /* 16px */
+}
+
+.badge-size-large .badge-icon {
+  font-size: 14px;
+}
+
+/* ========================================
+   STATUS VARIANTS - COMPLETED (Green)
+   ======================================== */
+
+.badge-completed {
+  /* Background: Semi-transparent green with glassmorphism */
+  background: rgba(16, 185, 129, 0.15);
+
+  /* Border: Subtle green border for definition */
+  border: 1px solid rgba(16, 185, 129, 0.3);
+
+  /* Text: Bright green for high contrast */
+  color: var(--success-500);
+
+  /* Shadow: Subtle green glow */
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+/* Hover state for interactive contexts */
+.badge-completed:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   STATUS VARIANTS - OVERDUE (Red/Orange)
+   ======================================== */
+
+.badge-overdue {
+  /* Background: Semi-transparent red with glassmorphism */
+  background: rgba(239, 68, 68, 0.15);
+
+  /* Border: Subtle red border for definition */
+  border: 1px solid rgba(239, 68, 68, 0.3);
+
+  /* Text: Bright red for high contrast and urgency */
+  color: var(--error-500);
+
+  /* Shadow: Subtle red glow for attention */
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+}
+
+/* Pulse animation for overdue badges (optional enhancement) */
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.badge-overdue {
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+/* Hover state */
+.badge-overdue:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  transform: translateY(-1px);
+  animation: none; /* Stop pulse on hover */
+}
+
+/* ========================================
+   STATUS VARIANTS - PLANNED (Blue)
+   ======================================== */
+
+.badge-planned {
+  /* Background: Semi-transparent blue with glassmorphism */
+  background: rgba(59, 130, 246, 0.15);
+
+  /* Border: Subtle blue border for definition */
+  border: 1px solid rgba(59, 130, 246, 0.3);
+
+  /* Text: Bright blue for high contrast */
+  color: #60a5fa;
+
+  /* Shadow: Subtle blue glow */
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+}
+
+/* Hover state */
+.badge-planned:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   ICON & LABEL ELEMENTS
+   ======================================== */
+
+.badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.badge-label {
+  display: inline-block;
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+/* Icon-only badges (no label) */
+.session-status-badge:has(.badge-icon):not(:has(.badge-label)) {
+  padding: 0;
+  width: var(--badge-icon-only-size, 24px);
+  height: var(--badge-icon-only-size, 24px);
+  border-radius: 50%;
+}
+
+.badge-size-small:has(.badge-icon):not(:has(.badge-label)) {
+  --badge-icon-only-size: 20px;
+}
+
+.badge-size-medium:has(.badge-icon):not(:has(.badge-label)) {
+  --badge-icon-only-size: 24px;
+}
+
+.badge-size-large:has(.badge-icon):not(:has(.badge-label)) {
+  --badge-icon-only-size: 28px;
+}
+
+/* ========================================
+   ACCESSIBILITY & RESPONSIVE DESIGN
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .session-status-badge {
+    border-width: 2px;
+  }
+
+  .badge-completed {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: var(--success-500);
+  }
+
+  .badge-overdue {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: var(--error-500);
+  }
+
+  .badge-planned {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: #60a5fa;
+  }
+}
+
+/* Reduced motion support - disable animations */
+@media (prefers-reduced-motion: reduce) {
+  .session-status-badge {
+    transition: none;
+  }
+
+  .badge-overdue {
+    animation: none;
+  }
+
+  .badge-completed:hover,
+  .badge-overdue:hover,
+  .badge-planned:hover {
+    transform: none;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.session-status-badge:focus-visible {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+  animation: none; /* Stop pulse on focus */
+}
+
+/* Dark mode optimization (already optimized for dark theme) */
+@media (prefers-color-scheme: light) {
+  /* If light mode ever needed, adjust opacity and borders */
+  .session-status-badge {
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Margin utilities for common spacing needs */
+.badge-ml-auto {
+  margin-left: auto;
+}
+
+.badge-mr-auto {
+  margin-right: auto;
+}
+
+/* Standalone badge (not inline with text) */
+.badge-standalone {
+  display: flex;
+}

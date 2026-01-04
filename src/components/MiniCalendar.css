@@ -107,22 +107,43 @@
   box-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
 }
 
-/* Training day indicator */
-.mini-calendar-day.has-training {
+/* Days with sessions - subtle background */
+.mini-calendar-day.has-session {
   background: linear-gradient(135deg,
-    rgba(249, 115, 22, 0.2),
-    rgba(249, 115, 22, 0.3)
+    rgba(59, 130, 246, 0.05),
+    rgba(16, 185, 129, 0.05)
   );
 }
 
-.training-indicator {
+/* Session indicators container */
+.mini-session-indicators {
   position: absolute;
-  bottom: 2px;
-  width: 4px;
-  height: 4px;
-  background: var(--orange-600);
+  bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  z-index: 1;
+}
+
+/* Indicator dots - match TrainingCalendar design */
+.mini-indicator-dot {
+  width: 5px;
+  height: 5px;
   border-radius: var(--radius-full);
-  box-shadow: 0 0 4px rgba(249, 115, 22, 0.6);
+  flex-shrink: 0;
+}
+
+/* Completed indicator - solid green dot */
+.mini-indicator-dot.completed {
+  background: #10b981;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+}
+
+/* Planned indicator - hollow blue ring */
+.mini-indicator-dot.planned {
+  background: transparent;
+  border: 1.5px solid #3b82f6;
+  box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
 }
 
 /* Stats footer */
@@ -193,9 +214,28 @@
     font-size: 10px;
   }
 
+  /* Adjust indicator sizes for mobile */
+  .mini-indicator-dot {
+    width: 4px;
+    height: 4px;
+  }
+
+  .mini-indicator-dot.planned {
+    border-width: 1px;
+  }
+
+  .mini-session-indicators {
+    bottom: 2px;
+    gap: 2px;
+  }
+
   .mini-calendar-stats {
     flex-wrap: wrap;
     gap: var(--space-3);
+  }
+
+  .mini-stat {
+    min-width: fit-content;
   }
 
   .mini-calendar-cta {

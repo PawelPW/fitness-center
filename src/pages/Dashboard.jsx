@@ -1,20 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
+import { useToast } from '../hooks/useToast';
 import MiniCalendar from '../components/MiniCalendar';
+import PlanWorkoutModal from '../components/PlanWorkoutModal';
+import QuickPlanTemplates from '../components/QuickPlanTemplates';
+import PlannedSessionCard from '../components/PlannedSessionCard';
+import SessionStatusBadge from '../components/SessionStatusBadge';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { calculateCurrentStreak } from '../utils/calendarHelpers';
 import '../styles/Dashboard.css';
 
-function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar, onViewSettings }) {
+function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar, onViewSettings, onViewPlanner }) {
   const { t } = useTranslation(['dashboard', 'common', 'workout']);
+  const { showToast } = useToast();
   const [sessions, setSessions] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Planning feature state
+  const [upcomingSessions, setUpcomingSessions] = useState([]);
+  const [showPlanModal, setShowPlanModal] = useState(false);
+  const [showQuickPlanModal, setShowQuickPlanModal] = useState(false);
+  const [editSession, setEditSession] = useState(null);
+
+  // Delete confirmation dialog state
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [sessionToDelete, setSessionToDelete] = useState(null);
+
   useEffect(() => {
     loadDashboardData();
+    loadUpcomingSessions();
   }, []);
 
   useEffect(() => {
@@ -34,6 +52,19 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       setError('Failed to load your workout data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  /**
+   * Load upcoming planned workout sessions
+   * Fetches next 7 days of planned sessions, limited to 5 for dashboard display
+   */
+  const loadUpcomingSessions = async () => {
+    try {
+      const { sessions } = await apiService.getUpcomingPlannedSessions(7);
+      setUpcomingSessions(sessions.slice(0, 5)); // Next 5 sessions for dashboard
+    } catch (error) {
+      console.error('Failed to fetch upcoming sessions:', error);
     }
   };
 
@@ -88,7 +119,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
-  
+
 
   const currentMonthSessions = completedSessions.filter(session => {
     const sessionDate = new Date(session.date);
@@ -96,6 +127,146 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
   });
 
   const monthlyWorkouts = currentMonthSessions.length;
+
+  /**
+   * Calculate scheduled (planned, non-completed) sessions for current month
+   */
+  const scheduledThisMonth = useMemo(() => {
+    return upcomingSessions.filter(session => {
+      const sessionDate = new Date(session.date);
+      return (
+        sessionDate.getMonth() === currentMonth &&
+        sessionDate.getFullYear() === currentYear &&
+        !session.completed
+      );
+    }).length;
+  }, [upcomingSessions, currentMonth, currentYear]);
+
+  /**
+   * Handle successful session planning
+   * Refreshes upcoming sessions and closes modal
+   */
+  const handlePlanSuccess = async (session) => {
+    console.log('Session planned:', session);
+    await loadUpcomingSessions();
+    setShowPlanModal(false);
+    setEditSession(null);
+  };
+
+  /**
+   * Handle successful quick plan template
+   * Refreshes upcoming sessions and navigates to calendar
+   */
+  const handleQuickPlanSuccess = async (sessions) => {
+    console.log('Quick plan created:', sessions);
+    await loadUpcomingSessions();
+    setShowQuickPlanModal(false);
+    // Navigate to calendar with highlights
+    if (onViewCalendar) {
+      onViewCalendar();
+    }
+  };
+
+  /**
+   * Start a planned workout session
+   * Navigates to workout tracking with session context
+   */
+  const handleStartWorkout = (session) => {
+    console.log('Starting workout from planned session:', session);
+    // Note: This would navigate to workout tracking page
+    // For now, we'll just show the session
+    if (onViewSession) {
+      onViewSession(session);
+    }
+  };
+
+  /**
+   * Edit a planned session
+   * Opens PlanWorkoutModal in edit mode with session data
+   */
+  const handleEditSession = (session) => {
+    setEditSession(session);
+    setShowPlanModal(true);
+  };
+
+  /**
+   * Delete a planned session
+   * Shows confirmation dialog and refreshes list after deletion
+   */
+  const handleDeleteSession = (sessionId) => {
+    setSessionToDelete(sessionId);
+    setShowDeleteDialog(true);
+  };
+
+  /**
+   * Confirm and execute session deletion with optimistic UI update
+   */
+  const confirmDelete = async () => {
+    const sessionId = sessionToDelete;
+
+    // 1. Optimistic update: Remove from UI immediately
+    const originalSessions = [...upcomingSessions];
+    setUpcomingSessions(prev => prev.filter(s => s.id !== sessionId));
+
+    // Close dialog immediately for better UX
+    setShowDeleteDialog(false);
+    setSessionToDelete(null);
+
+    try {
+      // 2. API call
+      await apiService.deletePlannedSession(sessionId);
+
+      // 3. Success toast
+      showToast({
+        type: 'success',
+        message: 'Workout removed',
+        duration: 3000
+      });
+    } catch (error) {
+      console.error('Failed to delete session:', error);
+
+      // 4. Rollback on error
+      setUpcomingSessions(originalSessions);
+
+      // 5. Parse error for retry option
+      let errorMessage = 'Failed to delete workout';
+      let errorCode = null;
+
+      try {
+        const errorData = JSON.parse(error.message);
+        errorCode = errorData.code;
+        if (errorData.error) {
+          errorMessage = errorData.error;
+        }
+      } catch {
+        // Use default message
+      }
+
+      // 6. Error toast with retry action for network errors
+      const isNetworkError = errorCode === 'TIMEOUT' || errorCode === 'OFFLINE' || errorCode === 'NETWORK_ERROR';
+
+      showToast({
+        type: 'error',
+        message: errorMessage,
+        duration: isNetworkError ? 0 : 5000,
+        action: isNetworkError ? {
+          label: 'Retry',
+          onClick: () => {
+            setSessionToDelete(sessionId);
+            confirmDelete();
+          }
+        } : null
+      });
+    }
+  };
+
+  /**
+   * Open the Plan Workout modal
+   */
+  const handleOpenPlanModal = () => {
+    setEditSession(null);
+    setShowPlanModal(true);
+  };
 
   return (
     <div className="dashboard-container">
@@ -124,6 +295,15 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
                 <span className="stat-badge-value">{monthlyWorkouts}</span>
                 <span className="stat-badge-label">{t('dashboard:header.workouts_this_month', { count: monthlyWorkouts })}</span>
               </span>
+
+              {/* Scheduled Workouts Badge */}
+              {scheduledThisMonth > 0 && (
+                <span className="stat-badge scheduled-badge" title="Planned workouts for this month">
+                  <span className="stat-badge-icon">📋</span>
+                  <span className="stat-badge-value">{scheduledThisMonth}</span>
+                  <span className="stat-badge-label">Scheduled</span>
+                </span>
+              )}
 
               {/* Compact Goal Progress Badge */}
               {user?.weight_kg && user?.target_weight_kg && user?.fitness_goal && (
@@ -250,6 +430,52 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           )}
         </section>
 
+        {/* Upcoming Workouts Section */}
+        <section className="section upcoming-workouts-section">
+          <div className="section-header">
+            <div className="section-title-wrapper">
+              <span className="section-icon floating-icon">🎯</span>
+              <div>
+                <h2 className="section-title">Upcoming Workouts</h2>
+                <p className="section-subtitle">Your planned training sessions</p>
+              </div>
+            </div>
+            {upcomingSessions.length > 0 && (
+              <button
+                className="view-all-link"
+                onClick={onViewCalendar}
+                aria-label="View all planned workouts"
+              >
+                View All →
+              </button>
+            )}
+          </div>
+
+          {upcomingSessions.length > 0 ? (
+            <div className="upcoming-sessions-grid">
+              {upcomingSessions.map((session) => (
+                <PlannedSessionCard
+                  key={session.id}
+                  session={session}
+                  onStartWorkout={handleStartWorkout}
+                  onEdit={handleEditSession}
+                  onDelete={handleDeleteSession}
+                  showActions={true}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state upcoming-empty">
+              <div className="empty-icon floating-icon">📅</div>
+              <h3>No Workouts Planned</h3>
+              <p>Start planning your training to stay on track</p>
+              <button onClick={handleOpenPlanModal} className="btn-primary">
+                Plan Your Week
+              </button>
+            </div>
+          )}
+        </section>
+
         {/* Training Calendar */}
         <section className="section">
           <MiniCalendar sessions={completedSessions} onClick={onViewCalendar} />
@@ -271,16 +497,47 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
               <div className="action-icon">📊</div>
               <div className="action-title">{t('dashboard:quickActions.statistics')}</div>
             </button>
-            <div className="action-card action-card-coming-soon">
-              <div className="coming-soon-badge">Coming Soon</div>
-              <div className="action-icon">🥗</div>
-              <div className="action-title">{t('dashboard:quickActions.diet')}</div>
-            </div>
+            <button className="action-card action-card-plan" onClick={onViewPlanner}>
+              <div className="action-icon">🗓️</div>
+              <div className="action-title">Planner</div>
+            </button>
           </div>
         </section>
         </>
         )}
       </main>
+
+      {/* Planning Modals */}
+      <PlanWorkoutModal
+        isOpen={showPlanModal}
+        onClose={() => {
+          setShowPlanModal(false);
+          setEditSession(null);
+        }}
+        onSuccess={handlePlanSuccess}
+        editSession={editSession}
+      />
+
+      <QuickPlanTemplates
+        isOpen={showQuickPlanModal}
+        onClose={() => setShowQuickPlanModal(false)}
+        onSuccess={handleQuickPlanSuccess}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={() => {
+          setShowDeleteDialog(false);
+          setSessionToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        title="Delete Workout?"
+        message="Delete this planned workout?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 }

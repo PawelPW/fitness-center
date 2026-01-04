@@ -7,7 +7,7 @@ import RestTimer from '../components/RestTimer';
 import apiService from '../services/api';
 import '../styles/WorkoutSession.css';
 
-function WorkoutSession({ program, onComplete, onCancel }) {
+function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
   const { t } = useTranslation(['workout', 'common']);
   const swipeHandlers = useSwipeNavigation(onCancel);
   const {
@@ -48,21 +48,31 @@ function WorkoutSession({ program, onComplete, onCancel }) {
     try {
       setLoading(true);
 
-      // Create session in backend
-      const sessionData = {
-        programId: program.id,
-        type: program.type,  // Backend expects 'type', not 'trainingType'
-        date: new Date().toISOString(),  // Backend expects 'date', not 'sessionDate'
-        completed: false,
-      };
+      let sessionId;
 
-      const response = await apiService.createSession(sessionData);
+      // If starting from a planned session, use its ID
+      // Otherwise, create a new session
+      if (plannedSessionId) {
+        sessionId = plannedSessionId;
+        console.log('Starting workout from planned session:', plannedSessionId);
+      } else {
+        // Create new session in backend
+        const sessionData = {
+          programId: program.id,
+          type: program.type,  // Backend expects 'type', not 'trainingType'
+          date: new Date().toISOString(),  // Backend expects 'date', not 'sessionDate'
+          completed: false,
+        };
+
+        const response = await apiService.createSession(sessionData);
+        sessionId = response.id;
+      }
 
       // Initialize session in frontend
       initializeSession({
-        sessionId: response.id,
-        programId: program.id,
-        programName: program.name,
+        sessionId: sessionId,
+        programId: program.id || program.training_program_id,
+        programName: program.name || program.type,
         trainingType: program.type,
         exercises: program.exercises || [],
       });
@@ -135,12 +145,20 @@ function WorkoutSession({ program, onComplete, onCancel }) {
       // Estimate calories (rough calculation)
       const estimatedCalories = Math.floor(durationMinutes * 5);
 
-      // Update session as completed
-      await apiService.updateSession(state.sessionId, {
+      const completionData = {
         completed: true,
         duration: durationMinutes,
         calories: estimatedCalories,
-      });
+        completed_at: new Date().toISOString(),
+      };
+
+      // If this is a planned session, update it using the planned sessions endpoint
+      // Otherwise, use the regular sessions endpoint
+      if (plannedSessionId) {
+        await apiService.updatePlannedSession(state.sessionId, completionData);
+      } else {
+        await apiService.updateSession(state.sessionId, completionData);
+      }
 
       // Save exercise data with individual sets
       for (const exercise of state.exercises) {
@@ -178,6 +196,7 @@ function WorkoutSession({ program, onComplete, onCancel }) {
             !state.exercises[idx]?.skipped
           ).length,
           totalExercises: state.exercises.length,
+          wasPlanned: !!plannedSessionId,
         });
       }
     } catch (err) {
@@ -204,6 +223,17 @@ function WorkoutSession({ program, onComplete, onCancel }) {
   const handleSaveNotes = (notes) => {
     updateCurrentExercise({ notes });
     setShowNotesModal(false);
+  };
+
+  // Helper function to format date for planned session indicator
+  const formatPlannedDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
   };
 
   if (loading && !state.isActive) {
@@ -247,6 +277,16 @@ function WorkoutSession({ program, onComplete, onCancel }) {
           {loading ? t('session.saving') : t('session.finish')}
         </button>
       </div>
+
+      {/* Planned Session Indicator */}
+      {plannedSessionId && program.plannedDate && (
+        <div className="planned-session-indicator">
+          <span className="indicator-icon">📅</span>
+          <span className="indicator-text">
+            Planned workout for {formatPlannedDate(program.plannedDate)}
+          </span>
+        </div>
+      )}
 
       {/* Progress Bar */}
       <div className="progress-section">

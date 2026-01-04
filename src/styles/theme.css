@@ -75,6 +75,59 @@
   --info-bg: rgba(100, 116, 139, 0.1);
 
   /* ========================================
+     PLANNED SESSION DESIGN SYSTEM
+     Visual distinction: Hollow vs Solid
+     ======================================== */
+
+  /* Planned Session Colors - Blue (Hollow/Outlined) */
+  --color-planned-primary: #3b82f6;
+  --color-planned-secondary: #60a5fa;
+  --color-planned-bg: rgba(59, 130, 246, 0.05);
+  --color-planned-bg-hover: rgba(59, 130, 246, 0.1);
+  --color-planned-border: #3b82f6;
+  --color-planned-border-hover: #60a5fa;
+  --color-planned-shadow: rgba(59, 130, 246, 0.25);
+  --color-planned-glow: rgba(59, 130, 246, 0.15);
+
+  /* Completed Session Colors - Green (Solid/Filled) */
+  --color-completed-primary: #10b981;
+  --color-completed-secondary: #34d399;
+  --color-completed-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+  --color-completed-bg-solid: rgba(16, 185, 129, 0.15);
+  --color-completed-border: rgba(16, 185, 129, 0.3);
+  --color-completed-border-hover: rgba(16, 185, 129, 0.5);
+  --color-completed-shadow: rgba(16, 185, 129, 0.25);
+  --color-completed-glow: rgba(16, 185, 129, 0.2);
+
+  /* Overdue Session Colors - Orange/Red (Hollow with Pulse) */
+  --color-overdue-primary: #f97316;
+  --color-overdue-secondary: #fb923c;
+  --color-overdue-bg: rgba(249, 115, 22, 0.08);
+  --color-overdue-bg-hover: rgba(249, 115, 22, 0.12);
+  --color-overdue-border: #f97316;
+  --color-overdue-border-pulse: #fb923c;
+  --color-overdue-shadow: rgba(249, 115, 22, 0.3);
+  --color-overdue-glow: rgba(249, 115, 22, 0.2);
+
+  /* Status Badge Colors */
+  --badge-planned-bg: rgba(59, 130, 246, 0.15);
+  --badge-planned-border: rgba(59, 130, 246, 0.3);
+  --badge-planned-text: #60a5fa;
+
+  --badge-completed-bg: rgba(16, 185, 129, 0.15);
+  --badge-completed-border: rgba(16, 185, 129, 0.3);
+  --badge-completed-text: #34d399;
+
+  --badge-overdue-bg: rgba(249, 115, 22, 0.15);
+  --badge-overdue-border: rgba(249, 115, 22, 0.3);
+  --badge-overdue-text: #fb923c;
+
+  /* Calendar Indicator Sizes */
+  --indicator-size-small: 5px;
+  --indicator-size-medium: 6px;
+  --indicator-size-large: 8px;
+
+  /* ========================================
      GRADIENTS - Subtle, Professional
      ======================================== */
 
@@ -239,7 +292,72 @@ html {
   color: var(--text-primary);
 }
 
-/* Disable animations for users who prefer reduced motion */
+/* ========================================
+   DARK MODE ENHANCEMENTS
+   Enhanced contrast and visibility for dark environments
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Enhanced planned session colors for dark mode */
+    --color-planned-bg: rgba(59, 130, 246, 0.12);
+    --color-planned-bg-hover: rgba(59, 130, 246, 0.18);
+    --color-planned-border: #60a5fa;
+    --color-planned-shadow: rgba(59, 130, 246, 0.35);
+
+    /* Enhanced completed session colors for dark mode */
+    --color-completed-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08));
+    --color-completed-bg-solid: rgba(16, 185, 129, 0.2);
+    --color-completed-border: rgba(16, 185, 129, 0.4);
+    --color-completed-shadow: rgba(16, 185, 129, 0.3);
+
+    /* Enhanced overdue session colors for dark mode */
+    --color-overdue-bg: rgba(249, 115, 22, 0.12);
+    --color-overdue-bg-hover: rgba(249, 115, 22, 0.18);
+    --color-overdue-border: #fb923c;
+    --color-overdue-shadow: rgba(249, 115, 22, 0.4);
+
+    /* Enhanced badge colors for dark mode */
+    --badge-planned-bg: rgba(59, 130, 246, 0.2);
+    --badge-planned-border: rgba(59, 130, 246, 0.4);
+
+    --badge-completed-bg: rgba(16, 185, 129, 0.2);
+    --badge-completed-border: rgba(16, 185, 129, 0.4);
+
+    --badge-overdue-bg: rgba(249, 115, 22, 0.2);
+    --badge-overdue-border: rgba(249, 115, 22, 0.4);
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE SUPPORT
+   Enhanced borders and colors for accessibility
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    /* Increase border widths and opacity */
+    --color-planned-border: #60a5fa;
+    --color-planned-bg: rgba(59, 130, 246, 0.2);
+
+    --color-completed-border: #34d399;
+    --color-completed-bg-solid: rgba(16, 185, 129, 0.25);
+
+    --color-overdue-border: #fb923c;
+    --color-overdue-bg: rgba(249, 115, 22, 0.2);
+
+    /* Stronger badge colors */
+    --badge-planned-bg: rgba(59, 130, 246, 0.3);
+    --badge-completed-bg: rgba(16, 185, 129, 0.3);
+    --badge-overdue-bg: rgba(249, 115, 22, 0.3);
+  }
+}
+
+/* ========================================
+   REDUCED MOTION ACCESSIBILITY
+   Disable animations for users who prefer reduced motion
+   ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -247,5 +365,12 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* Ensure pulsing animations are disabled */
+  .planned-session-card.is-overdue,
+  .indicator-dot.overdue,
+  .badge-overdue {
+    animation: none !important;
   }
 }

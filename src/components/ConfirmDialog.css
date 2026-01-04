@@ -1,0 +1,301 @@
+/**
+ * ConfirmDialog Styles
+ * Futuristic glassmorphism modal with Orange & Graphite theme
+ */
+
+/* Backdrop overlay */
+.confirm-dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: backdrop-fade-in 0.2s ease-out;
+}
+
+@keyframes backdrop-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Dialog card */
+.confirm-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 30, 35, 0.98) 0%,
+    rgba(20, 20, 25, 0.98) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+              0 8px 32px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: dialog-scale-in 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  overflow: hidden;
+}
+
+/* Gradient border effect */
+.confirm-dialog::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 120, 40, 0.4),
+    rgba(255, 60, 0, 0.2),
+    rgba(100, 100, 110, 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Danger variant (red accent) */
+.confirm-dialog-danger::before {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.5),
+    rgba(220, 38, 38, 0.3),
+    rgba(100, 100, 110, 0.3)
+  );
+}
+
+/* Warning variant (orange accent) */
+.confirm-dialog-warning::before {
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.5),
+    rgba(234, 88, 12, 0.3),
+    rgba(100, 100, 110, 0.3)
+  );
+}
+
+@keyframes dialog-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dialog header */
+.confirm-dialog-header {
+  margin-bottom: 16px;
+}
+
+.confirm-dialog-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.3;
+}
+
+/* Dialog body */
+.confirm-dialog-body {
+  margin-bottom: 24px;
+}
+
+.confirm-dialog-message {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 400;
+}
+
+/* Dialog actions */
+.confirm-dialog-actions {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+@media (min-width: 480px) {
+  .confirm-dialog-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* Buttons */
+.confirm-dialog-button {
+  flex: 1;
+  height: 48px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+@media (min-width: 480px) {
+  .confirm-dialog-button {
+    flex: initial;
+    min-width: 120px;
+  }
+}
+
+/* Cancel button (ghost/outline style) */
+.confirm-dialog-button-cancel {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.confirm-dialog-button-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.confirm-dialog-button-cancel:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Confirm button (solid gradient style) */
+.confirm-dialog-button-confirm {
+  background: linear-gradient(
+    135deg,
+    #ef4444 0%,
+    #dc2626 100%
+  );
+  color: white;
+  border: none;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3),
+              0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-dialog-button-confirm:hover {
+  background: linear-gradient(
+    135deg,
+    #f87171 0%,
+    #ef4444 100%
+  );
+  box-shadow: 0 6px 24px rgba(239, 68, 68, 0.4),
+              0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.confirm-dialog-button-confirm:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Warning variant confirm button (orange gradient) */
+.confirm-dialog-warning .confirm-dialog-button-confirm {
+  background: linear-gradient(
+    135deg,
+    #f97316 0%,
+    #ea580c 100%
+  );
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3),
+              0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-dialog-warning .confirm-dialog-button-confirm:hover {
+  background: linear-gradient(
+    135deg,
+    #fb923c 0%,
+    #f97316 100%
+  );
+  box-shadow: 0 6px 24px rgba(249, 115, 22, 0.4),
+              0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Focus styles for accessibility */
+.confirm-dialog-button:focus-visible {
+  outline: 2px solid #ff7828;
+  outline-offset: 2px;
+}
+
+.confirm-dialog-button-cancel:focus-visible {
+  outline-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Mobile optimizations */
+@media (max-width: 479px) {
+  .confirm-dialog {
+    max-width: calc(100% - 40px);
+    padding: 20px;
+  }
+
+  .confirm-dialog-title {
+    font-size: 18px;
+  }
+
+  .confirm-dialog-message {
+    font-size: 14px;
+  }
+
+  .confirm-dialog-button {
+    height: 52px;
+    font-size: 16px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .confirm-dialog-backdrop,
+  .confirm-dialog,
+  .confirm-dialog-button {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .confirm-dialog {
+    border: 2px solid white;
+  }
+
+  .confirm-dialog-button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Dark mode adjustments (already dark by default) */
+@media (prefers-color-scheme: light) {
+  /* Keep dark theme even in light mode for futuristic aesthetic */
+  .confirm-dialog {
+    background: linear-gradient(
+      135deg,
+      rgba(30, 30, 35, 0.98) 0%,
+      rgba(20, 20, 25, 0.98) 100%
+    );
+  }
+}

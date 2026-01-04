@@ -1,0 +1,46 @@
+/**
+ * ToastContainer Styles
+ * Responsive positioning: bottom-center (mobile), top-right (desktop)
+ */
+
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+
+  /* Mobile: bottom-center */
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  padding: 0 16px;
+}
+
+/* Desktop: top-right */
+@media (min-width: 768px) {
+  .toast-container {
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    align-items: flex-end;
+    width: auto;
+    max-width: 350px;
+    padding: 0;
+  }
+}
+
+/* Allow interaction with toasts */
+.toast-container > * {
+  pointer-events: auto;
+}
+
+/* Ensure toasts stack with proper spacing */
+.toast-container > * + * {
+  margin-top: 0;
+}
