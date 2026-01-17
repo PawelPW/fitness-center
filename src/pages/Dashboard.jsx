@@ -11,7 +11,7 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import { calculateCurrentStreak } from '../utils/calendarHelpers';
 import '../styles/Dashboard.css';
 
-function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar, onViewSettings, onViewPlanner }) {
+function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageTrainings, onViewStats, onViewCalendar, onViewSettings, onViewPlanner, onStartWorkout }) {
   const { t } = useTranslation(['dashboard', 'common', 'workout']);
   const { showToast } = useToast();
   const [sessions, setSessions] = useState([]);
@@ -169,16 +169,9 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
 
   /**
    * Start a planned workout session
-   * Navigates to workout tracking with session context
+   * Uses onStartWorkout prop from App.jsx which handles FE-7 (fetching program data)
    */
-  const handleStartWorkout = (session) => {
-    console.log('Starting workout from planned session:', session);
-    // Note: This would navigate to workout tracking page
-    // For now, we'll just show the session
-    if (onViewSession) {
-      onViewSession(session);
-    }
-  };
+  // Removed local handleStartWorkout function - now using onStartWorkout prop from App.jsx
 
   /**
    * Edit a planned session
@@ -393,11 +386,58 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           </div>
         </section>
 
+        {/* Upcoming Workouts Section */}
+        <section className="section upcoming-workouts-section">
+          <div className="section-header">
+            <h2 className="section-title">Upcoming Workouts</h2>
+            {upcomingSessions.length > 0 && (
+              <button
+                className="view-all-link"
+                onClick={onViewCalendar}
+                aria-label="View all planned workouts"
+              >
+                View All →
+              </button>
+            )}
+          </div>
+
+          {upcomingSessions.length > 0 ? (
+            <div className="upcoming-sessions-grid">
+              {upcomingSessions.map((session) => (
+                <PlannedSessionCard
+                  key={session.id}
+                  session={session}
+                  onStartWorkout={onStartWorkout}
+                  onEdit={handleEditSession}
+                  onDelete={handleDeleteSession}
+                  showActions={true}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state upcoming-empty">
+              <div className="empty-icon floating-icon">📅</div>
+              <h3>No Workouts Planned</h3>
+              <p>Start planning your training to stay on track</p>
+              <button onClick={handleOpenPlanModal} className="btn-primary">
+                Plan Your Week
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* Training Calendar */}
+        <section className="section">
+          <MiniCalendar sessions={completedSessions} onClick={onViewCalendar} />
+        </section>
+
         {/* Last Training Session */}
         <section className="section">
           {lastSession ? (
             <>
-              <h2 className="section-title">{t('dashboard:lastTraining.title')}</h2>
+              <div className="section-header">
+                <h2 className="section-title">{t('dashboard:lastTraining.title')}</h2>
+              </div>
               <div
                 className="card card-clickable session-card"
                 onClick={() => onViewSession && onViewSession(lastSession)}
@@ -430,60 +470,11 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           )}
         </section>
 
-        {/* Upcoming Workouts Section */}
-        <section className="section upcoming-workouts-section">
-          <div className="section-header">
-            <div className="section-title-wrapper">
-              <span className="section-icon floating-icon">🎯</span>
-              <div>
-                <h2 className="section-title">Upcoming Workouts</h2>
-                <p className="section-subtitle">Your planned training sessions</p>
-              </div>
-            </div>
-            {upcomingSessions.length > 0 && (
-              <button
-                className="view-all-link"
-                onClick={onViewCalendar}
-                aria-label="View all planned workouts"
-              >
-                View All →
-              </button>
-            )}
-          </div>
-
-          {upcomingSessions.length > 0 ? (
-            <div className="upcoming-sessions-grid">
-              {upcomingSessions.map((session) => (
-                <PlannedSessionCard
-                  key={session.id}
-                  session={session}
-                  onStartWorkout={handleStartWorkout}
-                  onEdit={handleEditSession}
-                  onDelete={handleDeleteSession}
-                  showActions={true}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state upcoming-empty">
-              <div className="empty-icon floating-icon">📅</div>
-              <h3>No Workouts Planned</h3>
-              <p>Start planning your training to stay on track</p>
-              <button onClick={handleOpenPlanModal} className="btn-primary">
-                Plan Your Week
-              </button>
-            </div>
-          )}
-        </section>
-
-        {/* Training Calendar */}
-        <section className="section">
-          <MiniCalendar sessions={completedSessions} onClick={onViewCalendar} />
-        </section>
-
         {/* Quick Actions */}
         <section className="section">
-          <h2 className="section-title">{t('dashboard:quickActions.title')}</h2>
+          <div className="section-header">
+            <h2 className="section-title">{t('dashboard:quickActions.title')}</h2>
+          </div>
           <div className="quick-actions-grid">
             <button className="action-card" onClick={onManageTrainings}>
               <div className="action-icon">📋</div>

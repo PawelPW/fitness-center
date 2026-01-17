@@ -192,6 +192,26 @@ class ApiService {
     });
   }
 
+  /**
+   * FE-2: Get user's training programs, optionally filtered by training type
+   *
+   * @param {string|null} trainingType - Optional training type to filter by (Cardio, Strength, etc.)
+   * @returns {Promise<Array>} Array of training program objects
+   * @returns {number} return[].id - Program ID
+   * @returns {string} return[].name - Program name
+   * @returns {string} return[].training_type - Training type
+   * @returns {string} return[].description - Program description
+   * @returns {number} return[].exercise_count - Number of exercises in program
+   *
+   * @throws {Error} Network errors
+   */
+  async getUserPrograms(trainingType = null) {
+    const params = trainingType ? `?type=${trainingType}` : '';
+    const response = await this.request(`/trainings${params}`);
+    // API returns { programs: [...] } - extract the array
+    return response.programs || response || [];
+  }
+
   // Training session endpoints
   async getAllSessions(options = {}) {
     // BE-1: Support query params for filtering planned/completed sessions

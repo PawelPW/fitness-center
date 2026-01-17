@@ -129,6 +129,16 @@ const PlannedSessionCard = ({
     return notes.substring(0, maxLength).trim() + '...';
   };
 
+  // FE-6: Truncate program names (max 30 characters)
+  const truncateProgramName = (name) => {
+    if (!name) return null;
+
+    const maxLength = 30;
+    if (name.length <= maxLength) return name;
+
+    return name.substring(0, maxLength).trim() + '...';
+  };
+
   // Handle card click
   const handleCardClick = (e) => {
     // Trigger haptic feedback if available (Capacitor)
@@ -197,6 +207,23 @@ const PlannedSessionCard = ({
           <h3 className="planned-session-card__type">
             {session.type || 'Workout'}
           </h3>
+
+          {/* FE-6: Program badge - shows associated program name and exercise count */}
+          {session?.program_name && (
+            <div className="planned-session-card__program-badge">
+              <span className="planned-session-card__program-icon" role="img" aria-hidden="true">
+                📋
+              </span>
+              <span className="planned-session-card__program-name">
+                {truncateProgramName(session.program_name)}
+              </span>
+              {session?.program_exercise_count && (
+                <span className="planned-session-card__program-count">
+                  {session.program_exercise_count} exercises
+                </span>
+              )}
+            </div>
+          )}
 
           {overdueStatus && (
             <span className="planned-session-card__overdue-badge" role="status">

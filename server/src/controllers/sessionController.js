@@ -52,27 +52,97 @@ const logError = (endpoint, context, error) => {
   });
 };
 
+// BE-5: Helper function to validate program ownership
+// BE-6: Enhanced with type matching validation
+/**
+ * Validates that a training program exists, belongs to the authenticated user,
+ * and optionally matches the expected training type
+ *
+ * @param {number|null} programId - The program ID to validate
+ * @param {number} userId - The authenticated user's ID
+ * @param {string|null} expectedType - Optional expected training type (e.g., 'Strength', 'Cardio')
+ * @returns {Promise<Object|null>} The program object if valid, null if programId is null/undefined
+ * @throws {Error} Throws 'PROGRAM_NOT_FOUND' if program doesn't exist
+ * @throws {Error} Throws 'PROGRAM_UNAUTHORIZED' if program belongs to another user
+ * @throws {Error} Throws 'PROGRAM_TYPE_MISMATCH' if program type doesn't match expectedType
+ */
+const validateProgramOwnership = async (programId, userId, expectedType = null) => {
+  // NULL is valid (ad-hoc workout without program)
+  if (!programId) {
+    return null;
+  }
+
+  const result = await pool.query(
+    'SELECT * FROM training_programs WHERE id = $1',
+    [programId]
+  );
+
+  if (result.rows.length === 0) {
+    throw new Error('PROGRAM_NOT_FOUND');
+  }
+
+  const program = result.rows[0];
+
+  // Allow both user-owned programs AND system programs (user_id IS NULL)
+  // System programs are available to all users
+  if (program.user_id !== null && program.user_id !== userId) {
+    throw new Error('PROGRAM_UNAUTHORIZED');
+  }
+
+  // BE-6: Type validation - ensure program type matches session type
+  if (expectedType && program.training_type !== expectedType) {
+    const error = new Error('PROGRAM_TYPE_MISMATCH');
+    error.programType = program.training_type;
+    error.sessionType = expectedType;
+    throw error;
+  }
+
+  return program;
+};
+
+/**
+ * Get all training sessions for the authenticated user
+ * BE-4: Enhanced with program data JOIN to return program_name and program_exercise_count
+ *
+ * @param {Object} req.query - Query parameters
+ * @param {boolean} [req.query.completed] - Filter by completion status
+ *
+ * @returns {Array} Array of session objects with program data
+ */
 export const getAllSessions = async (req, res) => {
   try {
     // BE-1: Support query params for filtering planned/completed sessions
     const { completed } = req.query;
 
-    // Build WHERE clause based on query params
-    let whereClause = 'user_id = $1';
+    // BE-4: Build query with LEFT JOIN to include program data
+    // LEFT JOIN ensures sessions without programs are still returned
+    let query = `
+      SELECT
+        ts.*,
+        tp.name as program_name,
+        tp.description as program_description,
+        COUNT(pe.id) as program_exercise_count
+      FROM training_sessions ts
+      LEFT JOIN training_programs tp ON ts.training_program_id = tp.id
+      LEFT JOIN program_exercises pe ON tp.id = pe.program_id
+      WHERE ts.user_id = $1
+    `;
+
     const queryParams = [req.user.userId];
 
     // Filter by completed status if specified
     if (completed !== undefined) {
       const isCompleted = completed === 'true' || completed === true;
-      whereClause += ' AND completed = $2';
+      query += ' AND ts.completed = $2';
       queryParams.push(isCompleted);
     }
-    // Default: return all sessions (backward compatible)
 
-    const sessionsResult = await pool.query(
-      `SELECT * FROM training_sessions WHERE ${whereClause} ORDER BY session_date DESC`,
-      queryParams
-    );
+    // BE-4: GROUP BY required for COUNT aggregate
+    // Must include all non-aggregated SELECT columns
+    query += ' GROUP BY ts.id, tp.id, tp.name, tp.description';
+    query += ' ORDER BY ts.session_date DESC';
+
+    const sessionsResult = await pool.query(query, queryParams);
 
     const sessions = await Promise.all(
       sessionsResult.rows.map(async (session) => {
@@ -124,6 +194,11 @@ export const getAllSessions = async (req, res) => {
           calories: session.calories,
           notes: session.notes,
           completed: session.completed,
+          // BE-4: Include program data from JOIN
+          program_name: session.program_name || null,
+          program_description: session.program_description || null,
+          program_exercise_count: parseInt(session.program_exercise_count) || 0,
+          training_program_id: session.training_program_id || null,
           exercises: exercisesWithSets,
           exerciseCount: exercisesWithSets.length,
         };
@@ -353,9 +428,20 @@ export const createSession = async (req, res) => {
 
 // BE-2: Create planned session endpoint
 // BE-9: Enhanced with ISO 8601 validation, backdating prevention, and error logging
+/**
+ * Create a new planned workout session
+ *
+ * @param {Object} req.body - Request body
+ * @param {string} req.body.type - Training type (Cardio, Strength, etc.)
+ * @param {string} req.body.date - Session date in ISO 8601 format (YYYY-MM-DD)
+ * @param {string} [req.body.notes] - Optional notes for the session
+ * @param {number} [req.body.training_program_id] - Optional ID of training program to associate (BE-2)
+ *
+ * @returns {Object} Created session object with training_program_id
+ */
 export const createPlannedSession = async (req, res) => {
   try {
-    const { type, date, notes } = req.body;
+    const { type, date, notes, training_program_id } = req.body;
 
     // BE-9: Validation - Required fields
     if (!type) {
@@ -400,10 +486,49 @@ export const createPlannedSession = async (req, res) => {
       });
     }
 
+    // BE-5: Validation - Verify program exists and belongs to user
+    // BE-6: Validation - Verify program type matches session type
+    if (training_program_id) {
+      try {
+        await validateProgramOwnership(training_program_id, req.user.userId, type);
+      } catch (error) {
+        if (error.message === 'PROGRAM_NOT_FOUND') {
+          logError('createPlannedSession', { userId: req.user.userId, requestData: { training_program_id } },
+            new Error(`Program not found: ${training_program_id}`));
+          return res.status(404).json({
+            error: 'Program not found',
+            field: 'training_program_id',
+            message: `No training program found with ID: ${training_program_id}`
+          });
+        }
+        if (error.message === 'PROGRAM_UNAUTHORIZED') {
+          logError('createPlannedSession', { userId: req.user.userId, requestData: { training_program_id } },
+            new Error(`Unauthorized program access: ${training_program_id}`));
+          return res.status(403).json({
+            error: 'You do not have access to this program',
+            field: 'training_program_id',
+            message: 'This training program belongs to another user'
+          });
+        }
+        if (error.message === 'PROGRAM_TYPE_MISMATCH') {
+          logError('createPlannedSession', { userId: req.user.userId, requestData: { training_program_id, type } },
+            new Error(`Program type mismatch: ${error.programType} != ${error.sessionType}`));
+          return res.status(400).json({
+            error: `Program type "${error.programType}" does not match session type "${error.sessionType}"`,
+            field: 'training_program_id',
+            hint: `Select a ${error.sessionType} program or remove program selection`
+          });
+        }
+        // Re-throw unexpected errors
+        throw error;
+      }
+    }
+
     // Create planned session (completed=false, duration/calories=NULL)
+    // BE-2: Include optional training_program_id for program selection feature
     const result = await pool.query(
-      'INSERT INTO training_sessions (user_id, training_type, session_date, duration, calories, notes, completed) VALUES ($1, $2, $3, NULL, NULL, $4, false) RETURNING *',
-      [req.user.userId, type, date, notes || null]
+      'INSERT INTO training_sessions (user_id, training_type, session_date, duration, calories, notes, training_program_id, completed) VALUES ($1, $2, $3, NULL, NULL, $4, $5, false) RETURNING *',
+      [req.user.userId, type, date, notes || null, training_program_id || null]
     );
 
     const session = result.rows[0];
@@ -415,6 +540,7 @@ export const createPlannedSession = async (req, res) => {
       duration: session.duration,
       calories: session.calories,
       notes: session.notes,
+      training_program_id: session.training_program_id, // BE-2: Include program ID in response
       completed: session.completed,
       exercises: [],
       exerciseCount: 0,
@@ -430,10 +556,23 @@ export const createPlannedSession = async (req, res) => {
 
 // BE-3: Update planned session endpoint
 // BE-9: Enhanced with ISO 8601 validation, backdating prevention, and error logging
+/**
+ * Update an existing planned workout session
+ *
+ * @param {Object} req.params - URL parameters
+ * @param {string} req.params.id - Session ID to update
+ * @param {Object} req.body - Fields to update (partial update supported)
+ * @param {string} [req.body.type] - Training type
+ * @param {string} [req.body.date] - Session date in ISO 8601 format
+ * @param {string} [req.body.notes] - Session notes
+ * @param {number|null} [req.body.training_program_id] - Program ID to associate, or null to remove (BE-3)
+ *
+ * @returns {Object} Updated session object
+ */
 export const updatePlannedSession = async (req, res) => {
   try {
     const { id } = req.params;
-    const { type, date, notes } = req.body;
+    const { type, date, notes, training_program_id } = req.body;
 
     // BE-9: Check if session exists and belongs to user
     const checkResult = await pool.query(
@@ -490,6 +629,50 @@ export const updatePlannedSession = async (req, res) => {
       }
     }
 
+    // BE-5: Validation - Verify program exists and belongs to user (if program ID is being set)
+    // BE-6: Validation - Verify program type matches session type
+    // Note: training_program_id can be null (to remove program), so only validate if it's a truthy value
+    if (training_program_id !== undefined && training_program_id !== null) {
+      // Determine which type to validate against:
+      // - If type is being updated, use the new type
+      // - Otherwise, use the existing session's type
+      const typeToValidate = type !== undefined ? type : session.training_type;
+
+      try {
+        await validateProgramOwnership(training_program_id, req.user.userId, typeToValidate);
+      } catch (error) {
+        if (error.message === 'PROGRAM_NOT_FOUND') {
+          logError('updatePlannedSession', { userId: req.user.userId, sessionId: id, requestData: { training_program_id } },
+            new Error(`Program not found: ${training_program_id}`));
+          return res.status(404).json({
+            error: 'Program not found',
+            field: 'training_program_id',
+            message: `No training program found with ID: ${training_program_id}`
+          });
+        }
+        if (error.message === 'PROGRAM_UNAUTHORIZED') {
+          logError('updatePlannedSession', { userId: req.user.userId, sessionId: id, requestData: { training_program_id } },
+            new Error(`Unauthorized program access: ${training_program_id}`));
+          return res.status(403).json({
+            error: 'You do not have access to this program',
+            field: 'training_program_id',
+            message: 'This training program belongs to another user'
+          });
+        }
+        if (error.message === 'PROGRAM_TYPE_MISMATCH') {
+          logError('updatePlannedSession', { userId: req.user.userId, sessionId: id, requestData: { training_program_id, type: typeToValidate } },
+            new Error(`Program type mismatch: ${error.programType} != ${error.sessionType}`));
+          return res.status(400).json({
+            error: `Program type "${error.programType}" does not match session type "${error.sessionType}"`,
+            field: 'training_program_id',
+            hint: `Select a ${error.sessionType} program or remove program selection`
+          });
+        }
+        // Re-throw unexpected errors
+        throw error;
+      }
+    }
+
     // Build dynamic update query
     const updates = [];
     const values = [];
@@ -506,6 +689,12 @@ export const updatePlannedSession = async (req, res) => {
     if (notes !== undefined) {
       updates.push(`notes = $${paramCount++}`);
       values.push(notes);
+    }
+    // BE-3: Allow updating training_program_id
+    // Handles three cases: undefined (don't update), null (remove program), value (set program)
+    if (training_program_id !== undefined) {
+      updates.push(`training_program_id = $${paramCount++}`);
+      values.push(training_program_id); // Can be null to remove program, or a number to set it
     }
 
     if (updates.length === 0) {
@@ -537,6 +726,7 @@ export const updatePlannedSession = async (req, res) => {
       duration: updatedSession.duration,
       calories: updatedSession.calories,
       notes: updatedSession.notes,
+      training_program_id: updatedSession.training_program_id, // BE-3: Include program ID in response
       completed: updatedSession.completed,
       exercises: [],
       exerciseCount: 0,
@@ -603,6 +793,15 @@ export const deletePlannedSession = async (req, res) => {
 };
 
 // BE-5: Get upcoming planned sessions endpoint
+/**
+ * Get upcoming planned sessions for the authenticated user
+ * BE-4: Enhanced with program data JOIN to return program_name and program_exercise_count
+ *
+ * @param {Object} req.query - Query parameters
+ * @param {number} [req.query.days=7] - Number of days to look ahead (1-365)
+ *
+ * @returns {Object} Object with sessions array, count, and days
+ */
 export const getUpcomingPlannedSessions = async (req, res) => {
   try {
     const { days = 7 } = req.query;
@@ -615,14 +814,22 @@ export const getUpcomingPlannedSessions = async (req, res) => {
       });
     }
 
-    // Query for upcoming planned sessions
+    // BE-4: Query with LEFT JOIN to include program data
     const sessionsResult = await pool.query(
-      `SELECT * FROM training_sessions
-       WHERE user_id = $1
-       AND completed = false
-       AND session_date >= CURRENT_DATE
-       AND session_date < CURRENT_DATE + INTERVAL '${numDays} days'
-       ORDER BY session_date ASC`,
+      `SELECT
+        ts.*,
+        tp.name as program_name,
+        tp.description as program_description,
+        COUNT(pe.id) as program_exercise_count
+       FROM training_sessions ts
+       LEFT JOIN training_programs tp ON ts.training_program_id = tp.id
+       LEFT JOIN program_exercises pe ON tp.id = pe.program_id
+       WHERE ts.user_id = $1
+       AND ts.completed = false
+       AND ts.session_date >= CURRENT_DATE
+       AND ts.session_date < CURRENT_DATE + INTERVAL '${numDays} days'
+       GROUP BY ts.id, tp.id, tp.name, tp.description
+       ORDER BY ts.session_date ASC`,
       [req.user.userId]
     );
 
@@ -675,6 +882,11 @@ export const getUpcomingPlannedSessions = async (req, res) => {
           calories: session.calories,
           notes: session.notes,
           completed: session.completed,
+          // BE-4: Include program data from JOIN
+          program_name: session.program_name || null,
+          program_description: session.program_description || null,
+          program_exercise_count: parseInt(session.program_exercise_count) || 0,
+          training_program_id: session.training_program_id || null,
           exercises: exercisesWithSets,
           exerciseCount: exercisesWithSets.length,
         };

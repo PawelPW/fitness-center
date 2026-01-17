@@ -12,7 +12,18 @@
     "sync": "npx cap sync",
     "analyze": "npm run build && bash scripts/analyze-bundle.sh",
     "analyze:open": "npm run build && open dist/stats.html",
-    "build:analyze": "npm run build && open dist/stats.html"
+    "build:analyze": "npm run build && open dist/stats.html",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:mobile": "playwright test --project=mobile-ios --project=mobile-android",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.58",
@@ -31,10 +42,20 @@
     "react-swipeable": "^7.0.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.57.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
+    "happy-dom": "^20.0.11",
+    "jsdom": "^27.4.0",
     "rollup-plugin-visualizer": "^6.0.5",
     "terser": "^5.44.1",
     "vite": "^7.2.7",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "vitest": "^4.0.16"
   }
 }

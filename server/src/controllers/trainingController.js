@@ -2,11 +2,22 @@ import pool from '../config/database.js';
 
 export const getAllPrograms = async (req, res) => {
   try {
+    // FE-2: Support optional type filter via query parameter
+    const { type } = req.query;
+
     // Fetch both system programs (user_id IS NULL) and user's custom programs
-    const programsResult = await pool.query(
-      'SELECT * FROM training_programs WHERE user_id IS NULL OR user_id = $1 ORDER BY user_id NULLS FIRST, created_at DESC',
-      [req.user.userId]
-    );
+    // Optionally filter by training_type if provided
+    let query = 'SELECT * FROM training_programs WHERE (user_id IS NULL OR user_id = $1)';
+    const params = [req.user.userId];
+
+    if (type) {
+      query += ' AND training_type = $2';
+      params.push(type);
+    }
+
+    query += ' ORDER BY user_id NULLS FIRST, created_at DESC';
+
+    const programsResult = await pool.query(query, params);
 
     const programs = await Promise.all(
       programsResult.rows.map(async (program) => {
@@ -15,22 +26,25 @@ export const getAllPrograms = async (req, res) => {
           [program.id]
         );
 
+        const exercises = exercisesResult.rows.map(ex => ({
+          id: ex.id.toString(),
+          exerciseId: ex.exercise_id.toString(),
+          exerciseName: ex.exercise_name,
+          sets: ex.sets,
+          reps: ex.reps,
+          weight: parseFloat(ex.weight) || 0,
+          duration: ex.duration,
+          restTime: ex.rest_time,
+        }));
+
         return {
           id: program.id.toString(),
           name: program.name,
           type: program.training_type,
           description: program.description,
           isSystem: program.user_id === null, // True for default programs, false for user custom
-          exercises: exercisesResult.rows.map(ex => ({
-            id: ex.id.toString(),
-            exerciseId: ex.exercise_id.toString(),
-            exerciseName: ex.exercise_name,
-            sets: ex.sets,
-            reps: ex.reps,
-            weight: parseFloat(ex.weight) || 0,
-            duration: ex.duration,
-            restTime: ex.rest_time,
-          })),
+          exercises: exercises,
+          exercise_count: exercises.length, // FE-2: Include exercise count for dropdown display
           createdAt: program.created_at,
           updatedAt: program.updated_at,
           isActive: program.is_active,
@@ -38,6 +52,7 @@ export const getAllPrograms = async (req, res) => {
       })
     );
 
+    // Return programs array directly for backward compatibility
     res.json(programs);
   } catch (error) {
     console.error('Get programs error:', error);

@@ -41,8 +41,28 @@ android/keystore.properties
 *.jks
 *.p12
 
+# iOS signing and certificates
+ios/App/GoogleService-Info.plist
+ios/App/App/GoogleService-Info.plist
+ios/**/*.p12
+ios/**/*.cer
+ios/**/*.mobileprovision
+ios/exportOptions.plist
+*.certSigningRequest
+DerivedData/
+
+# Apple Developer credentials
+AuthKey_*.p8
+*.provisionprofile
+
 # Environment files
 .env.mobile
+.env.ios
+.env.android
 
 # Translation working directory
 translation-export/
+
+# Cloud service configs
+google-services.json          # Firebase Android
+firebase-adminsdk-*.json      # Firebase service account

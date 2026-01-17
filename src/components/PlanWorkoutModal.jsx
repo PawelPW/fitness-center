@@ -35,6 +35,11 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
     notes: ''
   });
 
+  // FE-1: Program selection state
+  const [selectedProgramId, setSelectedProgramId] = useState(null);
+  const [availablePrograms, setAvailablePrograms] = useState([]);
+  const [loadingPrograms, setLoadingPrograms] = useState(false);
+
   // UI state
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,6 +75,8 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           time: editSession.scheduled_time || '',
           notes: editSession.notes || ''
         });
+        // FE-1: Pre-populate selectedProgramId in edit mode
+        setSelectedProgramId(editSession.training_program_id || null);
       } else {
         // Create mode: Use initial props or empty values
         setFormData({
@@ -78,16 +85,93 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           time: '',
           notes: ''
         });
+        // FE-1: Reset program selection in create mode
+        setSelectedProgramId(null);
       }
       setErrors({});
       setApiError('');
+    } else {
+      // FE-1: Cleanup - reset program selection when modal closes
+      setSelectedProgramId(null);
+      setAvailablePrograms([]);
+      setLoadingPrograms(false);
     }
   }, [isOpen, initialDate, initialType, editSession, isEditMode]);
+
+  // FE-2: Fetch programs when training type changes
+  useEffect(() => {
+    // AbortController for cleanup to prevent race conditions
+    const abortController = new AbortController();
+
+    const fetchPrograms = async () => {
+      // Clear programs if no type selected
+      if (!formData.type) {
+        setAvailablePrograms([]);
+        return;
+      }
+
+      try {
+        setLoadingPrograms(true);
+
+        // Fetch programs filtered by training type
+        const programs = await apiService.getUserPrograms(formData.type);
+
+        // Only update state if request wasn't aborted (user didn't change type rapidly)
+        if (!abortController.signal.aborted) {
+          setAvailablePrograms(programs);
+
+          // FE-5: Validate selected program still exists in fetched list
+          if (selectedProgramId) {
+            const programExists = programs.some(p => p.id === selectedProgramId);
+            if (!programExists) {
+              // Program was deleted or doesn't match type - clear selection
+              setSelectedProgramId(null);
+              showToast({
+                type: 'warning',
+                message: 'Selected program is no longer available',
+                duration: 4000
+              });
+            }
+          }
+        }
+      } catch (error) {
+        // Only handle error if request wasn't aborted
+        if (!abortController.signal.aborted) {
+          console.error('Failed to fetch programs:', error);
+          setAvailablePrograms([]);
+
+          // Show error toast to user
+          showToast({
+            type: 'error',
+            message: 'Failed to load programs',
+            duration: 3000
+          });
+        }
+      } finally {
+        // Only update loading state if request wasn't aborted
+        if (!abortController.signal.aborted) {
+          setLoadingPrograms(false);
+        }
+      }
+    };
+
+    fetchPrograms();
+
+    // Cleanup: abort fetch if user changes type rapidly
+    return () => {
+      abortController.abort();
+    };
+  }, [formData.type, showToast]); // Re-fetch when type changes
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+
+    // FE-1: Clear program selection when training type changes (prevents type mismatch)
+    if (name === 'type' && value !== formData.type) {
+      setSelectedProgramId(null);
+    }
 
     // Clear field error when user starts typing
     if (errors[name]) {
@@ -139,7 +223,9 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
       const sessionData = {
         type: formData.type,
         date: formData.date,
-        notes: formData.notes.trim() || undefined
+        notes: formData.notes.trim() || undefined,
+        // FE-1: Include selected program ID (undefined if not selected)
+        training_program_id: selectedProgramId || undefined
       };
 
       // If time is provided, combine it with date (optional feature)
@@ -185,10 +271,22 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
     } catch (error) {
       console.error(`Failed to ${isEditMode ? 'update' : 'create'} planned session:`, error);
 
-      // Handle validation errors from API
+      // FE-4: Handle validation errors from API
       try {
         const errorData = JSON.parse(error.message);
-        if (errorData.errors && Array.isArray(errorData.errors)) {
+
+        // FE-4: Handle program-specific validation errors
+        if (errorData.field === 'training_program_id') {
+          // Program-specific error (404, 403, 400)
+          if (errorData.hint) {
+            // BE-6: Type mismatch errors include helpful hints
+            setApiError(`${errorData.error}. ${errorData.hint}`);
+          } else {
+            // BE-5: Ownership/existence errors
+            setApiError(errorData.error);
+          }
+        } else if (errorData.errors && Array.isArray(errorData.errors)) {
+          // Handle array of field-specific errors
           const fieldErrors = {};
           errorData.errors.forEach(err => {
             if (err.param) {
@@ -198,6 +296,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           setErrors(fieldErrors);
           setApiError('Please fix the errors above');
         } else {
+          // Generic error fallback
           setApiError(errorData.error || `Failed to ${isEditMode ? 'update' : 'schedule'} workout`);
         }
       } catch {
@@ -301,6 +400,75 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
               </span>
             )}
           </div>
+
+          {/* FE-3: Program Dropdown - appears after training type selected */}
+          {formData.type && (
+            <div className="plan-form-group">
+              <label htmlFor="workout-program" className="plan-form-label">
+                Program (Optional)
+              </label>
+              {loadingPrograms ? (
+                /* FE-11: Skeleton loader - mimics dropdown structure */
+                <div className="plan-form-skeleton-wrapper">
+                  <div className="plan-form-skeleton plan-form-skeleton--select">
+                    <div className="plan-form-skeleton__shimmer"></div>
+                    <span className="plan-form-skeleton__text">Loading programs...</span>
+                  </div>
+                </div>
+              ) : availablePrograms.length > 0 ? (
+                <>
+                  <select
+                    id="workout-program"
+                    name="program"
+                    value={selectedProgramId || ''}
+                    onChange={(e) => setSelectedProgramId(e.target.value ? parseInt(e.target.value) : null)}
+                    className="plan-form-select"
+                    disabled={isSubmitting}
+                  >
+                    <option value="">📋 No program (ad-hoc workout)</option>
+                    {availablePrograms.map(program => (
+                      <option key={program.id} value={program.id}>
+                        💪 {program.name} ({program.exercise_count || 0} exercises)
+                      </option>
+                    ))}
+                  </select>
+                  {selectedProgramId && (
+                    <span className="plan-form-hint plan-form-success">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Exercises will be pre-loaded when you start this workout
+                    </span>
+                  )}
+                </>
+              ) : (
+                <div className="plan-form-empty-state">
+                  <div className="empty-state-icon">📋</div>
+                  <div className="empty-state-text">
+                    <p className="empty-state-title">No {formData.type} programs found</p>
+                    <p className="empty-state-description">
+                      Create a program to pre-load exercises for this workout type.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="plan-btn-link"
+                    onClick={() => {
+                      // Navigate to program builder
+                      window.location.href = '/trainings';
+                    }}
+                  >
+                    Create a program →
+                  </button>
+                </div>
+              )}
+              {availablePrograms.length > 0 && (
+                <span className="plan-form-hint">
+                  Pre-load exercises for this workout
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Date Picker */}
           <div className="plan-form-group">

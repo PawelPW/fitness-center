@@ -164,6 +164,7 @@ small {
   color: var(--text-primary);
   margin-bottom: var(--space-6);
   letter-spacing: var(--tracking-tight);
+  text-align: center;
 }
 
 /* Grid layouts */

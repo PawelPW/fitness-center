@@ -718,6 +718,170 @@
 }
 
 /* ============================================
+   FE-3: PROGRAM SELECTION UI COMPONENTS
+   ============================================ */
+
+/* Loading state */
+.plan-form-loading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgba(249, 115, 22, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.plan-form-loading .plan-btn-spinner {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+}
+
+/* FE-11: Skeleton loader for program dropdown */
+.plan-form-skeleton-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.plan-form-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(45, 50, 59, 0.6);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: var(--radius-lg);
+}
+
+.plan-form-skeleton--select {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+}
+
+.plan-form-skeleton__shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(249, 115, 22, 0.1) 50%,
+    transparent 100%
+  );
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.plan-form-skeleton__text {
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  opacity: 0.7;
+}
+
+/* Success hint with checkmark */
+.plan-form-success {
+  color: var(--success-500) !important;
+  background: rgba(34, 197, 94, 0.1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--success-500);
+  animation: planSuccessSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes planSuccessSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.plan-form-success svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 4px rgba(34, 197, 94, 0.3));
+}
+
+/* Empty state */
+.plan-form-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  background: rgba(55, 65, 81, 0.3);
+  border: 1px dashed rgba(156, 163, 175, 0.3);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}
+
+.empty-state-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.empty-state-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.empty-state-description {
+  font-size: var(--text-xs);
+  color: var(--text-quaternary);
+  margin: 0;
+}
+
+/* Link button for empty state */
+.plan-btn-link {
+  background: none;
+  border: none;
+  color: var(--primary-500);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.plan-btn-link:hover {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--primary-400);
+  transform: translateX(2px);
+}
+
+.plan-btn-link:active {
+  transform: translateX(1px) scale(0.98);
+}
+
+/* ============================================
    DARK MODE SUPPORT (already optimized)
    ============================================ */
 

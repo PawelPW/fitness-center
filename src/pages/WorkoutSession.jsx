@@ -68,17 +68,75 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
         sessionId = response.id;
       }
 
-      // Initialize session in frontend
+      // FE-8: Initialize session in frontend
+      // Check for exercises in nested program object (from planned sessions with programs)
+      // or directly in program object (from training program starts)
+      console.log('FE-8: WorkoutSession - Full program object:', JSON.stringify(program, null, 2));
+      console.log('FE-8: WorkoutSession - program.program:', program.program);
+      console.log('FE-8: WorkoutSession - program.exercises:', program.exercises);
+
+      // Handle different API response structures
+      let exercises = [];
+      if (program.program?.exercises) {
+        // Planned session with fetched program data
+        exercises = program.program.exercises;
+        console.log('FE-8: Using program.program.exercises (planned session):', exercises.length, 'exercises');
+      } else if (program.exercises) {
+        // Direct program start
+        exercises = program.exercises;
+        console.log('FE-8: Using program.exercises (direct start):', exercises.length, 'exercises');
+      } else if (program.program?.program_exercises) {
+        // Backend might return program_exercises array
+        exercises = program.program.program_exercises;
+        console.log('FE-8: Using program.program.program_exercises:', exercises.length, 'exercises');
+      } else if (program.program_exercises) {
+        exercises = program.program_exercises;
+        console.log('FE-8: Using program.program_exercises:', exercises.length, 'exercises');
+      } else {
+        console.warn('FE-8: NO EXERCISES FOUND! Checked all possible locations.');
+        console.warn('FE-8: Available properties:', Object.keys(program));
+        if (program.program) {
+          console.warn('FE-8: program.program properties:', Object.keys(program.program));
+        }
+      }
+
+      const programName = program.program?.name || program.name || program.type;
+      const programId = program.program?.id || program.id || program.training_program_id;
+
+      console.log('FE-8: Final exercises array:', exercises.length, 'exercises');
+      console.log('FE-8: Final programName:', programName);
+      console.log('FE-8: Final programId:', programId);
+
+      if (exercises.length === 0) {
+        console.error('FE-8: WARNING - Starting workout with 0 exercises!');
+        console.error('FE-8: This will create an empty workout session.');
+        // Set error and stop
+        setError('No exercises found in this program. Cannot start workout.');
+        setLoading(false);
+        return;
+      }
+
+      console.log('FE-8: Calling initializeSession with:', {
+        sessionId,
+        programId,
+        programName,
+        trainingType: program.type,
+        exerciseCount: exercises.length
+      });
+
       initializeSession({
         sessionId: sessionId,
-        programId: program.id || program.training_program_id,
-        programName: program.name || program.type,
+        programId: programId,
+        programName: programName,
         trainingType: program.type,
-        exercises: program.exercises || [],
+        exercises: exercises,
       });
+
+      console.log('FE-8: Session initialized successfully!');
     } catch (err) {
-      console.error('Failed to start workout:', err);
-      setError(t('errors.startFailed'));
+      console.error('FE-8: Failed to start workout:', err);
+      console.error('FE-8: Error stack:', err.stack);
+      setError(t('errors.startFailed') || 'Failed to start workout');
     } finally {
       setLoading(false);
     }
@@ -152,13 +210,10 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
         completed_at: new Date().toISOString(),
       };
 
-      // If this is a planned session, update it using the planned sessions endpoint
-      // Otherwise, use the regular sessions endpoint
-      if (plannedSessionId) {
-        await apiService.updatePlannedSession(state.sessionId, completionData);
-      } else {
-        await apiService.updateSession(state.sessionId, completionData);
-      }
+      // Always use the regular sessions endpoint for completion updates
+      // The updatePlannedSession endpoint is only for editing planned session metadata (type, date, notes)
+      // Completion updates (completed, duration, calories) go through updateSession
+      await apiService.updateSession(state.sessionId, completionData);
 
       // Save exercise data with individual sets
       for (const exercise of state.exercises) {
