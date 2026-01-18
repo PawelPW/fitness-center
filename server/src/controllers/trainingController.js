@@ -227,24 +227,30 @@ export const cloneProgram = async (req, res) => {
     await client.query('BEGIN');
 
     const { id } = req.params;
+    const { customName } = req.body; // Optional custom name for the clone
 
-    // Fetch the program to clone (must be a system program)
+    // Fetch the program to clone (system programs OR user's own programs)
     const programResult = await client.query(
-      'SELECT * FROM training_programs WHERE id = $1 AND user_id IS NULL',
-      [id]
+      'SELECT * FROM training_programs WHERE id = $1 AND (user_id IS NULL OR user_id = $2)',
+      [id, req.user.userId]
     );
 
     if (programResult.rows.length === 0) {
       await client.query('ROLLBACK');
-      return res.status(404).json({ error: 'System program not found' });
+      return res.status(404).json({ error: 'Program not found' });
     }
 
     const originalProgram = programResult.rows[0];
 
+    // Use custom name if provided, otherwise append "(My Copy)" for system programs or "(Copy)" for own programs
+    const isSystemProgram = originalProgram.user_id === null;
+    const defaultSuffix = isSystemProgram ? ' (My Copy)' : ' (Copy)';
+    const newName = customName || `${originalProgram.name}${defaultSuffix}`;
+
     // Create a copy for the user
     const newProgramResult = await client.query(
       'INSERT INTO training_programs (user_id, name, training_type, description, is_active) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [req.user.userId, `${originalProgram.name} (My Copy)`, originalProgram.training_type, originalProgram.description, true]
+      [req.user.userId, newName, originalProgram.training_type, originalProgram.description, true]
     );
 
     const newProgram = newProgramResult.rows[0];

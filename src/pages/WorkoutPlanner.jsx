@@ -72,7 +72,9 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
     try {
       if (showLoader) setLoading(true);
       const response = await apiService.getAllSessions({ completed: false });
-      setPlannedSessions(response.sessions || []);
+      // API returns sessions array directly, not wrapped in { sessions: [...] }
+      const sessions = Array.isArray(response) ? response : (response.sessions || []);
+      setPlannedSessions(sessions);
       setError('');
     } catch (err) {
       console.error('Failed to load planned sessions:', err);
@@ -89,7 +91,9 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
   const loadAllSessions = async () => {
     try {
       const response = await apiService.getAllSessions();
-      setAllSessions(response.sessions || []);
+      // API returns sessions array directly, not wrapped in { sessions: [...] }
+      const sessions = Array.isArray(response) ? response : (response.sessions || []);
+      setAllSessions(sessions);
     } catch (err) {
       console.error('Failed to load all sessions:', err);
     }

@@ -103,7 +103,7 @@ export const createExercise = async (req, res) => {
 export const updateExercise = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, lastWeight, lastDate, lastRepetitions, lastSeries } = req.body;
+    const { name, description, trainingType, lastWeight, lastDate, lastRepetitions, lastSeries } = req.body;
 
     // Check if exercise exists and belongs to user
     const checkResult = await pool.query(
@@ -127,6 +127,10 @@ export const updateExercise = async (req, res) => {
     if (description !== undefined) {
       updates.push(`description = $${paramCount++}`);
       values.push(description);
+    }
+    if (trainingType !== undefined) {
+      updates.push(`training_type = $${paramCount++}`);
+      values.push(trainingType);
     }
     if (lastWeight !== undefined) {
       updates.push(`last_weight = $${paramCount++}`);
@@ -166,6 +170,7 @@ export const updateExercise = async (req, res) => {
       id: exercise.id.toString(),
       name: exercise.name,
       description: exercise.description,
+      trainingType: exercise.training_type,
       isCustom: exercise.is_custom,
       lastWeight: exercise.last_weight,
       lastDate: exercise.last_date,

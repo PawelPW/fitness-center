@@ -192,6 +192,13 @@ class ApiService {
     });
   }
 
+  async cloneTrainingProgram(id, customName = null) {
+    return this.request(`/trainings/${id}/clone`, {
+      method: 'POST',
+      body: JSON.stringify({ customName }),
+    });
+  }
+
   /**
    * FE-2: Get user's training programs, optionally filtered by training type
    *

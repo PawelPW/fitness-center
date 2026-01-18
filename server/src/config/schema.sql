@@ -24,7 +24,13 @@ CREATE TABLE IF NOT EXISTS exercises (
   name VARCHAR(255) NOT NULL,
   training_type VARCHAR(50) NOT NULL,
   is_custom BOOLEAN DEFAULT true,
+  description TEXT,
+  last_weight DECIMAL(10, 2),
+  last_date TIMESTAMP,
+  last_repetitions INTEGER,
+  last_series INTEGER,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(user_id, name, training_type)
 );
 

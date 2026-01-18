@@ -16,6 +16,7 @@ function ExerciseList({ onBack }) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    trainingType: TRAINING_TYPES.STRENGTH,
   });
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,10 +70,10 @@ function ExerciseList({ onBack }) {
       await apiService.createExercise({
         name: formData.name.trim(),
         description: formData.description.trim(),
-        trainingType: selectedType,
+        trainingType: formData.trainingType,
       });
       await loadExercises();
-      setFormData({ name: '', description: '' });
+      setFormData({ name: '', description: '', trainingType: selectedType });
       setShowAddForm(false);
     } catch (err) {
       setError(err.message || t('exercises:errors.createFailed'));
@@ -92,9 +93,10 @@ function ExerciseList({ onBack }) {
       await apiService.updateExercise(editingExercise.id, {
         name: formData.name.trim(),
         description: formData.description.trim(),
+        trainingType: formData.trainingType,
       });
       await loadExercises();
-      setFormData({ name: '', description: '' });
+      setFormData({ name: '', description: '', trainingType: selectedType });
       setShowEditForm(false);
       setEditingExercise(null);
     } catch (err) {
@@ -107,6 +109,7 @@ function ExerciseList({ onBack }) {
     setFormData({
       name: exercise.name,
       description: exercise.description || '',
+      trainingType: selectedType, // Current type is the selected filter type
     });
     setShowEditForm(true);
     setError('');
@@ -195,7 +198,10 @@ function ExerciseList({ onBack }) {
             className="input-field"
           />
           <button
-            onClick={() => setShowAddForm(true)}
+            onClick={() => {
+              setFormData({ name: '', description: '', trainingType: selectedType });
+              setShowAddForm(true);
+            }}
             className="btn-primary"
           >
             + {t('exercises:actions.addExercise')}
@@ -206,14 +212,27 @@ function ExerciseList({ onBack }) {
         {showAddForm && (
           <div className="add-form-overlay" onClick={() => {
             setShowAddForm(false);
-            setFormData({ name: '', description: '' });
+            setFormData({ name: '', description: '', trainingType: selectedType });
             setError('');
           }}>
             <div className="add-form-card" onClick={(e) => e.stopPropagation()}>
               <h2 className="form-title">{t('exercises:form.addTitle')}</h2>
-              <p className="form-subtitle">{t('exercises:form.typeLabel', { type: selectedType })}</p>
 
               <form onSubmit={handleAddExercise}>
+                <div className="form-group">
+                  <label htmlFor="exerciseType">{t('exercises:form.typeSelectLabel', 'Type')}</label>
+                  <select
+                    id="exerciseType"
+                    value={formData.trainingType}
+                    onChange={(e) => setFormData({ ...formData, trainingType: e.target.value })}
+                    className="input-field"
+                  >
+                    {Object.values(TRAINING_TYPES).map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="exerciseName">{t('exercises:form.nameLabel')}</label>
                   <input
@@ -246,7 +265,7 @@ function ExerciseList({ onBack }) {
                     type="button"
                     onClick={() => {
                       setShowAddForm(false);
-                      setFormData({ name: '', description: '' });
+                      setFormData({ name: '', description: '', trainingType: selectedType });
                       setError('');
                     }}
                     className="btn-secondary"
@@ -267,14 +286,27 @@ function ExerciseList({ onBack }) {
           <div className="add-form-overlay" onClick={() => {
             setShowEditForm(false);
             setEditingExercise(null);
-            setFormData({ name: '', description: '' });
+            setFormData({ name: '', description: '', trainingType: selectedType });
             setError('');
           }}>
             <div className="add-form-card" onClick={(e) => e.stopPropagation()}>
               <h2 className="form-title">{t('exercises:form.editTitle')}</h2>
-              <p className="form-subtitle">{t('exercises:form.typeLabel', { type: selectedType })}</p>
 
               <form onSubmit={handleEditExercise}>
+                <div className="form-group">
+                  <label htmlFor="editExerciseType">{t('exercises:form.typeSelectLabel', 'Type')}</label>
+                  <select
+                    id="editExerciseType"
+                    value={formData.trainingType}
+                    onChange={(e) => setFormData({ ...formData, trainingType: e.target.value })}
+                    className="input-field"
+                  >
+                    {Object.values(TRAINING_TYPES).map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="editExerciseName">{t('exercises:form.nameLabel')}</label>
                   <input
@@ -308,7 +340,7 @@ function ExerciseList({ onBack }) {
                     onClick={() => {
                       setShowEditForm(false);
                       setEditingExercise(null);
-                      setFormData({ name: '', description: '' });
+                      setFormData({ name: '', description: '', trainingType: selectedType });
                       setError('');
                     }}
                     className="btn-secondary"

@@ -201,8 +201,10 @@ function App() {
     setNavigationStack(prev => prev.slice(0, -1));
   };
 
-  const handleUpdateUser = (updatedUser) => {
+  const handleUpdateUser = async (updatedUser) => {
     setUser(updatedUser);
+    // Persist updated user data to secure storage so it survives app restarts
+    await secureStorage.set('fitness-user', JSON.stringify(updatedUser));
   };
 
   const handleViewPlanner = () => {

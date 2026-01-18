@@ -36,6 +36,7 @@ async function runMigrations() {
       { version: 4, file: '004_add_user_profile_fields.sql' },
       { version: 5, file: '005_workout_planning_enhancements.sql' }, // BE-8
       { version: 6, file: '006_add_program_id_to_sessions.sql' }, // BE-1: Program Selection Feature
+      { version: 7, file: '007_add_exercise_fields.sql' }, // Add missing exercise columns
       // Add future migrations here
     ];
 

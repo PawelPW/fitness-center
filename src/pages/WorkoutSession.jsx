@@ -37,12 +37,16 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
   const [error, setError] = useState('');
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showNotesModal, setShowNotesModal] = useState(false);
+  const [sessionStarted, setSessionStarted] = useState(false);
 
   useEffect(() => {
-    if (program) {
+    // Guard: Only start session once, and only when program is available
+    // Include plannedSessionId in check to ensure props are synchronized
+    if (program && !sessionStarted) {
+      setSessionStarted(true);
       startWorkoutSession();
     }
-  }, [program]);
+  }, [program, plannedSessionId, sessionStarted]);
 
   const startWorkoutSession = async () => {
     try {
@@ -51,21 +55,20 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
       let sessionId;
 
       // If starting from a planned session, use its ID
-      // Otherwise, create a new session
+      // For ad-hoc workouts, use a temporary marker - session will be created on completion
       if (plannedSessionId) {
         sessionId = plannedSessionId;
         console.log('Starting workout from planned session:', plannedSessionId);
+      } else if (program.plannedSessionId) {
+        // Fallback: Check if plannedSessionId is nested in program object
+        sessionId = program.plannedSessionId;
+        console.log('Starting workout from planned session (via program):', sessionId);
       } else {
-        // Create new session in backend
-        const sessionData = {
-          programId: program.id,
-          type: program.type,  // Backend expects 'type', not 'trainingType'
-          date: new Date().toISOString(),  // Backend expects 'date', not 'sessionDate'
-          completed: false,
-        };
-
-        const response = await apiService.createSession(sessionData);
-        sessionId = response.id;
+        // For ad-hoc workouts, don't create a session yet
+        // Use 'pending' as a marker - actual session will be created when workout is completed
+        // This prevents incomplete/abandoned workouts from appearing as "upcoming"
+        sessionId = 'pending';
+        console.log('Starting ad-hoc workout - session will be created on completion');
       }
 
       // FE-8: Initialize session in frontend
@@ -203,17 +206,38 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
       // Estimate calories (rough calculation)
       const estimatedCalories = Math.floor(durationMinutes * 5);
 
-      const completionData = {
-        completed: true,
-        duration: durationMinutes,
-        calories: estimatedCalories,
-        completed_at: new Date().toISOString(),
-      };
+      let finalSessionId = state.sessionId;
 
-      // Always use the regular sessions endpoint for completion updates
-      // The updatePlannedSession endpoint is only for editing planned session metadata (type, date, notes)
-      // Completion updates (completed, duration, calories) go through updateSession
-      await apiService.updateSession(state.sessionId, completionData);
+      // Check if this is an ad-hoc workout (session not yet created)
+      if (state.sessionId === 'pending') {
+        // Create the session now with completed=true
+        console.log('Creating session for completed ad-hoc workout');
+        const sessionData = {
+          programId: state.programId,
+          type: state.trainingType,
+          date: new Date().toISOString(),
+          duration: durationMinutes,
+          calories: estimatedCalories,
+          completed: true, // Created as completed - won't appear in "upcoming"
+        };
+
+        const response = await apiService.createSession(sessionData);
+        finalSessionId = response.id;
+        console.log('Created completed session with ID:', finalSessionId);
+      } else {
+        // Existing planned session - update it to completed
+        const completionData = {
+          completed: true,
+          duration: durationMinutes,
+          calories: estimatedCalories,
+          completed_at: new Date().toISOString(),
+        };
+
+        // The updatePlannedSession endpoint is only for editing planned session metadata (type, date, notes)
+        // Completion updates (completed, duration, calories) go through updateSession
+        await apiService.updateSession(state.sessionId, completionData);
+        console.log('Updated planned session to completed:', state.sessionId);
+      }
 
       // Save exercise data with individual sets
       for (const exercise of state.exercises) {
@@ -237,14 +261,14 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
 
           console.log('Sending to API:', exerciseData);
 
-          await apiService.createSessionExercise(state.sessionId, exerciseData);
+          await apiService.createSessionExercise(finalSessionId, exerciseData);
         }
       }
 
       // Navigate to completion screen
       if (onComplete) {
         onComplete({
-          sessionId: state.sessionId,
+          sessionId: finalSessionId,
           duration: durationMinutes,
           calories: estimatedCalories,
           exercisesCompleted: state.completedExercises.filter(idx =>
