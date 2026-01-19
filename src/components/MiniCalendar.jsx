@@ -40,7 +40,6 @@ function MiniCalendar({ sessions, onClick }) {
     <div className="mini-calendar-card" onClick={onClick}>
       <div className="mini-calendar-header">
         <div className="mini-calendar-title">
-          <span className="calendar-icon">📅</span>
           {t('mini.title')}
         </div>
         <div className="mini-calendar-month">
