@@ -6,7 +6,16 @@
     "day_streak": "day streak",
     "day_streak_plural": "day streak",
     "workouts_this_month": "workouts this month",
-    "workouts_this_month_plural": "workouts this month"
+    "workouts_this_month_plural": "workouts this month",
+    "scheduled": "Scheduled",
+    "toGoal": "to goal",
+    "goalTitle": "Goal: {{goal}} - {{current}}kg → {{target}}kg",
+    "fitnessGoals": {
+      "weight_loss": "Weight Loss",
+      "muscle_gain": "Muscle Gain",
+      "maintenance": "Maintenance",
+      "endurance": "Endurance"
+    }
   },
   "loading": {
     "trainingData": "Loading your training data..."
@@ -14,6 +23,9 @@
   "trainingSessions": {
     "title": "Training Sessions",
     "sessionsCount": "Sessions this {{period}}",
+    "sessionsCount_week": "Sessions this week",
+    "sessionsCount_month": "Sessions this month",
+    "sessionsCount_year": "Sessions this year",
     "caloriesBurned": "Calories burned",
     "minutesTrained": "Minutes trained",
     "exercisesCompleted": "Exercises completed"
@@ -32,7 +44,26 @@
     "exercises": "Exercises",
     "statistics": "Statistics",
     "settings": "Settings",
-    "diet": "Diet"
+    "diet": "Diet",
+    "planner": "Planner"
+  },
+  "upcomingWorkouts": {
+    "title": "Upcoming Workouts",
+    "viewAll": "View All →",
+    "emptyTitle": "No Workouts Planned",
+    "emptyMessage": "Start planning your training to stay on track",
+    "planButton": "Plan Your Week"
+  },
+  "toast": {
+    "workoutRemoved": "Workout removed",
+    "deleteFailed": "Failed to delete workout",
+    "retry": "Retry"
+  },
+  "deleteDialog": {
+    "title": "Delete Workout?",
+    "message": "Delete this planned workout?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
   },
   "welcome_message": "Welcome back, {{name}}!",
   "recent_sessions": "Recent Sessions",

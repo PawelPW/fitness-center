@@ -212,7 +212,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       // 3. Success toast
       showToast({
         type: 'success',
-        message: 'Workout removed',
+        message: t('dashboard:toast.workoutRemoved'),
         duration: 3000
       });
     } catch (error) {
@@ -222,7 +222,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       setUpcomingSessions(originalSessions);
 
       // 5. Parse error for retry option
-      let errorMessage = 'Failed to delete workout';
+      let errorMessage = t('dashboard:toast.deleteFailed');
       let errorCode = null;
 
       try {
@@ -243,7 +243,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         message: errorMessage,
         duration: isNetworkError ? 0 : 5000,
         action: isNetworkError ? {
-          label: 'Retry',
+          label: t('dashboard:toast.retry'),
           onClick: () => {
             setSessionToDelete(sessionId);
             confirmDelete();
@@ -291,16 +291,16 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
 
               {/* Scheduled Workouts Badge */}
               {scheduledThisMonth > 0 && (
-                <span className="stat-badge scheduled-badge" title="Planned workouts for this month">
+                <span className="stat-badge scheduled-badge" title={t('dashboard:upcomingWorkouts.title')}>
                   <span className="stat-badge-icon">📋</span>
                   <span className="stat-badge-value">{scheduledThisMonth}</span>
-                  <span className="stat-badge-label">Scheduled</span>
+                  <span className="stat-badge-label">{t('dashboard:header.scheduled')}</span>
                 </span>
               )}
 
               {/* Compact Goal Progress Badge */}
               {user?.weight_kg && user?.target_weight_kg && user?.fitness_goal && (
-                <span className="stat-badge goal-badge" title={`Goal: ${user.fitness_goal === 'weight_loss' ? 'Weight Loss' : user.fitness_goal === 'muscle_gain' ? 'Muscle Gain' : user.fitness_goal === 'maintenance' ? 'Maintenance' : 'Endurance'} - ${user.weight_kg}kg → ${user.target_weight_kg}kg`}>
+                <span className="stat-badge goal-badge" title={t('dashboard:header.goalTitle', { goal: t(`dashboard:header.fitnessGoals.${user.fitness_goal}`), current: user.weight_kg, target: user.target_weight_kg })}>
                     <span className="goal-badge-icon">
                       {user.fitness_goal === 'weight_loss' && '🔥'}
                       {user.fitness_goal === 'muscle_gain' && '💪'}
@@ -315,7 +315,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
                         return remaining.toFixed(1);
                       })()}kg
                     </span>
-                    <span className="stat-badge-label">to goal</span>
+                    <span className="stat-badge-label">{t('dashboard:header.toGoal')}</span>
                   </span>
               )}
             </div>
@@ -362,7 +362,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
               <div className="stat-card-icon">🏋️</div>
               <div className="stat-card-value">{getStatValue('totalSessions', 0)}</div>
               <div className="stat-card-label">
-                {t('dashboard:trainingSessions.sessionsCount', { period: selectedPeriod })}
+                {t(`dashboard:trainingSessions.sessionsCount_${selectedPeriod}`)}
               </div>
             </div>
 
@@ -389,14 +389,14 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         {/* Upcoming Workouts Section */}
         <section className="section upcoming-workouts-section">
           <div className="section-header">
-            <h2 className="section-title">Upcoming Workouts</h2>
+            <h2 className="section-title">{t('dashboard:upcomingWorkouts.title')}</h2>
             {upcomingSessions.length > 0 && (
               <button
                 className="view-all-link"
                 onClick={onViewCalendar}
-                aria-label="View all planned workouts"
+                aria-label={t('dashboard:upcomingWorkouts.viewAll')}
               >
-                View All →
+                {t('dashboard:upcomingWorkouts.viewAll')}
               </button>
             )}
           </div>
@@ -417,10 +417,10 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           ) : (
             <div className="empty-state upcoming-empty">
               <div className="empty-icon floating-icon">📅</div>
-              <h3>No Workouts Planned</h3>
-              <p>Start planning your training to stay on track</p>
+              <h3>{t('dashboard:upcomingWorkouts.emptyTitle')}</h3>
+              <p>{t('dashboard:upcomingWorkouts.emptyMessage')}</p>
               <button onClick={handleOpenPlanModal} className="btn-primary">
-                Plan Your Week
+                {t('dashboard:upcomingWorkouts.planButton')}
               </button>
             </div>
           )}
@@ -490,7 +490,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
             </button>
             <button className="action-card action-card-plan" onClick={onViewPlanner}>
               <div className="action-icon">🗓️</div>
-              <div className="action-title">Planner</div>
+              <div className="action-title">{t('dashboard:quickActions.planner')}</div>
             </button>
           </div>
         </section>
@@ -523,10 +523,10 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
           setSessionToDelete(null);
         }}
         onConfirm={confirmDelete}
-        title="Delete Workout?"
-        message="Delete this planned workout?"
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('dashboard:deleteDialog.title')}
+        message={t('dashboard:deleteDialog.message')}
+        confirmText={t('dashboard:deleteDialog.confirm')}
+        cancelText={t('dashboard:deleteDialog.cancel')}
         variant="danger"
       />
     </div>

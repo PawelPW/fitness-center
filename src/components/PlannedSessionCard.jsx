@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { isOverdue } from '../utils/calendarHelpers';
 import './PlannedSessionCard.css';
 
@@ -26,6 +27,7 @@ const PlannedSessionCard = ({
   onCardClick,
   showActions = true,
 }) => {
+  const { t } = useTranslation('workoutPlanner');
   const [isPressed, setIsPressed] = useState(false);
 
   // Validate session data
@@ -58,13 +60,13 @@ const PlannedSessionCard = ({
 
   // Format date display
   const formatDate = (dateString) => {
-    if (!dateString) return 'Date not set';
+    if (!dateString) return t('card.dateNotSet');
 
     try {
       const date = new Date(dateString);
 
       if (isNaN(date.getTime())) {
-        return 'Invalid date';
+        return t('card.invalidDate');
       }
 
       const today = new Date();
@@ -78,9 +80,9 @@ const PlannedSessionCard = ({
       sessionDate.setHours(0, 0, 0, 0);
 
       if (sessionDate.getTime() === today.getTime()) {
-        return 'Today';
+        return t('dateLabels.today');
       } else if (sessionDate.getTime() === tomorrow.getTime()) {
-        return 'Tomorrow';
+        return t('dateLabels.tomorrow');
       } else {
         // Format as "Jan 15, 2026"
         return date.toLocaleDateString('en-US', {
@@ -91,20 +93,20 @@ const PlannedSessionCard = ({
       }
     } catch (error) {
       console.error('Error formatting date:', error);
-      return 'Invalid date';
+      return t('card.invalidDate');
     }
   };
 
   // Format time display
   const formatTime = (timeString) => {
-    if (!timeString) return 'All Day';
+    if (!timeString) return t('card.allDay');
 
     try {
       // Handle HH:MM format (24-hour)
       const [hours, minutes] = timeString.split(':').map(Number);
 
       if (isNaN(hours) || isNaN(minutes)) {
-        return 'All Day';
+        return t('card.allDay');
       }
 
       // Convert to 12-hour format with AM/PM
@@ -115,7 +117,7 @@ const PlannedSessionCard = ({
       return `${displayHours}:${displayMinutes} ${period}`;
     } catch (error) {
       console.error('Error formatting time:', error);
-      return 'All Day';
+      return t('card.allDay');
     }
   };
 
@@ -219,7 +221,7 @@ const PlannedSessionCard = ({
               </span>
               {session?.program_exercise_count && (
                 <span className="planned-session-card__program-count">
-                  {session.program_exercise_count} exercises
+                  {t('card.exercises', { count: session.program_exercise_count })}
                 </span>
               )}
             </div>
@@ -227,7 +229,7 @@ const PlannedSessionCard = ({
 
           {overdueStatus && (
             <span className="planned-session-card__overdue-badge" role="status">
-              OVERDUE
+              {t('dateLabels.overdue')}
             </span>
           )}
         </div>
@@ -278,7 +280,7 @@ const PlannedSessionCard = ({
             <span className="planned-session-card__btn-icon" role="img" aria-hidden="true">
               ▶️
             </span>
-            Start Workout
+            {t('card.startWorkout')}
           </button>
 
           <button
@@ -289,7 +291,7 @@ const PlannedSessionCard = ({
             <span className="planned-session-card__btn-icon" role="img" aria-hidden="true">
               ✏️
             </span>
-            Edit
+            {t('card.edit')}
           </button>
 
           <button
@@ -300,7 +302,7 @@ const PlannedSessionCard = ({
             <span className="planned-session-card__btn-icon" role="img" aria-hidden="true">
               🗑️
             </span>
-            Delete
+            {t('card.delete')}
           </button>
         </div>
       )}

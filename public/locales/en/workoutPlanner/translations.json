@@ -1,0 +1,200 @@
+{
+  "title": "Workout Planner",
+  "subtitle": "Plan and schedule your training sessions",
+  "loading": "Loading your workout plan...",
+  "refreshing": "Refreshing...",
+  "errors": {
+    "loadFailed": "Failed to load planned workouts. Please try again.",
+    "deleteFailed": "Failed to delete workout",
+    "deletePartial": "Some sessions could not be deleted. Please try again.",
+    "createFailed": "Failed to create workout plan. Please try again."
+  },
+  "header": {
+    "back": "Go back",
+    "info": "Planning features info"
+  },
+  "calendar": {
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month"
+  },
+  "quickActions": {
+    "quickPlan": "Quick Plan",
+    "planWorkout": "Plan Workout"
+  },
+  "sessions": {
+    "title": "Planned Workouts",
+    "count": "{{count}} session",
+    "count_plural": "{{count}} sessions",
+    "bulkActions": "Bulk actions"
+  },
+  "dateLabels": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "overdue": "OVERDUE"
+  },
+  "empty": {
+    "title": "No Workouts Planned",
+    "message": "No planned workouts yet. Tap 'Plan Workout' to get started and stay on track with your fitness goals.",
+    "action": "Plan Your First Workout"
+  },
+  "bulkActions": {
+    "title": "Bulk Actions",
+    "close": "Close",
+    "clearWeek": "Clear This Week",
+    "clearMonth": "Clear This Month ({{month}})",
+    "deleteAll": "Delete All Planned ({{count}})",
+    "confirmWeek": "Delete {{count}} planned workout(s) for this week?",
+    "confirmMonth": "Delete {{count}} planned workout(s) for {{month}} {{year}}?",
+    "confirmAll": "Delete ALL {{count}} planned workouts? This cannot be undone.",
+    "confirmAllFinal": "Are you absolutely sure? This will permanently delete all your planned workouts.",
+    "noSessionsWeek": "No planned sessions this week.",
+    "noSessionsMonth": "No planned sessions in {{month}} {{year}}."
+  },
+  "infoModal": {
+    "title": "Planning Features",
+    "close": "Close",
+    "gotIt": "Got it",
+    "features": {
+      "planWorkout": {
+        "title": "Plan Workout",
+        "description": "Schedule individual workouts with specific dates, times, and notes."
+      },
+      "quickPlan": {
+        "title": "Quick Plan",
+        "description": "Generate complete workout schedules for 1 week, 2 weeks, or 1 month using smart AI or default templates."
+      },
+      "calendar": {
+        "title": "Calendar View",
+        "description": "See your planned and completed workouts at a glance. Swipe left/right to navigate months."
+      },
+      "sessionManagement": {
+        "title": "Session Management",
+        "description": "Start, edit, or delete individual sessions directly from the list."
+      },
+      "bulkActions": {
+        "title": "Bulk Actions",
+        "description": "Clear multiple sessions at once (week, month, or all planned workouts)."
+      }
+    }
+  },
+  "deleteDialog": {
+    "title": "Delete Workout?",
+    "message": "Delete this planned workout?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "toast": {
+    "workoutRemoved": "Workout removed",
+    "retry": "Retry"
+  },
+  "modal": {
+    "scheduleTitle": "Schedule Workout",
+    "editTitle": "Edit Workout",
+    "close": "Close modal",
+    "form": {
+      "trainingType": "Training Type",
+      "trainingTypePlaceholder": "Select training type",
+      "program": "Program (Optional)",
+      "programPlaceholder": "No program (ad-hoc workout)",
+      "programHint": "Pre-load exercises for this workout",
+      "programSuccess": "Exercises will be pre-loaded when you start this workout",
+      "noPrograms": "No {{type}} programs found",
+      "noProgramsDescription": "Create a program to pre-load exercises for this workout type.",
+      "createProgram": "Create a program",
+      "date": "Date",
+      "time": "Time (Optional)",
+      "timeHint": "Set a specific time for your workout",
+      "notes": "Notes (Optional)",
+      "notesPlaceholder": "Add any notes or goals for this workout...",
+      "notesCount": "{{count}}/500 characters",
+      "loadingPrograms": "Loading programs...",
+      "programWarning": "Selected program is no longer available",
+      "loadProgramsFailed": "Failed to load programs"
+    },
+    "validation": {
+      "typeRequired": "Please select a training type",
+      "dateRequired": "Please select a date",
+      "dateFuture": "Date must be today or in the future",
+      "fixErrors": "Please fix the errors above"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "schedule": "Schedule Workout",
+      "update": "Update Workout",
+      "scheduling": "Scheduling...",
+      "updating": "Updating..."
+    },
+    "toast": {
+      "scheduled": "Workout scheduled",
+      "updated": "Workout updated"
+    },
+    "errors": {
+      "scheduleFailed": "Failed to schedule workout",
+      "updateFailed": "Failed to update workout"
+    }
+  },
+  "card": {
+    "dateNotSet": "Date not set",
+    "invalidDate": "Invalid date",
+    "allDay": "All Day",
+    "startWorkout": "Start Workout",
+    "edit": "Edit",
+    "delete": "Delete",
+    "exercises": "{{count}} exercises"
+  },
+  "quickPlan": {
+    "title": "Quick Plan",
+    "subtitle": "Generate workouts in seconds",
+    "close": "Close modal",
+    "timeHorizon": "Time Horizon",
+    "duration": {
+      "oneWeek": "1 Week",
+      "twoWeeks": "2 Weeks",
+      "oneMonth": "1 Month"
+    },
+    "templateMode": "Template Mode",
+    "modes": {
+      "default": "Default",
+      "smart": "Smart AI",
+      "smartLocked": "Requires 3+ workouts in past 4 weeks",
+      "smartHint": "Based on your training history"
+    },
+    "preview": {
+      "title": "Preview",
+      "count": "{{count}} workouts",
+      "week": "Week {{number}}",
+      "noSessions": "No sessions generated yet",
+      "generating": "Generating your workout plan..."
+    },
+    "edit": {
+      "timePlaceholder": "Time (optional)",
+      "notesPlaceholder": "Notes (optional)",
+      "done": "Done"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Plan ({{count}})",
+      "creating": "Creating {{count}} workouts...",
+      "creatingProgress": "Creating {{progress}}%..."
+    },
+    "toast": {
+      "created": "{{count}} workouts created"
+    },
+    "errors": {
+      "noSessions": "No sessions to create. Please generate a plan first.",
+      "smartModeRequirement": "You need at least 3 workouts in the past 4 weeks to use Smart mode.",
+      "generateFailed": "Failed to generate workout plan. Please try again."
+    }
+  },
+  "trainingTypes": {
+    "cardio": "Cardio",
+    "strength": "Strength",
+    "calisthenics": "Calisthenics",
+    "boxing": "Boxing",
+    "swimming": "Swimming",
+    "yoga": "Yoga",
+    "hiit": "HIIT",
+    "cycling": "Cycling",
+    "running": "Running"
+  }
+}

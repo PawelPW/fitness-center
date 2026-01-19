@@ -20,7 +20,15 @@
   "program": {
     "exercises_count": "{{count}} exercises",
     "exercises_count_plural": "{{count}} exercises",
-    "created": "Created {{date}}"
+    "created": "Created {{date}}",
+    "defaultBadge": "Default"
+  },
+  "cloneModal": {
+    "title": "Edit Default Training",
+    "message": "\"{{name}}\" is a default training program. To customize it, we'll create your personal copy that you can edit freely.",
+    "note": "The original default training will remain unchanged.",
+    "creating": "Creating...",
+    "confirm": "Create My Copy & Edit"
   },
   "empty": {
     "title": "No training programs yet",
@@ -31,6 +39,7 @@
   "errors": {
     "deleteFailed": "Failed to delete training program",
     "duplicateFailed": "Failed to duplicate training program",
+    "cloneFailed": "Failed to create your copy. Please try again.",
     "nameRequired": "Please enter a program name",
     "exercisesRequired": "Please add at least one exercise"
   },

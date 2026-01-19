@@ -19,6 +19,7 @@
     "addTitle": "Add New Exercise",
     "editTitle": "Edit Exercise",
     "typeLabel": "Type: {{type}}",
+    "typeSelectLabel": "Type",
     "nameLabel": "Exercise Name *",
     "namePlaceholder": "e.g., Incline Dumbbell Press",
     "descriptionLabel": "Description",

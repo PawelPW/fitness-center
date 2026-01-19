@@ -6,7 +6,16 @@
     "day_streak": "dni z rzędu",
     "day_streak_plural": "dni z rzędu",
     "workouts_this_month": "treningi w tym miesiącu",
-    "workouts_this_month_plural": "treningi w tym miesiącu"
+    "workouts_this_month_plural": "treningi w tym miesiącu",
+    "scheduled": "Zaplanowane",
+    "toGoal": "do celu",
+    "goalTitle": "Cel: {{goal}} - {{current}}kg → {{target}}kg",
+    "fitnessGoals": {
+      "weight_loss": "Utrata wagi",
+      "muscle_gain": "Budowa mięśni",
+      "maintenance": "Utrzymanie",
+      "endurance": "Wytrzymałość"
+    }
   },
   "loading": {
     "trainingData": "Ładowanie danych treningowych..."
@@ -14,6 +23,9 @@
   "trainingSessions": {
     "title": "Sesje treningowe",
     "sessionsCount": "Sesji w tym {{period}}",
+    "sessionsCount_week": "Sesji w tym tygodniu",
+    "sessionsCount_month": "Sesji w tym miesiącu",
+    "sessionsCount_year": "Sesji w tym roku",
     "caloriesBurned": "Spalone kalorie",
     "minutesTrained": "Minut treningu",
     "exercisesCompleted": "Ukończonych ćwiczeń"
@@ -32,7 +44,26 @@
     "exercises": "Ćwiczenia",
     "statistics": "Statystyki",
     "settings": "Ustawienia",
-    "diet": "Dieta"
+    "diet": "Dieta",
+    "planner": "Planer"
+  },
+  "upcomingWorkouts": {
+    "title": "Nadchodzące treningi",
+    "viewAll": "Zobacz wszystkie →",
+    "emptyTitle": "Brak zaplanowanych treningów",
+    "emptyMessage": "Zacznij planować treningi, aby trzymać się planu",
+    "planButton": "Zaplanuj tydzień"
+  },
+  "toast": {
+    "workoutRemoved": "Trening usunięty",
+    "deleteFailed": "Nie udało się usunąć treningu",
+    "retry": "Ponów"
+  },
+  "deleteDialog": {
+    "title": "Usunąć trening?",
+    "message": "Usunąć ten zaplanowany trening?",
+    "confirm": "Usuń",
+    "cancel": "Anuluj"
   },
   "welcome_message": "Witaj ponownie, {{name}}!",
   "recent_sessions": "Ostatnie sesje",

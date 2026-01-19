@@ -15,6 +15,7 @@ import enTraining from './locales/en/training/translations.json';
 import enStats from './locales/en/stats/translations.json';
 import enSettings from './locales/en/settings/translations.json';
 import enProfile from './locales/en/profile/translations.json';
+import enWorkoutPlanner from './locales/en/workoutPlanner/translations.json';
 
 // Spanish
 import esCommon from './locales/es/common/translations.json';
@@ -63,6 +64,7 @@ import plTraining from './locales/pl/training/translations.json';
 import plStats from './locales/pl/stats/translations.json';
 import plSettings from './locales/pl/settings/translations.json';
 import plProfile from './locales/pl/profile/translations.json';
+import plWorkoutPlanner from './locales/pl/workoutPlanner/translations.json';
 
 // Portuguese
 import ptCommon from './locales/pt/common/translations.json';
@@ -97,6 +99,7 @@ const resources = {
     stats: enStats,
     settings: enSettings,
     profile: enProfile,
+    workoutPlanner: enWorkoutPlanner,
   },
   es: {
     common: esCommon,
@@ -145,6 +148,7 @@ const resources = {
     stats: plStats,
     settings: plSettings,
     profile: plProfile,
+    workoutPlanner: plWorkoutPlanner,
   },
   pt: {
     common: ptCommon,
@@ -215,7 +219,7 @@ i18n
     resources,
     fallbackLng: 'en',
     defaultNS: 'common',
-    ns: ['auth', 'calendar', 'common', 'dashboard', 'workout', 'exercises', 'training', 'stats', 'settings', 'profile'],
+    ns: ['auth', 'calendar', 'common', 'dashboard', 'workout', 'exercises', 'training', 'stats', 'settings', 'profile', 'workoutPlanner'],
 
     interpolation: {
       escapeValue: false, // React already escapes values

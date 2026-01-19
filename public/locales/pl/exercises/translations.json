@@ -19,6 +19,7 @@
     "addTitle": "Dodaj nowe ćwiczenie",
     "editTitle": "Edytuj ćwiczenie",
     "typeLabel": "Typ: {{type}}",
+    "typeSelectLabel": "Typ",
     "nameLabel": "Nazwa ćwiczenia *",
     "namePlaceholder": "np. Wyciskanie hantli na ławce skośnej",
     "descriptionLabel": "Opis",

@@ -78,7 +78,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       setError('');
     } catch (err) {
       console.error('Failed to load planned sessions:', err);
-      setError('Failed to load planned workouts. Please try again.');
+      setError(t('errors.loadFailed'));
     } finally {
       if (showLoader) setLoading(false);
       setRefreshing(false);
@@ -195,7 +195,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       // 3. Success toast
       showToast({
         type: 'success',
-        message: 'Workout removed',
+        message: t('toast.workoutRemoved'),
         duration: 3000
       });
 
@@ -211,7 +211,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       setAllSessions(originalAllSessions);
 
       // 5. Parse error for retry option
-      let errorMessage = 'Failed to delete workout';
+      let errorMessage = t('errors.deleteFailed');
       let errorCode = null;
 
       try {
@@ -232,7 +232,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         message: errorMessage,
         duration: isNetworkError ? 0 : 5000,
         action: isNetworkError ? {
-          label: 'Retry',
+          label: t('toast.retry'),
           onClick: () => {
             setSessionToDelete(sessionId);
             confirmDelete();
@@ -247,16 +247,16 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
    */
   const handleDeleteAllPlanned = async () => {
     if (plannedSessions.length === 0) {
-      alert('No planned sessions to delete.');
+      alert(t('bulkActions.noSessionsWeek'));
       return;
     }
 
     // Double confirmation for safety
-    if (!confirm(`Delete ALL ${plannedSessions.length} planned workouts? This cannot be undone.`)) {
+    if (!confirm(t('bulkActions.confirmAll', { count: plannedSessions.length }))) {
       return;
     }
 
-    if (!confirm('Are you absolutely sure? This will permanently delete all your planned workouts.')) {
+    if (!confirm(t('bulkActions.confirmAllFinal'))) {
       return;
     }
 
@@ -278,7 +278,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       }
     } catch (error) {
       console.error('Failed to delete all sessions:', error);
-      alert('Some sessions could not be deleted. Please try again.');
+      alert(t('errors.deletePartial'));
     } finally {
       setLoading(false);
     }
@@ -309,11 +309,11 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
     });
 
     if (weekSessions.length === 0) {
-      alert('No planned sessions this week.');
+      alert(t('bulkActions.noSessionsWeek'));
       return;
     }
 
-    if (!confirm(`Delete ${weekSessions.length} planned workout(s) for this week?`)) {
+    if (!confirm(t('bulkActions.confirmWeek', { count: weekSessions.length }))) {
       return;
     }
 
@@ -334,7 +334,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       }
     } catch (error) {
       console.error('Failed to clear week:', error);
-      alert('Some sessions could not be deleted. Please try again.');
+      alert(t('errors.deletePartial'));
     } finally {
       setLoading(false);
     }
@@ -354,11 +354,11 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
     });
 
     if (monthSessions.length === 0) {
-      alert(`No planned sessions in ${getMonthName(currentMonth)} ${currentYear}.`);
+      alert(t('bulkActions.noSessionsMonth', { month: getMonthName(currentMonth), year: currentYear }));
       return;
     }
 
-    if (!confirm(`Delete ${monthSessions.length} planned workout(s) for ${getMonthName(currentMonth)} ${currentYear}?`)) {
+    if (!confirm(t('bulkActions.confirmMonth', { count: monthSessions.length, month: getMonthName(currentMonth), year: currentYear }))) {
       return;
     }
 
@@ -379,7 +379,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       }
     } catch (error) {
       console.error('Failed to clear month:', error);
-      alert('Some sessions could not be deleted. Please try again.');
+      alert(t('errors.deletePartial'));
     } finally {
       setLoading(false);
     }
@@ -502,9 +502,9 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
     sessionDate.setHours(0, 0, 0, 0);
 
     if (sessionDate.getTime() === today.getTime()) {
-      return 'Today';
+      return t('dateLabels.today');
     } else if (sessionDate.getTime() === tomorrow.getTime()) {
-      return 'Tomorrow';
+      return t('dateLabels.tomorrow');
     } else {
       // Format as "Mon, Jan 6"
       return date.toLocaleDateString('en-US', {
@@ -541,8 +541,8 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         </button>
 
         <div className="header-content">
-          <h1 className="header-title">Workout Planner</h1>
-          <p className="header-subtitle">Plan and schedule your training sessions</p>
+          <h1 className="header-title">{t('title')}</h1>
+          <p className="header-subtitle">{t('subtitle')}</p>
         </div>
 
         <button
@@ -562,7 +562,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Loading your workout plan...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <>
@@ -586,7 +586,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
                 onClick={() => setShowQuickPlanModal(true)}
               >
                 <span className="quick-action-icon">⚡</span>
-                <span className="quick-action-text">Quick Plan</span>
+                <span className="quick-action-text">{t('quickActions.quickPlan')}</span>
               </button>
 
               <button
@@ -597,7 +597,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
                 }}
               >
                 <span className="quick-action-icon">➕</span>
-                <span className="quick-action-text">Plan Workout</span>
+                <span className="quick-action-text">{t('quickActions.planWorkout')}</span>
               </button>
 
               <div className="month-navigation">
@@ -631,7 +631,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
             <section className="planned-sessions-section">
               <div className="section-header">
                 <h2 className="section-title">
-                  Planned Workouts
+                  {t('sessions.title')}
                   {plannedSessions.length > 0 && (
                     <span className="session-count">{plannedSessions.length}</span>
                   )}
@@ -656,7 +656,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
               {refreshing && (
                 <div className="refresh-indicator">
                   <div className="refresh-spinner"></div>
-                  <span>Refreshing...</span>
+                  <span>{t('refreshing')}</span>
                 </div>
               )}
 
@@ -679,7 +679,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
                     <div key={group.date} className="session-date-group">
                       <div className={`date-header ${isDateOverdue(group.date) ? 'overdue' : ''}`}>
                         <span className="date-label">{formatDateHeader(group.date)}</span>
-                        <span className="date-count">{group.sessions.length} session{group.sessions.length > 1 ? 's' : ''}</span>
+                        <span className="date-count">{t('sessions.count', { count: group.sessions.length })}</span>
                       </div>
 
                       <div className="sessions-grid">
@@ -700,15 +700,15 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
               ) : (
                 <div className="empty-state">
                   <div className="empty-icon">📅</div>
-                  <h3 className="empty-title">No Workouts Planned</h3>
+                  <h3 className="empty-title">{t('empty.title')}</h3>
                   <p className="empty-message">
-                    No planned workouts yet. Tap 'Plan Workout' to get started and stay on track with your fitness goals.
+                    {t('empty.message')}
                   </p>
                   <button
                     className="btn-primary-cta"
                     onClick={() => setShowPlanModal(true)}
                   >
-                    <span>Plan Your First Workout</span>
+                    <span>{t('empty.action')}</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
@@ -725,11 +725,11 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         <div className="bulk-actions-backdrop" onClick={() => setShowBulkActionsMenu(false)}>
           <div className="bulk-actions-sheet" onClick={(e) => e.stopPropagation()}>
             <div className="bulk-actions-header">
-              <h3>Bulk Actions</h3>
+              <h3>{t('bulkActions.title')}</h3>
               <button
                 className="bulk-actions-close"
                 onClick={() => setShowBulkActionsMenu(false)}
-                aria-label="Close"
+                aria-label={t('bulkActions.close')}
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
@@ -746,7 +746,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
                 </svg>
-                <span>Clear This Week</span>
+                <span>{t('bulkActions.clearWeek')}</span>
               </button>
 
               <button
@@ -759,7 +759,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
                   <line x1="8" y1="2" x2="8" y2="6" />
                   <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
-                <span>Clear This Month ({getMonthName(currentMonth)})</span>
+                <span>{t('bulkActions.clearMonth', { month: getMonthName(currentMonth) })}</span>
               </button>
 
               <button
@@ -772,7 +772,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
                   <line x1="10" y1="11" x2="10" y2="17" />
                   <line x1="14" y1="11" x2="14" y2="17" />
                 </svg>
-                <span>Delete All Planned ({plannedSessions.length})</span>
+                <span>{t('bulkActions.deleteAll', { count: plannedSessions.length })}</span>
               </button>
             </div>
           </div>
@@ -784,11 +784,11 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         <div className="info-modal-backdrop" onClick={() => setShowInfoModal(false)}>
           <div className="info-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="info-modal-header">
-              <h3>Planning Features</h3>
+              <h3>{t('infoModal.title')}</h3>
               <button
                 className="info-modal-close"
                 onClick={() => setShowInfoModal(false)}
-                aria-label="Close"
+                aria-label={t('infoModal.close')}
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
@@ -799,28 +799,28 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
 
             <div className="info-modal-body">
               <div className="info-section">
-                <h4>📅 Plan Workout</h4>
-                <p>Schedule individual workouts with specific dates, times, and notes.</p>
+                <h4>📅 {t('infoModal.features.planWorkout.title')}</h4>
+                <p>{t('infoModal.features.planWorkout.description')}</p>
               </div>
 
               <div className="info-section">
-                <h4>⚡ Quick Plan</h4>
-                <p>Generate complete workout schedules for 1 week, 2 weeks, or 1 month using smart AI or default templates.</p>
+                <h4>⚡ {t('infoModal.features.quickPlan.title')}</h4>
+                <p>{t('infoModal.features.quickPlan.description')}</p>
               </div>
 
               <div className="info-section">
-                <h4>🗓️ Calendar View</h4>
-                <p>See your planned and completed workouts at a glance. Swipe left/right to navigate months.</p>
+                <h4>🗓️ {t('infoModal.features.calendar.title')}</h4>
+                <p>{t('infoModal.features.calendar.description')}</p>
               </div>
 
               <div className="info-section">
-                <h4>🎯 Session Management</h4>
-                <p>Start, edit, or delete individual sessions directly from the list.</p>
+                <h4>🎯 {t('infoModal.features.sessionManagement.title')}</h4>
+                <p>{t('infoModal.features.sessionManagement.description')}</p>
               </div>
 
               <div className="info-section">
-                <h4>🗑️ Bulk Actions</h4>
-                <p>Clear multiple sessions at once (week, month, or all planned workouts).</p>
+                <h4>🗑️ {t('infoModal.features.bulkActions.title')}</h4>
+                <p>{t('infoModal.features.bulkActions.description')}</p>
               </div>
             </div>
 
@@ -828,7 +828,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
               className="info-modal-close-btn"
               onClick={() => setShowInfoModal(false)}
             >
-              Got it
+              {t('infoModal.gotIt')}
             </button>
           </div>
         </div>
@@ -860,10 +860,10 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
           setSessionToDelete(null);
         }}
         onConfirm={confirmDelete}
-        title="Delete Workout?"
-        message="Delete this planned workout?"
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('deleteDialog.title')}
+        message={t('deleteDialog.message')}
+        confirmText={t('deleteDialog.confirm')}
+        cancelText={t('deleteDialog.cancel')}
         variant="danger"
       />
     </div>

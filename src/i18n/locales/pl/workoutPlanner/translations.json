@@ -1,0 +1,200 @@
+{
+  "title": "Planer treningów",
+  "subtitle": "Planuj i harmonogramuj swoje sesje treningowe",
+  "loading": "Ładowanie planu treningowego...",
+  "refreshing": "Odświeżanie...",
+  "errors": {
+    "loadFailed": "Nie udało się załadować zaplanowanych treningów. Spróbuj ponownie.",
+    "deleteFailed": "Nie udało się usunąć treningu",
+    "deletePartial": "Niektórych sesji nie udało się usunąć. Spróbuj ponownie.",
+    "createFailed": "Nie udało się utworzyć planu treningowego. Spróbuj ponownie."
+  },
+  "header": {
+    "back": "Wróć",
+    "info": "Informacje o funkcjach planowania"
+  },
+  "calendar": {
+    "previousMonth": "Poprzedni miesiąc",
+    "nextMonth": "Następny miesiąc"
+  },
+  "quickActions": {
+    "quickPlan": "Szybki plan",
+    "planWorkout": "Zaplanuj trening"
+  },
+  "sessions": {
+    "title": "Zaplanowane treningi",
+    "count": "{{count}} sesja",
+    "count_plural": "{{count}} sesji",
+    "bulkActions": "Akcje zbiorcze"
+  },
+  "dateLabels": {
+    "today": "Dzisiaj",
+    "tomorrow": "Jutro",
+    "overdue": "ZALEGŁE"
+  },
+  "empty": {
+    "title": "Brak zaplanowanych treningów",
+    "message": "Nie masz jeszcze zaplanowanych treningów. Kliknij 'Zaplanuj trening', aby zacząć i trzymać się swoich celów fitness.",
+    "action": "Zaplanuj swój pierwszy trening"
+  },
+  "bulkActions": {
+    "title": "Akcje zbiorcze",
+    "close": "Zamknij",
+    "clearWeek": "Wyczyść ten tydzień",
+    "clearMonth": "Wyczyść ten miesiąc ({{month}})",
+    "deleteAll": "Usuń wszystkie zaplanowane ({{count}})",
+    "confirmWeek": "Usunąć {{count}} zaplanowanych treningów z tego tygodnia?",
+    "confirmMonth": "Usunąć {{count}} zaplanowanych treningów z {{month}} {{year}}?",
+    "confirmAll": "Usunąć WSZYSTKIE {{count}} zaplanowane treningi? Tej operacji nie można cofnąć.",
+    "confirmAllFinal": "Czy jesteś absolutnie pewien? To trwale usunie wszystkie zaplanowane treningi.",
+    "noSessionsWeek": "Brak zaplanowanych sesji w tym tygodniu.",
+    "noSessionsMonth": "Brak zaplanowanych sesji w {{month}} {{year}}."
+  },
+  "infoModal": {
+    "title": "Funkcje planowania",
+    "close": "Zamknij",
+    "gotIt": "Rozumiem",
+    "features": {
+      "planWorkout": {
+        "title": "Zaplanuj trening",
+        "description": "Zaplanuj pojedyncze treningi z konkretnymi datami, godzinami i notatkami."
+      },
+      "quickPlan": {
+        "title": "Szybki plan",
+        "description": "Generuj kompletne harmonogramy treningów na 1 tydzień, 2 tygodnie lub 1 miesiąc przy użyciu inteligentnej AI lub domyślnych szablonów."
+      },
+      "calendar": {
+        "title": "Widok kalendarza",
+        "description": "Zobacz zaplanowane i ukończone treningi na pierwszy rzut oka. Przesuń w lewo/prawo, aby nawigować między miesiącami."
+      },
+      "sessionManagement": {
+        "title": "Zarządzanie sesjami",
+        "description": "Rozpocznij, edytuj lub usuń pojedyncze sesje bezpośrednio z listy."
+      },
+      "bulkActions": {
+        "title": "Akcje zbiorcze",
+        "description": "Wyczyść wiele sesji naraz (tydzień, miesiąc lub wszystkie zaplanowane treningi)."
+      }
+    }
+  },
+  "deleteDialog": {
+    "title": "Usunąć trening?",
+    "message": "Usunąć ten zaplanowany trening?",
+    "confirm": "Usuń",
+    "cancel": "Anuluj"
+  },
+  "toast": {
+    "workoutRemoved": "Trening usunięty",
+    "retry": "Ponów"
+  },
+  "modal": {
+    "scheduleTitle": "Zaplanuj trening",
+    "editTitle": "Edytuj trening",
+    "close": "Zamknij okno",
+    "form": {
+      "trainingType": "Typ treningu",
+      "trainingTypePlaceholder": "Wybierz typ treningu",
+      "program": "Program (opcjonalnie)",
+      "programPlaceholder": "Bez programu (trening ad-hoc)",
+      "programHint": "Wczytaj ćwiczenia dla tego treningu",
+      "programSuccess": "Ćwiczenia zostaną wczytane po rozpoczęciu treningu",
+      "noPrograms": "Brak programów typu {{type}}",
+      "noProgramsDescription": "Utwórz program, aby wczytać ćwiczenia dla tego typu treningu.",
+      "createProgram": "Utwórz program",
+      "date": "Data",
+      "time": "Godzina (opcjonalnie)",
+      "timeHint": "Ustaw konkretną godzinę treningu",
+      "notes": "Notatki (opcjonalnie)",
+      "notesPlaceholder": "Dodaj notatki lub cele dla tego treningu...",
+      "notesCount": "{{count}}/500 znaków",
+      "loadingPrograms": "Ładowanie programów...",
+      "programWarning": "Wybrany program nie jest już dostępny",
+      "loadProgramsFailed": "Nie udało się załadować programów"
+    },
+    "validation": {
+      "typeRequired": "Wybierz typ treningu",
+      "dateRequired": "Wybierz datę",
+      "dateFuture": "Data musi być dzisiejsza lub przyszła",
+      "fixErrors": "Popraw błędy powyżej"
+    },
+    "actions": {
+      "cancel": "Anuluj",
+      "schedule": "Zaplanuj trening",
+      "update": "Zaktualizuj trening",
+      "scheduling": "Planowanie...",
+      "updating": "Aktualizowanie..."
+    },
+    "toast": {
+      "scheduled": "Trening zaplanowany",
+      "updated": "Trening zaktualizowany"
+    },
+    "errors": {
+      "scheduleFailed": "Nie udało się zaplanować treningu",
+      "updateFailed": "Nie udało się zaktualizować treningu"
+    }
+  },
+  "card": {
+    "dateNotSet": "Data nie ustawiona",
+    "invalidDate": "Nieprawidłowa data",
+    "allDay": "Cały dzień",
+    "startWorkout": "Rozpocznij trening",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "exercises": "{{count}} ćwiczeń"
+  },
+  "quickPlan": {
+    "title": "Szybki plan",
+    "subtitle": "Generuj treningi w kilka sekund",
+    "close": "Zamknij okno",
+    "timeHorizon": "Horyzont czasowy",
+    "duration": {
+      "oneWeek": "1 tydzień",
+      "twoWeeks": "2 tygodnie",
+      "oneMonth": "1 miesiąc"
+    },
+    "templateMode": "Tryb szablonu",
+    "modes": {
+      "default": "Domyślny",
+      "smart": "Inteligentna AI",
+      "smartLocked": "Wymaga 3+ treningów w ostatnich 4 tygodniach",
+      "smartHint": "Na podstawie historii treningów"
+    },
+    "preview": {
+      "title": "Podgląd",
+      "count": "{{count}} treningów",
+      "week": "Tydzień {{number}}",
+      "noSessions": "Nie wygenerowano jeszcze sesji",
+      "generating": "Generowanie planu treningowego..."
+    },
+    "edit": {
+      "timePlaceholder": "Godzina (opcjonalnie)",
+      "notesPlaceholder": "Notatki (opcjonalnie)",
+      "done": "Gotowe"
+    },
+    "actions": {
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź plan ({{count}})",
+      "creating": "Tworzenie {{count}} treningów...",
+      "creatingProgress": "Tworzenie {{progress}}%..."
+    },
+    "toast": {
+      "created": "Utworzono {{count}} treningów"
+    },
+    "errors": {
+      "noSessions": "Brak sesji do utworzenia. Najpierw wygeneruj plan.",
+      "smartModeRequirement": "Potrzebujesz co najmniej 3 treningów z ostatnich 4 tygodni, aby użyć trybu Inteligentnego.",
+      "generateFailed": "Nie udało się wygenerować planu treningowego. Spróbuj ponownie."
+    }
+  },
+  "trainingTypes": {
+    "cardio": "Cardio",
+    "strength": "Siłowy",
+    "calisthenics": "Kalistenika",
+    "boxing": "Boks",
+    "swimming": "Pływanie",
+    "yoga": "Joga",
+    "hiit": "HIIT",
+    "cycling": "Kolarstwo",
+    "running": "Bieganie"
+  }
+}

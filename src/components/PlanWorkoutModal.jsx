@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import apiService from '../services/api.js';
 import { useToast } from '../hooks/useToast';
 import './PlanWorkoutModal.css';
@@ -23,6 +24,7 @@ import './PlanWorkoutModal.css';
  * @param {string} [props.editSession.notes] - Session notes
  */
 function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initialType = '', editSession = null }) {
+  const { t } = useTranslation('workoutPlanner');
   const { showToast } = useToast();
 
   // Determine if we're in edit mode (editSession has an id)
@@ -47,12 +49,12 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
 
   // Training type options
   const trainingTypes = [
-    { value: '', label: 'Select training type', disabled: true },
-    { value: 'Cardio', label: 'Cardio', icon: '🏃' },
-    { value: 'Strength', label: 'Strength', icon: '💪' },
-    { value: 'Calisthenics', label: 'Calisthenics', icon: '🤸' },
-    { value: 'Boxing', label: 'Boxing', icon: '🥊' },
-    { value: 'Swimming', label: 'Swimming', icon: '🏊' }
+    { value: '', label: t('modal.form.trainingTypePlaceholder'), disabled: true },
+    { value: 'Cardio', label: t('trainingTypes.cardio'), icon: '🏃' },
+    { value: 'Strength', label: t('trainingTypes.strength'), icon: '💪' },
+    { value: 'Calisthenics', label: t('trainingTypes.calisthenics'), icon: '🤸' },
+    { value: 'Boxing', label: t('trainingTypes.boxing'), icon: '🥊' },
+    { value: 'Swimming', label: t('trainingTypes.swimming'), icon: '🏊' }
   ];
 
   // Get today's date in YYYY-MM-DD format for min attribute
@@ -128,7 +130,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
               setSelectedProgramId(null);
               showToast({
                 type: 'warning',
-                message: 'Selected program is no longer available',
+                message: t('modal.form.programWarning'),
                 duration: 4000
               });
             }
@@ -143,7 +145,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           // Show error toast to user
           showToast({
             type: 'error',
-            message: 'Failed to load programs',
+            message: t('modal.form.loadProgramsFailed'),
             duration: 3000
           });
         }
@@ -186,19 +188,19 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
 
     // Training type is required
     if (!formData.type) {
-      newErrors.type = 'Please select a training type';
+      newErrors.type = t('modal.validation.typeRequired');
     }
 
     // Date is required and must be today or in the future
     if (!formData.date) {
-      newErrors.date = 'Please select a date';
+      newErrors.date = t('modal.validation.dateRequired');
     } else {
       const selectedDate = new Date(formData.date + 'T00:00:00');
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       if (selectedDate < today) {
-        newErrors.date = 'Date must be today or in the future';
+        newErrors.date = t('modal.validation.dateFuture');
       }
     }
 
@@ -254,7 +256,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
       // Show success toast
       showToast({
         type: 'success',
-        message: isEditMode ? 'Workout updated' : 'Workout scheduled',
+        message: isEditMode ? t('modal.toast.updated') : t('modal.toast.scheduled'),
         duration: 3000
       });
 
@@ -294,13 +296,13 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
             }
           });
           setErrors(fieldErrors);
-          setApiError('Please fix the errors above');
+          setApiError(t('modal.validation.fixErrors'));
         } else {
           // Generic error fallback
-          setApiError(errorData.error || `Failed to ${isEditMode ? 'update' : 'schedule'} workout`);
+          setApiError(errorData.error || (isEditMode ? t('modal.errors.updateFailed') : t('modal.errors.scheduleFailed')));
         }
       } catch {
-        setApiError(`Failed to ${isEditMode ? 'update' : 'schedule'} workout. Please try again.`);
+        setApiError(isEditMode ? t('modal.errors.updateFailed') : t('modal.errors.scheduleFailed'));
       }
     } finally {
       setIsSubmitting(false);
@@ -347,13 +349,13 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
         <div className="plan-modal-header">
           <div className="plan-modal-header-content">
             <div className="plan-modal-icon">📅</div>
-            <h2 className="plan-modal-title">{isEditMode ? 'Edit Workout' : 'Schedule Workout'}</h2>
+            <h2 className="plan-modal-title">{isEditMode ? t('modal.editTitle') : t('modal.scheduleTitle')}</h2>
           </div>
           <button
             className="plan-modal-close"
             onClick={onClose}
             disabled={isSubmitting}
-            aria-label="Close modal"
+            aria-label={t('modal.close')}
             type="button"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -368,7 +370,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           {/* Training Type */}
           <div className="plan-form-group">
             <label htmlFor="workout-type" className="plan-form-label label-required">
-              Training Type
+              {t('modal.form.trainingType')}
             </label>
             <select
               id="workout-type"
@@ -405,14 +407,14 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           {formData.type && (
             <div className="plan-form-group">
               <label htmlFor="workout-program" className="plan-form-label">
-                Program (Optional)
+                {t('modal.form.program')}
               </label>
               {loadingPrograms ? (
                 /* FE-11: Skeleton loader - mimics dropdown structure */
                 <div className="plan-form-skeleton-wrapper">
                   <div className="plan-form-skeleton plan-form-skeleton--select">
                     <div className="plan-form-skeleton__shimmer"></div>
-                    <span className="plan-form-skeleton__text">Loading programs...</span>
+                    <span className="plan-form-skeleton__text">{t('modal.form.loadingPrograms')}</span>
                   </div>
                 </div>
               ) : availablePrograms.length > 0 ? (
@@ -425,10 +427,10 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
                     className="plan-form-select"
                     disabled={isSubmitting}
                   >
-                    <option value="">📋 No program (ad-hoc workout)</option>
+                    <option value="">📋 {t('modal.form.programPlaceholder')}</option>
                     {availablePrograms.map(program => (
                       <option key={program.id} value={program.id}>
-                        💪 {program.name} ({program.exercise_count || 0} exercises)
+                        💪 {program.name} ({program.exercise_count || 0} {t('card.exercises', { count: program.exercise_count || 0 }).split(' ').slice(1).join(' ')})
                       </option>
                     ))}
                   </select>
@@ -437,7 +439,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
-                      Exercises will be pre-loaded when you start this workout
+                      {t('modal.form.programSuccess')}
                     </span>
                   )}
                 </>
@@ -445,9 +447,9 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
                 <div className="plan-form-empty-state">
                   <div className="empty-state-icon">📋</div>
                   <div className="empty-state-text">
-                    <p className="empty-state-title">No {formData.type} programs found</p>
+                    <p className="empty-state-title">{t('modal.form.noPrograms', { type: formData.type })}</p>
                     <p className="empty-state-description">
-                      Create a program to pre-load exercises for this workout type.
+                      {t('modal.form.noProgramsDescription')}
                     </p>
                   </div>
                   <button
@@ -458,13 +460,13 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
                       window.location.href = '/trainings';
                     }}
                   >
-                    Create a program →
+                    {t('modal.form.createProgram')} →
                   </button>
                 </div>
               )}
               {availablePrograms.length > 0 && (
                 <span className="plan-form-hint">
-                  Pre-load exercises for this workout
+                  {t('modal.form.programHint')}
                 </span>
               )}
             </div>
@@ -473,7 +475,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           {/* Date Picker */}
           <div className="plan-form-group">
             <label htmlFor="workout-date" className="plan-form-label label-required">
-              Date
+              {t('modal.form.date')}
             </label>
             <input
               type="date"
@@ -501,7 +503,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
           {/* Time Picker (Optional) */}
           <div className="plan-form-group">
             <label htmlFor="workout-time" className="plan-form-label">
-              Time (Optional)
+              {t('modal.form.time')}
             </label>
             <input
               type="time"
@@ -513,28 +515,28 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
               disabled={isSubmitting}
             />
             <span className="plan-form-hint">
-              Set a specific time for your workout
+              {t('modal.form.timeHint')}
             </span>
           </div>
 
           {/* Notes Textarea (Optional) */}
           <div className="plan-form-group">
             <label htmlFor="workout-notes" className="plan-form-label">
-              Notes (Optional)
+              {t('modal.form.notes')}
             </label>
             <textarea
               id="workout-notes"
               name="notes"
               value={formData.notes}
               onChange={handleChange}
-              placeholder="Add any notes or goals for this workout..."
+              placeholder={t('modal.form.notesPlaceholder')}
               rows="3"
               maxLength="500"
               className="plan-form-textarea"
               disabled={isSubmitting}
             />
             <span className="plan-form-hint">
-              {formData.notes.length}/500 characters
+              {t('modal.form.notesCount', { count: formData.notes.length })}
             </span>
           </div>
 
@@ -558,7 +560,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
               className="plan-btn-secondary"
               disabled={isSubmitting}
             >
-              Cancel
+              {t('modal.actions.cancel')}
             </button>
             <button
               type="submit"
@@ -568,7 +570,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
               {isSubmitting ? (
                 <>
                   <span className="plan-btn-spinner"></span>
-                  {isEditMode ? 'Updating...' : 'Scheduling...'}
+                  {isEditMode ? t('modal.actions.updating') : t('modal.actions.scheduling')}
                 </>
               ) : (
                 <>
@@ -577,7 +579,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
                     <polyline points="17 21 17 13 7 13 7 21"></polyline>
                     <polyline points="7 3 7 8 15 8"></polyline>
                   </svg>
-                  {isEditMode ? 'Update Workout' : 'Schedule Workout'}
+                  {isEditMode ? t('modal.actions.update') : t('modal.actions.schedule')}
                 </>
               )}
             </button>

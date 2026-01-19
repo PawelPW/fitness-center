@@ -20,7 +20,15 @@
   "program": {
     "exercises_count": "{{count}} ćwiczeń",
     "exercises_count_plural": "{{count}} ćwiczeń",
-    "created": "Utworzono {{date}}"
+    "created": "Utworzono {{date}}",
+    "defaultBadge": "Domyślny"
+  },
+  "cloneModal": {
+    "title": "Edytuj domyślny trening",
+    "message": "\"{{name}}\" to domyślny program treningowy. Aby go dostosować, utworzymy Twoją osobistą kopię, którą możesz dowolnie edytować.",
+    "note": "Oryginalny domyślny trening pozostanie niezmieniony.",
+    "creating": "Tworzenie...",
+    "confirm": "Utwórz moją kopię i edytuj"
   },
   "empty": {
     "title": "Brak programów treningowych",
@@ -31,6 +39,7 @@
   "errors": {
     "deleteFailed": "Nie udało się usunąć programu treningowego",
     "duplicateFailed": "Nie udało się zduplikować programu treningowego",
+    "cloneFailed": "Nie udało się utworzyć kopii. Spróbuj ponownie.",
     "nameRequired": "Wprowadź nazwę programu",
     "exercisesRequired": "Dodaj co najmniej jedno ćwiczenie"
   },

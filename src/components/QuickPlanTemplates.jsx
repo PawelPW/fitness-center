@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import apiService from '../services/api.js';
 import { useToast } from '../hooks/useToast';
 import { formatDateKey } from '../utils/calendarHelpers.js';
@@ -17,6 +18,7 @@ import './QuickPlanTemplates.css';
  * @param {string} [props.initialDuration='1week'] - Pre-select duration ('1week', '2weeks', '1month')
  */
 function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1week' }) {
+  const { t } = useTranslation('workoutPlanner');
   const { showToast } = useToast();
 
   // State management
@@ -32,11 +34,11 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
 
   // Training type options with icons
   const trainingTypes = [
-    { value: 'Cardio', label: 'Cardio', icon: '🏃' },
-    { value: 'Strength', label: 'Strength', icon: '💪' },
-    { value: 'Calisthenics', label: 'Calisthenics', icon: '🤸' },
-    { value: 'Boxing', label: 'Boxing', icon: '🥊' },
-    { value: 'Swimming', label: 'Swimming', icon: '🏊' }
+    { value: 'Cardio', label: t('trainingTypes.cardio'), icon: '🏃' },
+    { value: 'Strength', label: t('trainingTypes.strength'), icon: '💪' },
+    { value: 'Calisthenics', label: t('trainingTypes.calisthenics'), icon: '🤸' },
+    { value: 'Boxing', label: t('trainingTypes.boxing'), icon: '🥊' },
+    { value: 'Swimming', label: t('trainingTypes.swimming'), icon: '🏊' }
   ];
 
   // Reset state when modal opens
@@ -192,7 +194,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
       setGeneratedSessions(sessions);
     } catch (err) {
       console.error('Error generating template:', err);
-      setError('Failed to generate workout plan. Please try again.');
+      setError(t('quickPlan.errors.generateFailed'));
     } finally {
       setIsGenerating(false);
     }
@@ -212,7 +214,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
   // Handle mode toggle
   const handleModeChange = (newMode) => {
     if (newMode === 'smart' && !hasTrainingHistory) {
-      setError('You need at least 3 workouts in the past 4 weeks to use Smart mode.');
+      setError(t('quickPlan.errors.smartModeRequirement'));
       return;
     }
 
@@ -281,7 +283,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
   // Handle form submission - bulk create sessions
   const handleSubmit = async () => {
     if (generatedSessions.length === 0) {
-      setError('No sessions to create. Please generate a plan first.');
+      setError(t('quickPlan.errors.noSessions'));
       return;
     }
 
@@ -320,7 +322,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
       // Show success toast
       showToast({
         type: 'success',
-        message: `${result.count} workouts created`,
+        message: t('quickPlan.toast.created', { count: result.count }),
         duration: 3000
       });
 
@@ -335,7 +337,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
       console.error('Failed to create sessions:', err);
 
       // Parse error message
-      let errorMessage = 'Failed to create workout plan. Please try again.';
+      let errorMessage = t('errors.createFailed');
       let errorCode = null;
 
       try {
@@ -362,7 +364,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
         message: errorMessage,
         duration: isNetworkError ? 0 : 5000, // Don't auto-dismiss network errors
         action: isNetworkError ? {
-          label: 'Retry',
+          label: t('toast.retry'),
           onClick: () => handleSubmit()
         } : null
       });
@@ -416,15 +418,15 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
           <div className="qpt-header-content">
             <div className="qpt-icon">⚡</div>
             <div className="qpt-header-text">
-              <h2 className="qpt-title">Quick Plan</h2>
-              <p className="qpt-subtitle">Generate workouts in seconds</p>
+              <h2 className="qpt-title">{t('quickPlan.title')}</h2>
+              <p className="qpt-subtitle">{t('quickPlan.subtitle')}</p>
             </div>
           </div>
           <button
             className="qpt-close"
             onClick={onClose}
             disabled={isSubmitting}
-            aria-label="Close modal"
+            aria-label={t('quickPlan.close')}
             type="button"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -438,7 +440,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
         <div className="qpt-content">
           {/* Time Horizon Selector */}
           <div className="qpt-section">
-            <label className="qpt-section-label">Time Horizon</label>
+            <label className="qpt-section-label">{t('quickPlan.timeHorizon')}</label>
             <div className="qpt-pill-group">
               <button
                 type="button"
@@ -446,7 +448,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                 onClick={() => handleDurationChange('1week')}
                 disabled={isSubmitting || isGenerating}
               >
-                1 Week
+                {t('quickPlan.duration.oneWeek')}
               </button>
               <button
                 type="button"
@@ -454,7 +456,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                 onClick={() => handleDurationChange('2weeks')}
                 disabled={isSubmitting || isGenerating}
               >
-                2 Weeks
+                {t('quickPlan.duration.twoWeeks')}
               </button>
               <button
                 type="button"
@@ -462,14 +464,14 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                 onClick={() => handleDurationChange('1month')}
                 disabled={isSubmitting || isGenerating}
               >
-                1 Month
+                {t('quickPlan.duration.oneMonth')}
               </button>
             </div>
           </div>
 
           {/* Mode Toggle */}
           <div className="qpt-section">
-            <label className="qpt-section-label">Template Mode</label>
+            <label className="qpt-section-label">{t('quickPlan.templateMode')}</label>
             <div className="qpt-pill-group">
               <button
                 type="button"
@@ -478,35 +480,35 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                 disabled={isSubmitting || isGenerating}
               >
                 <span className="qpt-pill-icon">📅</span>
-                Default
+                {t('quickPlan.modes.default')}
               </button>
               <button
                 type="button"
                 className={`qpt-pill ${mode === 'smart' ? 'active' : ''}`}
                 onClick={() => handleModeChange('smart')}
                 disabled={isSubmitting || isGenerating || !hasTrainingHistory}
-                title={!hasTrainingHistory ? 'Requires 3+ workouts in past 4 weeks' : ''}
+                title={!hasTrainingHistory ? t('quickPlan.modes.smartLocked') : ''}
               >
                 <span className="qpt-pill-icon">🧠</span>
-                Smart AI
+                {t('quickPlan.modes.smart')}
                 {!hasTrainingHistory && <span className="qpt-pill-badge">🔒</span>}
               </button>
             </div>
             {mode === 'smart' && hasTrainingHistory && (
-              <p className="qpt-mode-hint">Based on your training history</p>
+              <p className="qpt-mode-hint">{t('quickPlan.modes.smartHint')}</p>
             )}
           </div>
 
           {/* Preview List */}
           <div className="qpt-section">
             <label className="qpt-section-label">
-              Preview ({generatedSessions.length} workouts)
+              {t('quickPlan.preview.title')} ({t('quickPlan.preview.count', { count: generatedSessions.length })})
             </label>
 
             {isGenerating ? (
               <div className="qpt-loading">
                 <div className="qpt-spinner"></div>
-                <p>Generating your workout plan...</p>
+                <p>{t('quickPlan.preview.generating')}</p>
               </div>
             ) : generatedSessions.length === 0 ? (
               <div className="qpt-empty">
@@ -516,13 +518,13 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                   <line x1="8" y1="2" x2="8" y2="6"></line>
                   <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                <p>No sessions generated yet</p>
+                <p>{t('quickPlan.preview.noSessions')}</p>
               </div>
             ) : (
               <div className="qpt-preview-list">
                 {weekGroups.map((week) => (
                   <div key={week.weekNumber} className="qpt-week-group">
-                    <div className="qpt-week-header">Week {week.weekNumber}</div>
+                    <div className="qpt-week-header">{t('quickPlan.preview.week', { number: week.weekNumber })}</div>
                     {week.sessions.map((session) => (
                       <div
                         key={session.id}
@@ -555,14 +557,14 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                                 type="time"
                                 value={session.scheduled_time}
                                 onChange={(e) => handleSessionEdit(session.index, 'scheduled_time', e.target.value)}
-                                placeholder="Time (optional)"
+                                placeholder={t('quickPlan.edit.timePlaceholder')}
                                 className="qpt-edit-input"
                               />
                               <input
                                 type="text"
                                 value={session.notes}
                                 onChange={(e) => handleSessionEdit(session.index, 'notes', e.target.value)}
-                                placeholder="Notes (optional)"
+                                placeholder={t('quickPlan.edit.notesPlaceholder')}
                                 className="qpt-edit-input"
                               />
                             </div>
@@ -572,7 +574,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                                 onClick={() => setEditingIndex(null)}
                                 className="qpt-edit-btn qpt-edit-btn-done"
                               >
-                                Done
+                                {t('quickPlan.edit.done')}
                               </button>
                             </div>
                           </div>
@@ -589,7 +591,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                               <div className="qpt-session-details">
                                 <div className="qpt-session-date">{formatDisplayDate(session.date)}</div>
                                 <div className="qpt-session-time">
-                                  {session.scheduled_time || 'All Day'}
+                                  {session.scheduled_time || t('card.allDay')}
                                 </div>
                               </div>
                               {session.notes && (
@@ -638,7 +640,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
             className="qpt-btn qpt-btn-secondary"
             disabled={isSubmitting}
           >
-            Cancel
+            {t('quickPlan.actions.cancel')}
           </button>
           <button
             type="button"
@@ -650,9 +652,9 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
               <>
                 <span className="qpt-btn-spinner"></span>
                 {creatingProgress > 0 && creatingProgress < 100 ? (
-                  `Creating ${Math.round(creatingProgress)}%...`
+                  t('quickPlan.actions.creatingProgress', { progress: Math.round(creatingProgress) })
                 ) : (
-                  `Creating ${generatedSessions.length} workouts...`
+                  t('quickPlan.actions.creating', { count: generatedSessions.length })
                 )}
               </>
             ) : (
@@ -660,7 +662,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
-                Confirm Plan ({generatedSessions.length})
+                {t('quickPlan.actions.confirm', { count: generatedSessions.length })}
               </>
             )}
           </button>
