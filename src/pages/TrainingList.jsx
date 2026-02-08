@@ -9,6 +9,7 @@ import {
   duplicateTrainingProgram,
   getProgramStatistics,
 } from '../utils/trainingDatabase';
+import { logger } from '../utils/logger';
 import '../styles/TrainingList.css';
 
 function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout }) {
@@ -33,7 +34,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
       const programStats = await getProgramStatistics();
       setStats(programStats);
     } catch (error) {
-      console.error('Failed to load training programs:', error);
+      logger.error('Failed to load training programs:', error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +46,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
         await deleteTrainingProgram(id);
         await loadPrograms();
       } catch (error) {
-        console.error('Failed to delete training program:', error);
+        logger.error('Failed to delete training program:', error);
         alert(t('errors.deleteFailed'));
       }
     }
@@ -56,7 +57,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
       await duplicateTrainingProgram(id);
       await loadPrograms();
     } catch (error) {
-      console.error('Failed to duplicate training program:', error);
+      logger.error('Failed to duplicate training program:', error);
       alert(t('errors.duplicateFailed'));
     }
   };
@@ -85,7 +86,7 @@ function TrainingList({ onBack, onCreateTraining, onEditTraining, onStartWorkout
       // Edit the cloned program
       onEditTraining(clonedProgram);
     } catch (error) {
-      console.error('Failed to clone training program:', error);
+      logger.error('Failed to clone training program:', error);
       alert(t('errors.cloneFailed', 'Failed to create your copy. Please try again.'));
     } finally {
       setCloning(false);

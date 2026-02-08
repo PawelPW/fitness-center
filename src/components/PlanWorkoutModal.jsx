@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../services/api.js';
 import { useToast } from '../hooks/useToast';
+import { logger } from '../utils/logger';
 import './PlanWorkoutModal.css';
 
 /**
@@ -139,7 +140,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
       } catch (error) {
         // Only handle error if request wasn't aborted
         if (!abortController.signal.aborted) {
-          console.error('Failed to fetch programs:', error);
+          logger.error('Failed to fetch programs:', error);
           setAvailablePrograms([]);
 
           // Show error toast to user
@@ -271,7 +272,7 @@ function PlanWorkoutModal({ isOpen, onClose, onSuccess, initialDate = '', initia
       // Close modal
       onClose();
     } catch (error) {
-      console.error(`Failed to ${isEditMode ? 'update' : 'create'} planned session:`, error);
+      logger.error(`Failed to ${isEditMode ? 'update' : 'create'} planned session:`, error);
 
       // FE-4: Handle validation errors from API
       try {

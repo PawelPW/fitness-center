@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import ExerciseStatsDetail from '../components/ExerciseStatsDetail';
+import { logger } from '../utils/logger';
 import '../styles/ExerciseStats.css';
 
 function ExerciseStats({ onBack }) {
@@ -21,7 +22,7 @@ function ExerciseStats({ onBack }) {
       const data = await apiService.getAllExerciseStats();
       setExercises(data.exercises);
     } catch (err) {
-      console.error('Failed to load exercise stats:', err);
+      logger.error('Failed to load exercise stats:', err);
       setError(t('exerciseStats.errors.loadFailed'));
     } finally {
       setLoading(false);

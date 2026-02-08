@@ -4,6 +4,7 @@ import { App as CapacitorApp } from '@capacitor/app';
 import { useCapacitorBackButton } from './hooks/useCapacitorBackButton';
 import apiService from './services/api.js';
 import secureStorage from './utils/secureStorage.js';
+import { logger } from './utils/logger.js';
 import { ToastProvider } from './contexts/ToastContext';
 import ToastContainer from './components/ToastContainer';
 import Login from './pages/Login';
@@ -53,7 +54,7 @@ function App() {
           setShowWelcome(true); // Show welcome screen for returning users
         }
       } catch (error) {
-        console.error('Error loading session:', error);
+        logger.error('Error loading session:', error);
       } finally {
         setLoading(false);
       }
@@ -277,7 +278,7 @@ function App() {
   useCapacitorBackButton(handleBackButton);
 
   const handleStartWorkout = async (session) => {
-    console.log('FE-7: handleStartWorkout called with session:', session);
+    logger.log('FE-7: handleStartWorkout called with session:', session);
 
     // Check if this is a planned session (has id and completed=false)
     if (session && session.id && session.completed === false) {
@@ -285,22 +286,22 @@ function App() {
       let programData = null;
       if (session.training_program_id) {
         try {
-          console.log('FE-7: Fetching program data for training_program_id:', session.training_program_id);
+          logger.log('FE-7: Fetching program data for training_program_id:', session.training_program_id);
           programData = await apiService.getTrainingProgramById(session.training_program_id);
-          console.log('FE-7: Raw API response:', programData);
-          console.log('FE-7: Program has exercises:', programData?.exercises?.length || 0);
+          logger.log('FE-7: Raw API response:', programData);
+          logger.log('FE-7: Program has exercises:', programData?.exercises?.length || 0);
 
           // CRITICAL FIX: Verify we actually got exercise data
           if (!programData || !programData.exercises || programData.exercises.length === 0) {
-            console.warn('FE-7: Program fetched but has no exercises!', programData);
+            logger.warn('FE-7: Program fetched but has no exercises!', programData);
           }
         } catch (error) {
-          console.error('FE-7: Failed to fetch program data:', error);
+          logger.error('FE-7: Failed to fetch program data:', error);
           alert(`Failed to load workout program: ${error.message || 'Unknown error'}. You can continue with an ad-hoc workout.`);
           // Continue without program data - user can still do ad-hoc workout
         }
       } else {
-        console.log('FE-7: No training_program_id, starting ad-hoc workout');
+        logger.log('FE-7: No training_program_id, starting ad-hoc workout');
       }
 
       // Starting from planned session
@@ -315,7 +316,7 @@ function App() {
         training_program_id: session.training_program_id,
       };
 
-      console.log('FE-7: Setting activeWorkout with structure:', {
+      logger.log('FE-7: Setting activeWorkout with structure:', {
         ...workoutData,
         program: programData ? {
           id: programData.id,
@@ -326,14 +327,14 @@ function App() {
       setActiveWorkout(workoutData);
     } else if (session && session.training_program_id) {
       // Starting from training program (existing behavior)
-      console.log('FE-7: Starting from training program directly');
+      logger.log('FE-7: Starting from training program directly');
       setActiveWorkout(session);
     } else if (session && session.type) {
       // Starting a generic workout (fallback)
-      console.log('FE-7: Starting generic workout');
+      logger.log('FE-7: Starting generic workout');
       setActiveWorkout(session);
     } else {
-      console.warn('Invalid session data for starting workout', session);
+      logger.warn('Invalid session data for starting workout', session);
       return;
     }
 

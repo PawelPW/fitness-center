@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import { useToast } from '../hooks/useToast';
+import { logger } from '../utils/logger';
 import MiniCalendar from '../components/MiniCalendar';
 import PlanWorkoutModal from '../components/PlanWorkoutModal';
 import QuickPlanTemplates from '../components/QuickPlanTemplates';
@@ -48,7 +49,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       setSessions(allSessions);
       await loadStats();
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      logger.error('Failed to load dashboard data:', error);
       setError('Failed to load your workout data');
     } finally {
       setLoading(false);
@@ -64,7 +65,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       const { sessions } = await apiService.getUpcomingPlannedSessions(7);
       setUpcomingSessions(sessions.slice(0, 5)); // Next 5 sessions for dashboard
     } catch (error) {
-      console.error('Failed to fetch upcoming sessions:', error);
+      logger.error('Failed to fetch upcoming sessions:', error);
     }
   };
 
@@ -73,7 +74,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
       const periodStats = await apiService.getSessionStats(selectedPeriod);
       setStats(periodStats);
     } catch (error) {
-      console.error('Failed to load stats:', error);
+      logger.error('Failed to load stats:', error);
     }
   };
 
@@ -147,7 +148,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
    * Refreshes upcoming sessions and closes modal
    */
   const handlePlanSuccess = async (session) => {
-    console.log('Session planned:', session);
+    logger.log('Session planned:', session);
     await loadUpcomingSessions();
     setShowPlanModal(false);
     setEditSession(null);
@@ -158,7 +159,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
    * Refreshes upcoming sessions and navigates to calendar
    */
   const handleQuickPlanSuccess = async (sessions) => {
-    console.log('Quick plan created:', sessions);
+    logger.log('Quick plan created:', sessions);
     await loadUpcomingSessions();
     setShowQuickPlanModal(false);
     // Navigate to calendar with highlights
@@ -216,7 +217,7 @@ function Dashboard({ user, onLogout, onViewSession, onManageExercises, onManageT
         duration: 3000
       });
     } catch (error) {
-      console.error('Failed to delete session:', error);
+      logger.error('Failed to delete session:', error);
 
       // 4. Rollback on error
       setUpcomingSessions(originalSessions);

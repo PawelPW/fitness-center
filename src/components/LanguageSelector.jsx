@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Preferences } from '@capacitor/preferences';
 import { SUPPORTED_LANGUAGES, filterLanguages } from '../i18n/languages';
+import { logger } from '../utils/logger';
 import './LanguageSelector.css';
 
 /**
@@ -76,7 +77,7 @@ export default function LanguageSelector({ isOpen, onClose }) {
       }, 2000);
 
     } catch (error) {
-      console.error('Failed to change language:', error);
+      logger.error('Failed to change language:', error);
     }
   };
 

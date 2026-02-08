@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import { useToast } from '../hooks/useToast';
+import { logger } from '../utils/logger';
 import MiniCalendar from '../components/MiniCalendar';
 import PlannedSessionCard from '../components/PlannedSessionCard';
 import PlanWorkoutModal from '../components/PlanWorkoutModal';
@@ -77,7 +78,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       setPlannedSessions(sessions);
       setError('');
     } catch (err) {
-      console.error('Failed to load planned sessions:', err);
+      logger.error('Failed to load planned sessions:', err);
       setError(t('errors.loadFailed'));
     } finally {
       if (showLoader) setLoading(false);
@@ -95,7 +96,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
       const sessions = Array.isArray(response) ? response : (response.sessions || []);
       setAllSessions(sessions);
     } catch (err) {
-      console.error('Failed to load all sessions:', err);
+      logger.error('Failed to load all sessions:', err);
     }
   };
 
@@ -116,7 +117,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
    * Handle successful session planning
    */
   const handlePlanSuccess = async (session) => {
-    console.log('Session planned:', session);
+    logger.log('Session planned:', session);
     await loadPlannedSessions(false);
     await loadAllSessions();
     setShowPlanModal(false);
@@ -132,7 +133,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
    * Handle successful quick plan
    */
   const handleQuickPlanSuccess = async (sessions) => {
-    console.log('Quick plan created:', sessions);
+    logger.log('Quick plan created:', sessions);
     await loadPlannedSessions(false);
     await loadAllSessions();
     setShowQuickPlanModal(false);
@@ -147,11 +148,11 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
    * Start a planned workout session
    */
   const handleStartWorkout = (session) => {
-    console.log('Starting workout from planned session:', session);
+    logger.log('Starting workout from planned session:', session);
     if (onStartWorkout) {
       onStartWorkout(session);
     } else {
-      console.warn('WorkoutPlanner: onStartWorkout prop not provided');
+      logger.warn('WorkoutPlanner: onStartWorkout prop not provided');
     }
   };
 
@@ -204,7 +205,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         window.Capacitor.Plugins.Haptics.notification({ type: 'success' });
       }
     } catch (error) {
-      console.error('Failed to delete session:', error);
+      logger.error('Failed to delete session:', error);
 
       // 4. Rollback on error
       setPlannedSessions(originalPlannedSessions);
@@ -277,7 +278,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         window.Capacitor.Plugins.Haptics.notification({ type: 'success' });
       }
     } catch (error) {
-      console.error('Failed to delete all sessions:', error);
+      logger.error('Failed to delete all sessions:', error);
       alert(t('errors.deletePartial'));
     } finally {
       setLoading(false);
@@ -333,7 +334,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         window.Capacitor.Plugins.Haptics.notification({ type: 'success' });
       }
     } catch (error) {
-      console.error('Failed to clear week:', error);
+      logger.error('Failed to clear week:', error);
       alert(t('errors.deletePartial'));
     } finally {
       setLoading(false);
@@ -378,7 +379,7 @@ function WorkoutPlanner({ onBack, onStartWorkout }) {
         window.Capacitor.Plugins.Haptics.notification({ type: 'success' });
       }
     } catch (error) {
-      console.error('Failed to clear month:', error);
+      logger.error('Failed to clear month:', error);
       alert(t('errors.deletePartial'));
     } finally {
       setLoading(false);

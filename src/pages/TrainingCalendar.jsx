@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
+import { logger } from '../utils/logger';
 import {
   generateCalendarGrid,
   getMonthName,
@@ -68,7 +69,7 @@ function TrainingCalendar({ onBack, onStartWorkout }) {
       const data = await apiService.getAllSessions();
       setSessions(data || []);
     } catch (err) {
-      console.error('Failed to fetch sessions:', err);
+      logger.error('Failed to fetch sessions:', err);
       setError(t('errors.loadFailed'));
     } finally {
       setLoading(false);
@@ -128,7 +129,7 @@ function TrainingCalendar({ onBack, onStartWorkout }) {
       onStartWorkout(session);
     } else {
       // Fallback: log a warning if no handler provided
-      console.warn('TrainingCalendar: onStartWorkout prop not provided');
+      logger.warn('TrainingCalendar: onStartWorkout prop not provided');
     }
   };
 
@@ -178,7 +179,7 @@ function TrainingCalendar({ onBack, onStartWorkout }) {
         duration: 3000
       });
     } catch (error) {
-      console.error('Failed to delete session:', error);
+      logger.error('Failed to delete session:', error);
 
       // 4. Rollback on error
       setSessions(originalSessions);
@@ -252,7 +253,7 @@ function TrainingCalendar({ onBack, onStartWorkout }) {
   const handleViewSessionDetails = (session) => {
     // This could navigate to a detailed session view
     // For now, just close the modal
-    console.log('View session details:', session);
+    logger.log('View session details:', session);
   };
 
   // Generate calendar grid and stats

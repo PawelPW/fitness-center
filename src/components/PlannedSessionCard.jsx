@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isOverdue } from '../utils/calendarHelpers';
+import { logger } from '../utils/logger';
 import './PlannedSessionCard.css';
 
 /**
@@ -32,7 +33,7 @@ const PlannedSessionCard = ({
 
   // Validate session data
   if (!session || !session.id) {
-    console.warn('PlannedSessionCard: Invalid session data provided');
+    logger.warn('PlannedSessionCard: Invalid session data provided');
     return null;
   }
 
@@ -92,7 +93,7 @@ const PlannedSessionCard = ({
         });
       }
     } catch (error) {
-      console.error('Error formatting date:', error);
+      logger.error('Error formatting date:', error);
       return t('card.invalidDate');
     }
   };
@@ -116,7 +117,7 @@ const PlannedSessionCard = ({
 
       return `${displayHours}:${displayMinutes} ${period}`;
     } catch (error) {
-      console.error('Error formatting time:', error);
+      logger.error('Error formatting time:', error);
       return t('card.allDay');
     }
   };

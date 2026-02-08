@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import apiService from '../services/api';
+import { logger } from '../utils/logger';
 import '../styles/Profile.css';
 
 function Profile({ onBack, user, onUpdateUser }) {
@@ -192,7 +193,7 @@ function Profile({ onBack, user, onUpdateUser }) {
         setError(response.message || 'Failed to update profile');
       }
     } catch (err) {
-      console.error('Error saving profile:', err);
+      logger.error('Error saving profile:', err);
 
       // Handle validation errors from express-validator
       if (err.message && err.message.includes('errors')) {

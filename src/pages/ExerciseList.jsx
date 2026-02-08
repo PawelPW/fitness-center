@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import apiService from '../services/api';
 import { TRAINING_TYPES } from '../utils/trainingData';
+import { logger } from '../utils/logger';
 import '../styles/ExerciseList.css';
 
 function ExerciseList({ onBack }) {
@@ -39,7 +40,7 @@ function ExerciseList({ onBack }) {
       setExercises(allExercises);
       calculateExerciseCount(allExercises);
     } catch (err) {
-      console.error('Failed to load exercises:', err);
+      logger.error('Failed to load exercises:', err);
       setError(t('exercises:errors.loadFailed'));
     } finally {
       setLoading(false);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
+import { logger } from '../utils/logger';
 import SetLogger from '../components/SetLogger';
 import RestTimer from '../components/RestTimer';
 import apiService from '../services/api';
@@ -58,68 +59,68 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
       // For ad-hoc workouts, use a temporary marker - session will be created on completion
       if (plannedSessionId) {
         sessionId = plannedSessionId;
-        console.log('Starting workout from planned session:', plannedSessionId);
+        logger.log('Starting workout from planned session:', plannedSessionId);
       } else if (program.plannedSessionId) {
         // Fallback: Check if plannedSessionId is nested in program object
         sessionId = program.plannedSessionId;
-        console.log('Starting workout from planned session (via program):', sessionId);
+        logger.log('Starting workout from planned session (via program):', sessionId);
       } else {
         // For ad-hoc workouts, don't create a session yet
         // Use 'pending' as a marker - actual session will be created when workout is completed
         // This prevents incomplete/abandoned workouts from appearing as "upcoming"
         sessionId = 'pending';
-        console.log('Starting ad-hoc workout - session will be created on completion');
+        logger.log('Starting ad-hoc workout - session will be created on completion');
       }
 
       // FE-8: Initialize session in frontend
       // Check for exercises in nested program object (from planned sessions with programs)
       // or directly in program object (from training program starts)
-      console.log('FE-8: WorkoutSession - Full program object:', JSON.stringify(program, null, 2));
-      console.log('FE-8: WorkoutSession - program.program:', program.program);
-      console.log('FE-8: WorkoutSession - program.exercises:', program.exercises);
+      logger.log('FE-8: WorkoutSession - Full program object:', JSON.stringify(program, null, 2));
+      logger.log('FE-8: WorkoutSession - program.program:', program.program);
+      logger.log('FE-8: WorkoutSession - program.exercises:', program.exercises);
 
       // Handle different API response structures
       let exercises = [];
       if (program.program?.exercises) {
         // Planned session with fetched program data
         exercises = program.program.exercises;
-        console.log('FE-8: Using program.program.exercises (planned session):', exercises.length, 'exercises');
+        logger.log('FE-8: Using program.program.exercises (planned session):', exercises.length, 'exercises');
       } else if (program.exercises) {
         // Direct program start
         exercises = program.exercises;
-        console.log('FE-8: Using program.exercises (direct start):', exercises.length, 'exercises');
+        logger.log('FE-8: Using program.exercises (direct start):', exercises.length, 'exercises');
       } else if (program.program?.program_exercises) {
         // Backend might return program_exercises array
         exercises = program.program.program_exercises;
-        console.log('FE-8: Using program.program.program_exercises:', exercises.length, 'exercises');
+        logger.log('FE-8: Using program.program.program_exercises:', exercises.length, 'exercises');
       } else if (program.program_exercises) {
         exercises = program.program_exercises;
-        console.log('FE-8: Using program.program_exercises:', exercises.length, 'exercises');
+        logger.log('FE-8: Using program.program_exercises:', exercises.length, 'exercises');
       } else {
-        console.warn('FE-8: NO EXERCISES FOUND! Checked all possible locations.');
-        console.warn('FE-8: Available properties:', Object.keys(program));
+        logger.warn('FE-8: NO EXERCISES FOUND! Checked all possible locations.');
+        logger.warn('FE-8: Available properties:', Object.keys(program));
         if (program.program) {
-          console.warn('FE-8: program.program properties:', Object.keys(program.program));
+          logger.warn('FE-8: program.program properties:', Object.keys(program.program));
         }
       }
 
       const programName = program.program?.name || program.name || program.type;
       const programId = program.program?.id || program.id || program.training_program_id;
 
-      console.log('FE-8: Final exercises array:', exercises.length, 'exercises');
-      console.log('FE-8: Final programName:', programName);
-      console.log('FE-8: Final programId:', programId);
+      logger.log('FE-8: Final exercises array:', exercises.length, 'exercises');
+      logger.log('FE-8: Final programName:', programName);
+      logger.log('FE-8: Final programId:', programId);
 
       if (exercises.length === 0) {
-        console.error('FE-8: WARNING - Starting workout with 0 exercises!');
-        console.error('FE-8: This will create an empty workout session.');
+        logger.error('FE-8: WARNING - Starting workout with 0 exercises!');
+        logger.error('FE-8: This will create an empty workout session.');
         // Set error and stop
         setError('No exercises found in this program. Cannot start workout.');
         setLoading(false);
         return;
       }
 
-      console.log('FE-8: Calling initializeSession with:', {
+      logger.log('FE-8: Calling initializeSession with:', {
         sessionId,
         programId,
         programName,
@@ -135,10 +136,10 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
         exercises: exercises,
       });
 
-      console.log('FE-8: Session initialized successfully!');
+      logger.log('FE-8: Session initialized successfully!');
     } catch (err) {
-      console.error('FE-8: Failed to start workout:', err);
-      console.error('FE-8: Error stack:', err.stack);
+      logger.error('FE-8: Failed to start workout:', err);
+      logger.error('FE-8: Error stack:', err.stack);
       setError(t('errors.startFailed') || 'Failed to start workout');
     } finally {
       setLoading(false);
@@ -211,7 +212,7 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
       // Check if this is an ad-hoc workout (session not yet created)
       if (state.sessionId === 'pending') {
         // Create the session now with completed=true
-        console.log('Creating session for completed ad-hoc workout');
+        logger.log('Creating session for completed ad-hoc workout');
         const sessionData = {
           programId: state.programId,
           type: state.trainingType,
@@ -223,7 +224,7 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
 
         const response = await apiService.createSession(sessionData);
         finalSessionId = response.id;
-        console.log('Created completed session with ID:', finalSessionId);
+        logger.log('Created completed session with ID:', finalSessionId);
       } else {
         // Existing planned session - update it to completed
         const completionData = {
@@ -236,7 +237,7 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
         // The updatePlannedSession endpoint is only for editing planned session metadata (type, date, notes)
         // Completion updates (completed, duration, calories) go through updateSession
         await apiService.updateSession(state.sessionId, completionData);
-        console.log('Updated planned session to completed:', state.sessionId);
+        logger.log('Updated planned session to completed:', state.sessionId);
       }
 
       // Save exercise data with individual sets
@@ -247,8 +248,8 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
           const totalReps = exercise.completedSets.reduce((sum, set) => sum + set.reps, 0);
           const avgWeight = exercise.completedSets.reduce((sum, set) => sum + set.weight, 0) / totalSets;
 
-          console.log('Exercise object:', exercise);
-          console.log('Exercise exerciseName:', exercise.exerciseName);
+          logger.log('Exercise object:', exercise);
+          logger.log('Exercise exerciseName:', exercise.exerciseName);
 
           const exerciseData = {
             exerciseName: exercise.exerciseName,
@@ -259,7 +260,7 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
             setsData: exercise.completedSets, // Send individual sets data
           };
 
-          console.log('Sending to API:', exerciseData);
+          logger.log('Sending to API:', exerciseData);
 
           await apiService.createSessionExercise(finalSessionId, exerciseData);
         }
@@ -279,7 +280,7 @@ function WorkoutSession({ program, plannedSessionId, onComplete, onCancel }) {
         });
       }
     } catch (err) {
-      console.error('Failed to finish workout:', err);
+      logger.error('Failed to finish workout:', err);
       setError(t('errors.saveFailed'));
     } finally {
       setLoading(false);

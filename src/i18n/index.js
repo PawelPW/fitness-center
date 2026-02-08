@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { Preferences } from '@capacitor/preferences';
+import { logger } from '../utils/logger';
 
 // Import all translation files
 // English
@@ -171,7 +172,7 @@ const capacitorLanguageDetector = {
       const { value: savedLanguage } = await Preferences.get({ key: 'app-language' });
 
       if (savedLanguage) {
-        console.log('[i18n] Using saved language preference:', savedLanguage);
+        logger.log('[i18n] Using saved language preference:', savedLanguage);
         callback(savedLanguage);
         return;
       }
@@ -186,17 +187,17 @@ const capacitorLanguageDetector = {
       const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(lang => lang.code);
       const languageToUse = supportedLanguageCodes.includes(baseLanguage) ? baseLanguage : 'en';
 
-      console.log('[i18n] Detected device language:', deviceLanguage);
-      console.log('[i18n] Using language:', languageToUse);
+      logger.log('[i18n] Detected device language:', deviceLanguage);
+      logger.log('[i18n] Using language:', languageToUse);
 
       callback(languageToUse);
     } catch (error) {
-      console.error('[i18n] Error detecting language:', error);
+      logger.error('[i18n] Error detecting language:', error);
       callback('en'); // Fallback to English on error
     }
   },
   init: () => {
-    console.log('[i18n] Capacitor language detector initialized');
+    logger.log('[i18n] Capacitor language detector initialized');
   },
   cacheUserLanguage: async (language) => {
     try {
@@ -204,9 +205,9 @@ const capacitorLanguageDetector = {
         key: 'app-language',
         value: language,
       });
-      console.log('[i18n] Language preference saved:', language);
+      logger.log('[i18n] Language preference saved:', language);
     } catch (error) {
-      console.error('[i18n] Error saving language preference:', error);
+      logger.error('[i18n] Error saving language preference:', error);
     }
   },
 };
@@ -245,9 +246,9 @@ export const changeLanguage = async (languageCode) => {
       key: 'app-language',
       value: languageCode,
     });
-    console.log('[i18n] Language changed to:', languageCode);
+    logger.log('[i18n] Language changed to:', languageCode);
   } catch (error) {
-    console.error('[i18n] Error changing language:', error);
+    logger.error('[i18n] Error changing language:', error);
   }
 };
 

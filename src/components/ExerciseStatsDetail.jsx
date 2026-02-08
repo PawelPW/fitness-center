@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import apiService from '../services/api';
 import VolumeChart from './VolumeChart';
 import ProgressionChart from './ProgressionChart';
+import { logger } from '../utils/logger';
 import '../styles/ExerciseStatsDetail.css';
 
 function ExerciseStatsDetail({ exerciseName, onBack }) {
@@ -34,7 +35,7 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
       setHistory(historyData.history || []);
       setPRs(prsData.personalRecords || {});
     } catch (err) {
-      console.error('Failed to load exercise data:', err);
+      logger.error('Failed to load exercise data:', err);
     } finally {
       setLoading(false);
     }
@@ -45,7 +46,7 @@ function ExerciseStatsDetail({ exerciseName, onBack }) {
       const data = await apiService.getVolumeStats(exerciseName, selectedPeriod, 'week');
       setVolumeData(data);
     } catch (err) {
-      console.error('Failed to load volume data:', err);
+      logger.error('Failed to load volume data:', err);
     }
   };
 

@@ -7,6 +7,7 @@ import {
   createTrainingProgram,
   updateTrainingProgram,
 } from '../utils/trainingDatabase';
+import { logger } from '../utils/logger';
 import '../styles/TrainingBuilder.css';
 
 function TrainingBuilder({ onBack, existingProgram }) {
@@ -39,7 +40,7 @@ function TrainingBuilder({ onBack, existingProgram }) {
       const exList = await getExercisesByType(programType);
       setAvailableExercises(exList);
     } catch (error) {
-      console.error('Failed to load exercises:', error);
+      logger.error('Failed to load exercises:', error);
     } finally {
       setLoading(false);
     }

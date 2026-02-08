@@ -1,4 +1,5 @@
 import { useReducer, useEffect } from 'react';
+import { logger } from '../utils/logger';
 
 // Action types
 const ACTIONS = {
@@ -382,7 +383,7 @@ export function useWorkoutSession() {
         });
         return true;
       } catch (error) {
-        console.error('Failed to restore session:', error);
+        logger.error('Failed to restore session:', error);
         return false;
       }
     }

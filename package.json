@@ -23,13 +23,15 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:mobile": "playwright test --project=mobile-ios --project=mobile-android",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "security:audit": "npm audit --audit-level=critical",
+    "security:check": "npm audit"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.58",
     "@capacitor/android": "^8.0.0",
     "@capacitor/app": "^8.0.0",
-    "@capacitor/cli": "^8.0.0",
+    "@capacitor/cli": "8.0.2-nightly-20260121T151058.0",
     "@capacitor/core": "^8.0.0",
     "@capacitor/ios": "^8.0.0",
     "@capacitor/preferences": "^8.0.0",

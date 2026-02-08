@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import apiService from '../services/api.js';
 import { useToast } from '../hooks/useToast';
 import { formatDateKey } from '../utils/calendarHelpers.js';
+import { logger } from '../utils/logger';
 import './QuickPlanTemplates.css';
 
 /**
@@ -65,7 +66,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
 
       setHasTrainingHistory(recentSessions.length >= 3);
     } catch (err) {
-      console.error('Error checking training history:', err);
+      logger.error('Error checking training history:', err);
       setHasTrainingHistory(false);
     }
   };
@@ -172,7 +173,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
 
       return sessions;
     } catch (err) {
-      console.error('Error generating smart template:', err);
+      logger.error('Error generating smart template:', err);
       // Fall back to default template on error
       return generateDefaultTemplate(selectedDuration);
     }
@@ -193,7 +194,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
 
       setGeneratedSessions(sessions);
     } catch (err) {
-      console.error('Error generating template:', err);
+      logger.error('Error generating template:', err);
       setError(t('quickPlan.errors.generateFailed'));
     } finally {
       setIsGenerating(false);
@@ -334,7 +335,7 @@ function QuickPlanTemplates({ isOpen, onClose, onSuccess, initialDuration = '1we
       // Close modal
       onClose();
     } catch (err) {
-      console.error('Failed to create sessions:', err);
+      logger.error('Failed to create sessions:', err);
 
       // Parse error message
       let errorMessage = t('errors.createFailed');
