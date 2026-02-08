@@ -9,7 +9,7 @@
     "allowNavigation": ["*"]
   },
   "android": {
-    "allowMixedContent": true
+    "allowMixedContent": false
   },
   "plugins": {
     "SplashScreen": {

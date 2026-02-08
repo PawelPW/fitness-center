@@ -1,4 +1,5 @@
 import { Preferences } from '@capacitor/preferences';
+import { logger } from './logger.js';
 
 /**
  * Secure Storage Utility
@@ -17,7 +18,7 @@ class SecureStorage {
     try {
       await Preferences.set({ key, value });
     } catch (error) {
-      console.error('SecureStorage.set error:', error);
+      logger.error('SecureStorage.set error:', error);
       throw new Error('Failed to store data securely');
     }
   }
@@ -32,7 +33,7 @@ class SecureStorage {
       const { value } = await Preferences.get({ key });
       return value;
     } catch (error) {
-      console.error('SecureStorage.get error:', error);
+      logger.error('SecureStorage.get error:', error);
       return null;
     }
   }
@@ -45,7 +46,7 @@ class SecureStorage {
     try {
       await Preferences.remove({ key });
     } catch (error) {
-      console.error('SecureStorage.remove error:', error);
+      logger.error('SecureStorage.remove error:', error);
       throw new Error('Failed to remove data from secure storage');
     }
   }
@@ -57,7 +58,7 @@ class SecureStorage {
     try {
       await Preferences.clear();
     } catch (error) {
-      console.error('SecureStorage.clear error:', error);
+      logger.error('SecureStorage.clear error:', error);
       throw new Error('Failed to clear secure storage');
     }
   }
@@ -71,7 +72,7 @@ class SecureStorage {
       const { keys } = await Preferences.keys();
       return keys;
     } catch (error) {
-      console.error('SecureStorage.keys error:', error);
+      logger.error('SecureStorage.keys error:', error);
       return [];
     }
   }

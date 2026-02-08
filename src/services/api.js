@@ -1,4 +1,5 @@
 import secureStorage from '../utils/secureStorage.js';
+import { logger } from '../utils/logger.js';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 const TOKEN_KEY = 'auth-token';
@@ -93,7 +94,7 @@ class ApiService {
         }));
       }
 
-      console.error('API Error:', error);
+      logger.error('API Error:', error);
       throw error;
     }
   }

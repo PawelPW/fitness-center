@@ -1,12 +1,13 @@
 import apiService from '../services/api.js';
 import { TRAINING_TYPES } from './trainingData';
+import { logger } from './logger.js';
 
 // Get all training programs
 export const getAllTrainingPrograms = async () => {
   try {
     return await apiService.getAllTrainingPrograms();
   } catch (error) {
-    console.error('Failed to fetch training programs:', error);
+    logger.error('Failed to fetch training programs:', error);
     return [];
   }
 };
@@ -16,7 +17,7 @@ export const getTrainingProgramById = async (id) => {
   try {
     return await apiService.getTrainingProgramById(id);
   } catch (error) {
-    console.error('Failed to fetch training program:', error);
+    logger.error('Failed to fetch training program:', error);
     return null;
   }
 };

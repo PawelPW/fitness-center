@@ -1,4 +1,5 @@
 import apiService from '../services/api.js';
+import { logger } from './logger.js';
 
 // Training session types
 export const TRAINING_TYPES = {
@@ -14,7 +15,7 @@ export const initializeTrainingData = async () => {
   try {
     return await apiService.getAllSessions();
   } catch (error) {
-    console.error('Failed to fetch training sessions:', error);
+    logger.error('Failed to fetch training sessions:', error);
     return [];
   }
 };
@@ -100,6 +101,6 @@ export const deleteTrainingSession = async (id) => {
 
 // Save training data - no longer needed with API
 export const saveTrainingData = async (sessions) => {
-  console.log('saveTrainingData is deprecated with API backend');
+  logger.log('saveTrainingData is deprecated with API backend');
   return sessions;
 };

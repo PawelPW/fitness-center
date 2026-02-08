@@ -1,11 +1,12 @@
 import apiService from '../services/api.js';
+import { logger } from './logger.js';
 
 // Get all exercises (already grouped by type from API)
 export const getAllExercises = async () => {
   try {
     return await apiService.getAllExercises();
   } catch (error) {
-    console.error('Failed to fetch exercises:', error);
+    logger.error('Failed to fetch exercises:', error);
     return {};
   }
 };
@@ -15,7 +16,7 @@ export const getExercisesByType = async (type) => {
   try {
     return await apiService.getExercisesByType(type);
   } catch (error) {
-    console.error('Failed to fetch exercises by type:', error);
+    logger.error('Failed to fetch exercises by type:', error);
     return [];
   }
 };
